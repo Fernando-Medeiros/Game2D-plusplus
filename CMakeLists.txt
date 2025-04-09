@@ -25,25 +25,30 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
+file(GLOB_RECURSE GAME_FILES CONFIGURE_DEPENDS
+    ${PROJECT_SOURCE_DIR}/core/enums/*.h
+    ${PROJECT_SOURCE_DIR}/core/tools/*.h
+    ${PROJECT_SOURCE_DIR}/core/tools/*.cpp
 
-# Adiciona os submódulos (módulos do projeto)
-add_subdirectory(core)
-
-# Adiciona os executaveis (arquivos .h e .cpp)
-add_executable(Game2D main.cpp)
-
-# Bibliotecas adicionais
-target_link_libraries(Game2D raylib core)
-
-# Globalização dos imports
-target_include_directories(Game2D
-  PRIVATE
-    ${PROJECT_SOURCE_DIR}/design/scenes
-    ${PROJECT_SOURCE_DIR}/infra/adapters
-    ${PROJECT_SOURCE_DIR}/infra/managers
+    ${PROJECT_SOURCE_DIR}/infra/adapters/contracts/*.h
+    ${PROJECT_SOURCE_DIR}/infra/adapters/.h
+    ${PROJECT_SOURCE_DIR}/infra/adapters/*.cpp
+    ${PROJECT_SOURCE_DIR}/infra/managers/*.h
+    ${PROJECT_SOURCE_DIR}/infra/managers/*.cpp
 )
 
-# Default
+add_executable(Game2D main.cpp ${GAME_FILES})
+
+target_link_libraries(Game2D raylib)
+
+target_include_directories(Game2D PRIVATE
+  ${PROJECT_SOURCE_DIR}/core/enums
+  ${PROJECT_SOURCE_DIR}/core/tools
+  ${PROJECT_SOURCE_DIR}/infra/adapters
+  ${PROJECT_SOURCE_DIR}/infra/adapters/contracts
+  ${PROJECT_SOURCE_DIR}/infra/managers
+)
+
 include(GNUInstallDirs)
 install(TARGETS Game2D
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
