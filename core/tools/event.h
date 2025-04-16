@@ -1,26 +1,36 @@
 #ifndef TOOLS_EVENT_H
 #define TOOLS_EVENT_H
 
+#include <any>
 #include <functional>
+#include <memory>
 #include <vector>
 
 namespace core::tools {
 
-template<typename T>
+using namespace std;
+
+using EventId = size_t;
+using EventArgs = any;
+using EventCallback = function<void(EventArgs &)>;
+using EventCollection = vector<pair<EventId, EventCallback>>;
+
 class Event
 {
-public:
-    using Action = std::function<void(T &)>;
-
 private:
-    std::vector<Action> handlers;
+    unique_ptr<EventId> nextId;
+    unique_ptr<EventCollection> handlers;
 
 public:
-    Event() = default;
+    Event();
     ~Event() = default;
 
-    void invoke(T &sender);
-    void subscribe(const Action &handler);
+    void invoke(any sender);
+    void unsubscribe(EventId &eventId);
+    EventId subscribe(EventCallback handler);
+
+private:
+    void refreshCapacity();
 };
 } // namespace core::tools
 #endif // TOOLS_EVENT_H
