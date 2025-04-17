@@ -31,7 +31,7 @@ file(GLOB_RECURSE GAME_FILES CONFIGURE_DEPENDS
     ${PROJECT_SOURCE_DIR}/core/tools/*.cpp
 
     ${PROJECT_SOURCE_DIR}/infra/adapters/contracts/*.h
-    ${PROJECT_SOURCE_DIR}/infra/adapters/.h
+    ${PROJECT_SOURCE_DIR}/infra/adapters/*.h
     ${PROJECT_SOURCE_DIR}/infra/adapters/*.cpp
     ${PROJECT_SOURCE_DIR}/infra/managers/*.h
     ${PROJECT_SOURCE_DIR}/infra/managers/*.cpp
