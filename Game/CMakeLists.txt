@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(Game2D LANGUAGES CXX)
+project(Game LANGUAGES CXX)
 
 # Generate compile_commands.json
 set(CMAKE_CXX_STANDARD 23)
@@ -26,31 +26,34 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 endif()
 
 file(GLOB_RECURSE GAME_FILES CONFIGURE_DEPENDS
-    ${PROJECT_SOURCE_DIR}/core/enums/*.h
-    ${PROJECT_SOURCE_DIR}/core/tools/*.h
-    ${PROJECT_SOURCE_DIR}/core/tools/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.cpp
 
-    ${PROJECT_SOURCE_DIR}/infra/adapters/contracts/*.h
-    ${PROJECT_SOURCE_DIR}/infra/adapters/*.h
-    ${PROJECT_SOURCE_DIR}/infra/adapters/*.cpp
-    ${PROJECT_SOURCE_DIR}/infra/managers/*.h
-    ${PROJECT_SOURCE_DIR}/infra/managers/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.cpp
 )
 
-add_executable(Game2D main.cpp ${GAME_FILES})
+add_library(Game STATIC ${GAME_FILES})
+add_executable(GameExecutable main.cpp)
 
-target_link_libraries(Game2D raylib)
+target_link_libraries(Game raylib)
+target_link_libraries(GameExecutable PRIVATE Game)
 
-target_include_directories(Game2D PRIVATE
-  ${PROJECT_SOURCE_DIR}/core/enums
-  ${PROJECT_SOURCE_DIR}/core/tools
-  ${PROJECT_SOURCE_DIR}/infra/adapters
-  ${PROJECT_SOURCE_DIR}/infra/adapters/contracts
-  ${PROJECT_SOURCE_DIR}/infra/managers
+target_include_directories(Game PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/core/enums
+  ${CMAKE_CURRENT_SOURCE_DIR}/core/tools
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 include(GNUInstallDirs)
-install(TARGETS Game2D
+install(TARGETS Game
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

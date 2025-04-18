@@ -73,6 +73,13 @@ public:
         return *this;
     };
 
+    constexpr VectorAdapter &operator*(const T &value) noexcept
+    {
+        X *= value;
+        Y *= value;
+        return *this;
+    };
+
     constexpr VectorAdapter &operator+(const T &value) noexcept
     {
         X += value;
