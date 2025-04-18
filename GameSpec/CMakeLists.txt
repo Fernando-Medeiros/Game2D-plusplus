@@ -12,7 +12,7 @@ file(GLOB_RECURSE SPEC_FILES CONFIGURE_DEPENDS
 
 add_executable(GameSpec main.cpp ${SPEC_FILES})
 
-target_link_libraries(GameSpec PUBLIC Game)
+target_link_libraries(GameSpec PUBLIC GameCore)
 
 target_include_directories(GameSpec PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/adapters

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(MultiProject CXX)
+project(Game2D CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 

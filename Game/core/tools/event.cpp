@@ -1,10 +1,14 @@
 #include "event.hpp"
+#include <any>
+#include <memory>
+#include <type_traits>
+#include <vector>
 
 using namespace core::tools;
 
 Event::Event()
-    : nextId{make_unique<EventId>()}
-    , handlers{make_unique<EventCollection>()}
+    : nextId{ make_unique<EventId>() }
+    , handlers{ make_unique<EventCollection>() }
 {
     handlers->reserve(2);
 };
@@ -17,11 +21,11 @@ EventId Event::subscribe(EventCallback handler)
     return id;
 }
 
-void Event::unsubscribe(EventId &eventId)
+void Event::unsubscribe(EventId& eventId)
 {
-    auto expression = std::remove_if(handlers->begin(), handlers->end(), [=](const auto &pair) {
-        return pair.first == eventId;
-    });
+    auto expression = std::remove_if(handlers->begin(), handlers->end(), [=](const auto& pair) {
+	  return pair.first == eventId;
+	  });
 
     handlers->erase(expression, handlers->end());
     refreshCapacity();
@@ -29,8 +33,8 @@ void Event::unsubscribe(EventId &eventId)
 
 void Event::invoke(any sender)
 {
-    for (auto &[_, handler] : *handlers) {
-        handler(sender);
+    for (auto& [_, handler] : *handlers) {
+	  handler(sender);
     }
 }
 
@@ -39,10 +43,11 @@ void Event::refreshCapacity()
     size_t length = handlers->size();
 
     if (length == 0) {
-        handlers->clear();
-        handlers = make_unique<EventCollection>();
-        handlers->reserve(1);
-    } else {
-        handlers->reserve(length + 1);
+	  handlers->clear();
+	  handlers = make_unique<EventCollection>();
+	  handlers->reserve(1);
+    }
+    else {
+	  handlers->reserve(length + 1);
     }
 }

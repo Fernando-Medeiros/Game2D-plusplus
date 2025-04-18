@@ -1,16 +1,17 @@
 #ifndef VECTOR_ADAPTER_SPEC_HPP
 #define VECTOR_ADAPTER_SPEC_HPP
 
-#include <format>
 #include <memory>
 #include <print>
+#include <raylib.h>
+#include <string>
 #include <vector_adapter.hpp>
 
 using namespace std;
 
 void should_create_vector_2D()
 {
-    string message{""};
+    string message{ "" };
     println("INICIO TESTE - VECTOR 2D");
 
     auto vector2D = make_unique<adapters::VectorAdapter<float>>();
@@ -26,13 +27,13 @@ void should_create_vector_2D()
     println("{}", vector2D->toString());
     *vector2D - *vector2D;
     println("{}", vector2D->toString());
-    *vector2D **vector2D;
+    *vector2D** vector2D;
     println("{}", vector2D->toString());
     println("{} {} {} {}",
-            vector2D->getVerticalPos(),
-            vector2D->getHorizontalPos(),
-            vector2D->getRowPos(),
-            vector2D->getColumnPos());
+	  vector2D->getVerticalPos(),
+	  vector2D->getHorizontalPos(),
+	  vector2D->getRowPos(),
+	  vector2D->getColumnPos());
 
     Vector2 rayVector2D = *vector2D;
 

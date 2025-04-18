@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(Game LANGUAGES CXX)
+project(GameCore LANGUAGES CXX)
 
 # Generate compile_commands.json
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # Instala as dependencias do raylib
 set(RAYLIB_VERSION 5.5)
@@ -25,35 +26,36 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
-file(GLOB_RECURSE GAME_FILES CONFIGURE_DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.hpp
+file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.cpp
-
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.cpp
 )
 
-add_library(Game STATIC ${GAME_FILES})
-add_executable(GameExecutable main.cpp)
+file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
+)
 
-target_link_libraries(Game PUBLIC raylib)
-target_link_libraries(GameExecutable PRIVATE Game)
+add_library(GameCore SHARED ${CPP_FILES})
+target_link_libraries(GameCore PUBLIC raylib)
 
-target_include_directories(Game PUBLIC
+add_executable(GameApp main.cpp)
+target_link_libraries(GameApp PRIVATE GameCore)
+
+target_include_directories(GameCore PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/core/enums
   ${CMAKE_CURRENT_SOURCE_DIR}/core/tools
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
 include(GNUInstallDirs)
-install(TARGETS Game
+install(TARGETS GameCore
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
