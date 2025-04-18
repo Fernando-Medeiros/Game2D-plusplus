@@ -1,5 +1,5 @@
-﻿#ifndef ENUM_WORLD_SIZE_H
-#define ENUM_WORLD_SIZE_H
+﻿#ifndef ENUM_WORLD_SIZE_HPP
+#define ENUM_WORLD_SIZE_HPP
 
 #include <cstdint>
 

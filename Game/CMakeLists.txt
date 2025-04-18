@@ -26,21 +26,21 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 endif()
 
 file(GLOB_RECURSE GAME_FILES CONFIGURE_DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.cpp
 
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.cpp
 )
 
 add_library(Game STATIC ${GAME_FILES})
 add_executable(GameExecutable main.cpp)
 
-target_link_libraries(Game raylib)
+target_link_libraries(Game PUBLIC raylib)
 target_link_libraries(GameExecutable PRIVATE Game)
 
 target_include_directories(Game PUBLIC

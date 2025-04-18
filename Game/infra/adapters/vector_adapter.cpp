@@ -1,4 +1,4 @@
-#include <vector_adapter.h>
+#include <vector_adapter.hpp>
 
 using namespace adapters;
 

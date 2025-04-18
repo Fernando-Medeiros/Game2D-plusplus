@@ -1,4 +1,4 @@
-#include <viewport_adapter.h>
+#include <viewport_adapter.hpp>
 
 using namespace adapters;
 
@@ -7,7 +7,7 @@ ViewportAdapter::ViewportAdapter() noexcept
     , _size()
     , _center()
     , _position()
-    , _view()
+    , _view{}
 {}
 
 ViewportAdapter::ViewportAdapter(const Vector &center, const Vector &size) noexcept
@@ -15,7 +15,7 @@ ViewportAdapter::ViewportAdapter(const Vector &center, const Vector &size) noexc
     , _size(size)
     , _center(center)
     , _position(center)
-    , _view(size, center, 0, 1.0)
+    , _view{size, center, 0, 1.0}
 {}
 
 Rect ViewportAdapter::getRect() noexcept

@@ -8,7 +8,8 @@ int main()
     InitWindow(screenWidth, screenHeight, "raylib basic window");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose())
+    {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawText("It works!", 20, 20, 20, BLACK);

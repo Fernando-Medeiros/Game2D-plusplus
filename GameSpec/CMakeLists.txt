@@ -6,9 +6,17 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(GameSpec main.cpp)
+file(GLOB_RECURSE SPEC_FILES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/adapters/*.hpp
+)
+
+add_executable(GameSpec main.cpp ${SPEC_FILES})
 
 target_link_libraries(GameSpec PUBLIC Game)
+
+target_include_directories(GameSpec PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/adapters
+)
 
 include(GNUInstallDirs)
 install(TARGETS GameSpec
