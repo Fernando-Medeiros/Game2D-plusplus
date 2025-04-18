@@ -26,10 +26,10 @@ namespace adapters {
 
 	  VectorAdapter(const Vector2& copy) noexcept;
 
-	  VectorAdapter(const T& x,
-		const T& y,
-		const PositionType& row,
-		const PositionType& column) noexcept;
+	  VectorAdapter(
+		T x, T y,
+		PositionType row,
+		PositionType column) noexcept;
 
 	  ~VectorAdapter() noexcept = default;
 

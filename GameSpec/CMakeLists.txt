@@ -6,18 +6,49 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Verifica se o GoogleTest já está disponível no sistema
+find_package(GTest QUIET)
+if (NOT GTest_FOUND)
+  include(FetchContent)
+
+  set(GOOGLETEST_VERSION 1.16.0)
+  FetchContent_Declare(
+    googletest
+    DOWNLOAD_EXTRACT_TIMESTAMP OFF
+    URL https://github.com/google/googletest/archive/refs/tags/v${GOOGLETEST_VERSION}.zip
+  )
+
+  FetchContent_GetProperties(googletest)
+  if (NOT googletest_POPULATED)
+    message(STATUS "GoogleTest não encontrado. Baixando automaticamente...")
+    # Evita que o CMake builde os testes internos do GoogleTest
+    set(BUILD_GMOCK ON CACHE BOOL "" FORCE)
+    set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+    FetchContent_MakeAvailable(googletest)
+  endif()
+endif()
+
+
 file(GLOB_RECURSE SPEC_FILES CONFIGURE_DEPENDS
-    ${CMAKE_CURRENT_SOURCE_DIR}/adapters/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/adapters/*.cpp
 )
 
-add_executable(GameSpec main.cpp ${SPEC_FILES})
+add_executable(GameSpec ${SPEC_FILES})
 
-target_link_libraries(GameSpec PUBLIC GameCore)
-
-target_include_directories(GameSpec PUBLIC
+target_link_libraries(GameSpec PRIVATE
+    GameCore
+    gtest
+    gtest_main
+)
+target_include_directories(GameSpec PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/adapters
 )
 
+enable_testing()
+
+include(GoogleTest)
 include(GNUInstallDirs)
 install(TARGETS GameSpec
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
