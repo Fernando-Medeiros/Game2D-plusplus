@@ -83,3 +83,4 @@ CMakeLists.txt.user*
 .uic/
 /build*/
 /.vs
+/out/install/x64-Debug
