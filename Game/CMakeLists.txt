@@ -40,7 +40,7 @@ file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
 )
 
-add_library(GameCore SHARED ${CPP_FILES})
+add_library(GameCore SHARED ${CPP_FILES} ${HPP_FILES})
 target_link_libraries(GameCore PUBLIC raylib)
 
 add_executable(GameApp main.cpp)

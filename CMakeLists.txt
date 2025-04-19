@@ -6,3 +6,4 @@ set(CMAKE_CXX_STANDARD 23)
 # Adiciona os dois projetos como subdiretórios
 add_subdirectory(Game)
 add_subdirectory(GameSpec)
+add_subdirectory(GameInterop)
