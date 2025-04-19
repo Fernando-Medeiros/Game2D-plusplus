@@ -42,15 +42,24 @@ target_link_libraries(GameSpec PRIVATE
     gtest
     gtest_main
 )
+
 target_include_directories(GameSpec PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/adapters
 )
 
 enable_testing()
-
 include(GoogleTest)
+
 include(GNUInstallDirs)
 install(TARGETS GameSpec
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+# [DLL] copia os arquivos compilados de gamecore para o output do gamespec.
+# O gamecore.dll precisa estar junto do .exe quando compartilha a biblioteca com SHARED.
+add_custom_command(TARGET GameSpec POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    $<TARGET_FILE:GameCore>
+    $<TARGET_FILE_DIR:GameSpec>
 )
