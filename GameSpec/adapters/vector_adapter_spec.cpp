@@ -6,11 +6,11 @@ using namespace adapters;
 
 class VectorAdapterSpec : public ::testing::Test {
 protected:
-    position_type row{ 50 }, column{ 100 };
+    Position row{ 50 }, column{ 100 };
 
-    float horizontal{ 10.0f }, vertical{ 20.0f }, modifier{ 5 };
+    Coords horizontal{ 10.0f }, vertical{ 20.0f }, modifier{ 5 };
 
-    VectorAdapter<float> vector{ horizontal, vertical, row, column };
+    VectorAdapter vector{ horizontal, vertical, row, column };
 
     void SetUp() override {}
 };
@@ -51,7 +51,7 @@ TEST_F(VectorAdapterSpec, Should_Subtract_Scalar_Correctly) {
 }
 
 TEST_F(VectorAdapterSpec, Should_Subtract_Another_Vector_Correctly) {
-    VectorAdapter<float> other(horizontal, vertical);
+    VectorAdapter other(horizontal, vertical);
     vector - other;
 
     EXPECT_FLOAT_EQ(vector.verticalPosition(), 0.0f);
@@ -59,7 +59,7 @@ TEST_F(VectorAdapterSpec, Should_Subtract_Another_Vector_Correctly) {
 }
 
 TEST_F(VectorAdapterSpec, Should_Multiply_By_Another_Vector_Correctly) {
-    VectorAdapter<float> other(2.0f, 3.0f);
+    VectorAdapter other(2.0f, 3.0f);
     vector* other;
 
     EXPECT_FLOAT_EQ(vector.verticalPosition(), vertical * other.verticalPosition());
@@ -67,7 +67,7 @@ TEST_F(VectorAdapterSpec, Should_Multiply_By_Another_Vector_Correctly) {
 }
 
 TEST_F(VectorAdapterSpec, Should_Divide_By_Another_Vector_Correctly) {
-    VectorAdapter<float> other(2.0f, 4.0f);
+    VectorAdapter other(2.0f, 4.0f);
     vector / other;
 
     EXPECT_FLOAT_EQ(vector.verticalPosition(), vertical / other.verticalPosition());
@@ -75,7 +75,7 @@ TEST_F(VectorAdapterSpec, Should_Divide_By_Another_Vector_Correctly) {
 }
 
 TEST_F(VectorAdapterSpec, Should_Add_Another_Vector_Correctly) {
-    VectorAdapter<float> other(horizontal, vertical);
+    VectorAdapter other(horizontal, vertical);
     vector + other;
 
     EXPECT_FLOAT_EQ(vector.verticalPosition(), vertical + other.verticalPosition());
@@ -84,7 +84,7 @@ TEST_F(VectorAdapterSpec, Should_Add_Another_Vector_Correctly) {
 
 TEST_F(VectorAdapterSpec, Should_Convert_To_Raylib_Vector2) {
     Vector2 rayVec = vector;
-    VectorAdapter<float> other(rayVec);
+    VectorAdapter other(rayVec);
 
     EXPECT_FLOAT_EQ(rayVec.y, vertical);
     EXPECT_FLOAT_EQ(rayVec.x, horizontal);

@@ -1,53 +1,44 @@
 ﻿#ifndef ADAPTER_VIEWPORT_HPP
 #define ADAPTER_VIEWPORT_HPP
 
+#include <raylib.h>
+#include <string>
 #include <vector_adapter.hpp>
 
 namespace adapters {
 
-using View = Camera2D;
-using ZoomType = float;
-using String = std::string;
-using Rect = VectorAdapter<float>;
-using Vector = VectorAdapter<float>;
+    using Zoom = float;
+    using View = Camera2D;
+    using String = std::string;
 
-/// Estrutura responsável por adaptar a janela de renderização de uma biblioteca externa para a janela do jogo.
-class ViewportAdapter
-{
-private:
-    View _view;
-    Vector _size;
-    Vector _center;
-    Vector _position;
-    ZoomType _zoom{1.0};
-
-public:
-    ViewportAdapter() noexcept;
-    ViewportAdapter(const Vector &center, const Vector &size) noexcept;
-
-    ~ViewportAdapter() noexcept = default;
-
-    [[nodiscard]] Rect getRect() noexcept;
-    [[nodiscard]] const Vector &getSize() const noexcept;
-    [[nodiscard]] const Vector &getCenter() const noexcept;
-    [[nodiscard]] const Vector &getPosition() const noexcept;
-
-    void reset(Rect rect) noexcept;
-    void setZoom(const ZoomType &scale) noexcept;
-    void setSize(const Vector &size) noexcept;
-    void setCenter(const Vector &center) noexcept;
-
-    constexpr operator Camera2D() noexcept { return Camera2D{_size, _center, 0, _zoom}; };
-
-    constexpr operator Camera2D() const noexcept { return Camera2D{_size, _center, 0, _zoom}; };
-
-    const String toString() const noexcept
+    class ViewportAdapter
     {
-        return std::format("Viewport -> {0} {1} {2}",
-                           _position.toString(),
-                           _center.toString(),
-                           _size.toString());
+    private:
+	  Zoom _zoom{ 1.0 };
+	  View _view{};
+	  VectorAdapter _size{};
+	  VectorAdapter _center{};
+	  VectorAdapter _position{};
+
+    public:
+	  ViewportAdapter() noexcept = default;
+	  ViewportAdapter(const VectorAdapter& size, const VectorAdapter& center) noexcept;
+	  ~ViewportAdapter() noexcept = default;
+
+	  [[nodiscard]] VectorAdapter rect() noexcept;
+	  [[nodiscard]] const VectorAdapter& size() const noexcept;
+	  [[nodiscard]] const VectorAdapter& center() const noexcept;
+	  [[nodiscard]] const VectorAdapter& position() const noexcept;
+
+	  void zoom(Zoom scale) noexcept;
+	  void reset(VectorAdapter rect) noexcept;
+	  void size(VectorAdapter size) noexcept;
+	  void center(VectorAdapter center) noexcept;
+	  const std::string toString() const noexcept;
+
+	  constexpr operator Camera2D() noexcept { return Camera2D{ _size, _center, 0, _zoom }; };
+
+	  constexpr operator Camera2D() const noexcept { return Camera2D{ _size, _center, 0, _zoom }; };
     };
-};
 } // namespace adapters
 #endif // !ADAPTER_VIEWPORT_HPP

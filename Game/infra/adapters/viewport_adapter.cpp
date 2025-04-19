@@ -1,54 +1,59 @@
+#include <format>
+#include <string>
+#include <vector_adapter.hpp>
 #include <viewport_adapter.hpp>
 
 using namespace adapters;
 
-ViewportAdapter::ViewportAdapter() noexcept
-    : _zoom(1.0)
-    , _size()
-    , _center()
-    , _position()
-    , _view{}
-{}
-
-ViewportAdapter::ViewportAdapter(const Vector &center, const Vector &size) noexcept
-    : _zoom(1.0)
-    , _size(size)
-    , _center(center)
-    , _position(center)
-    , _view{size, center, 0, 1.0}
-{}
-
-Rect ViewportAdapter::getRect() noexcept
-{
-    return Rect();
+ViewportAdapter::ViewportAdapter(const VectorAdapter& size, const VectorAdapter& center) noexcept
+    : _zoom{ 1.0 }
+    , _size{ size }
+    , _center{ center }
+    , _position{ center }
+    , _view{ size, center, 0, 1.0 } {
 }
 
-const Vector &ViewportAdapter::getSize() const noexcept
+[[nodiscard]] VectorAdapter ViewportAdapter::rect() noexcept
+{
+    return VectorAdapter();
+}
+
+[[nodiscard]] const VectorAdapter& ViewportAdapter::size() const noexcept
 {
     return _size;
 }
 
-const Vector &ViewportAdapter::getCenter() const noexcept
+[[nodiscard]] const VectorAdapter& ViewportAdapter::center() const noexcept
 {
     return _center;
 }
 
-const Vector &ViewportAdapter::getPosition() const noexcept
+[[nodiscard]] const VectorAdapter& ViewportAdapter::position() const noexcept
 {
     return _position;
 }
 
-void ViewportAdapter::setZoom(const ZoomType &zoom) noexcept
+void ViewportAdapter::zoom(Zoom zoom) noexcept
 {
     _zoom += zoom;
 }
 
-void ViewportAdapter::setSize(const Vector &size) noexcept
+void ViewportAdapter::reset(VectorAdapter rect) noexcept
+{
+    _size = rect;
+}
+
+void ViewportAdapter::size(VectorAdapter size) noexcept
 {
     _size = size;
 }
 
-void ViewportAdapter::setCenter(const Vector &center) noexcept
+void ViewportAdapter::center(VectorAdapter center) noexcept
 {
     _center = center;
 }
+
+const std::string ViewportAdapter::toString() const noexcept
+{
+    return std::format("Viewport -> {0} {1} {2}", _position.toString(), _center.toString(), _size.toString());
+};
