@@ -9,7 +9,6 @@ namespace adapters {
 
     using Zoom = float;
     using View = Camera2D;
-    using String = std::string;
 
     class ViewportAdapter
     {
@@ -25,16 +24,16 @@ namespace adapters {
 	  ViewportAdapter(const VectorAdapter& size, const VectorAdapter& center) noexcept;
 	  ~ViewportAdapter() noexcept = default;
 
-	  [[nodiscard]] VectorAdapter rect() noexcept;
+	  [[nodiscard]] VectorAdapter& rect() noexcept;
 	  [[nodiscard]] const VectorAdapter& size() const noexcept;
 	  [[nodiscard]] const VectorAdapter& center() const noexcept;
 	  [[nodiscard]] const VectorAdapter& position() const noexcept;
+	  [[nodiscard]] const std::string toString() const noexcept;
 
 	  void zoom(Zoom scale) noexcept;
 	  void reset(VectorAdapter rect) noexcept;
 	  void size(VectorAdapter size) noexcept;
 	  void center(VectorAdapter center) noexcept;
-	  const std::string toString() const noexcept;
 
 	  constexpr operator Camera2D() noexcept { return Camera2D{ _size, _center, 0, _zoom }; };
 

@@ -8,7 +8,7 @@
 
 namespace adapters {
 
-    using Coords = float;
+    using Coords = uint16_t;
     using Position = uint8_t;
 
     class VectorAdapter
@@ -24,11 +24,11 @@ namespace adapters {
 	  VectorAdapter(Coords x, Coords y, Position row, Position column) noexcept;
 	  ~VectorAdapter() noexcept = default;
 
-	  const Position& rowPosition() const noexcept;
-	  const Position& columnPosition() const noexcept;
-	  const Coords& verticalPosition() const noexcept;
-	  const Coords& horizontalPosition() const noexcept;
-	  const std::string toString() const noexcept;
+	  [[nodiscard]] const Position& rowPosition() const noexcept;
+	  [[nodiscard]] const Position& columnPosition() const noexcept;
+	  [[nodiscard]] const Coords& verticalPosition() const noexcept;
+	  [[nodiscard]] const Coords& horizontalPosition() const noexcept;
+	  [[nodiscard]] const std::string toString() const noexcept;
 
 	  constexpr VectorAdapter& operator+(const VectorAdapter& right) noexcept
 	  {
@@ -94,9 +94,9 @@ namespace adapters {
 		    && this->columnPosition() == right.columnPosition();
 	  };
 
-	  constexpr operator Vector2() noexcept { return Vector2(_horizontal, _vertical); };
+	  [[nodiscard]] constexpr operator Vector2() noexcept { return Vector2(_horizontal, _vertical); };
 
-	  constexpr operator Vector2() const noexcept { return Vector2(_horizontal, _vertical); };
+	  [[nodiscard]] constexpr operator Vector2() const noexcept { return Vector2(_horizontal, _vertical); };
     };
 } // namespace adapters
 #endif
