@@ -33,6 +33,7 @@ endif()
 
 file(GLOB_RECURSE SPEC_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/adapters/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.cpp
 )
 
 add_executable(GameSpec ${SPEC_FILES})
@@ -41,10 +42,6 @@ target_link_libraries(GameSpec PRIVATE
     GameCore
     gtest
     gtest_main
-)
-
-target_include_directories(GameSpec PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}/adapters
 )
 
 enable_testing()

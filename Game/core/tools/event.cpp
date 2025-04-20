@@ -1,53 +1,34 @@
 #include "event.hpp"
-#include <any>
-#include <memory>
 #include <type_traits>
-#include <vector>
+#include <unordered_map>
 
-using namespace core::tools;
+namespace core::tools {
 
-Event::Event()
-    : nextId{ make_unique<EventId>() }
-    , handlers{ make_unique<EventCollection>() }
-{
-    handlers->reserve(2);
-};
-
-EventId Event::subscribe(EventCallback handler)
-{
-    EventId id = ++(*nextId);
-    handlers->emplace_back(id, std::move(handler));
-    refreshCapacity();
-    return id;
-}
-
-void Event::unsubscribe(EventId& eventId)
-{
-    auto expression = std::remove_if(handlers->begin(), handlers->end(), [=](const auto& pair) {
-	  return pair.first == eventId;
-	  });
-
-    handlers->erase(expression, handlers->end());
-    refreshCapacity();
-}
-
-void Event::invoke(any sender)
-{
-    for (auto& [_, handler] : *handlers) {
-	  handler(sender);
+    Event::Event() noexcept :
+	  nextId{ 0 },
+	  handlers{ EventCollection() } {
+	  handlers.reserve(4);
     }
-}
 
-void Event::refreshCapacity()
-{
-    size_t length = handlers->size();
-
-    if (length == 0) {
-	  handlers->clear();
-	  handlers = make_unique<EventCollection>();
-	  handlers->reserve(1);
+    [[nodiscard]] EventId Event::subscribe(EventCallback handler) noexcept {
+	  EventId id = ++nextId;
+	  handlers[id] = std::move(handler);
+	  return id;
     }
-    else {
-	  handlers->reserve(length + 1);
+
+    [[nodiscard]] EventId Event::subscribe(EventCallbackWrapper* handler) noexcept {
+	  EventId id = ++nextId;
+	  handlers[id] = [handler](const EventArgs& args) { handler(args); };
+	  return id;
+    }
+
+    void Event::unsubscribe(EventId eventId) noexcept {
+	  handlers.erase(eventId);
+    }
+
+    void Event::invoke(const EventArgs& sender) noexcept {
+	  for (auto& [_, handler] : handlers) {
+		handler(sender);
+	  }
     }
 }
