@@ -3,10 +3,8 @@
 
 #include <cstdint>
 
-namespace core::enums {
-
 /// Enumeração de botões do mouse.
-enum class Mouse : int8_t {
+enum class EMouse : int8_t {
     None = -99,
     ScrollDown = -1,
     Left = 0,
@@ -17,5 +15,4 @@ enum class Mouse : int8_t {
     XButton2,
     ButtonCount,
 };
-} // namespace core::enums
 #endif

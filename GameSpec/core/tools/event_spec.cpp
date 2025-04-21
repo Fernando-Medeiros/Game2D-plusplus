@@ -3,8 +3,6 @@
 #include <gtest/gtest.h>
 #include <string>
 
-using namespace core::tools;
-
 class EventSpec : public ::testing::Test {
 protected:
     Event event;

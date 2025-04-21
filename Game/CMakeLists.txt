@@ -26,6 +26,25 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
   endif()
 endif()
 
+# Instala magic_enum se não estiver disponível
+set(MAGIC_ENUM_VERSION v0.9.5)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  magic_enum
+  GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+  GIT_TAG        ${MAGIC_ENUM_VERSION}
+  DOWNLOAD_EXTRACT_TIMESTAMP OFF
+)
+
+FetchContent_GetProperties(magic_enum)
+if (NOT magic_enum_POPULATED)
+  set(FETCHCONTENT_QUIET NO)
+  FetchContent_MakeAvailable(magic_enum)
+endif()
+
+
 file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.cpp
@@ -35,13 +54,17 @@ file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
 file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/resources/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataSchemas/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataStructs/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataTransports/*.hpp
 )
 
 add_library(GameCore SHARED ${CPP_FILES} ${HPP_FILES})
-target_link_libraries(GameCore PUBLIC raylib)
+target_link_libraries(GameCore PUBLIC raylib magic_enum)
 
 add_executable(GameApp main.cpp)
 target_link_libraries(GameApp PRIVATE GameCore)
@@ -52,6 +75,9 @@ target_include_directories(GameCore PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataStructs
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataSchemas
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataTransports
 )
 
 include(GNUInstallDirs)

@@ -1,7 +1,6 @@
 #include "viewport_adapter.hpp"
 #include "viewport_adapter_api.hpp"
-
-using namespace adapters;
+#include <vector_adapter.hpp>
 
 ViewportHandle CreateViewport(Vector size, Vector center) {
     auto* adapter = new ViewportAdapter(
@@ -19,13 +18,13 @@ void DestroyViewport(ViewportHandle handle) {
 Vector GetViewportSize(ViewportHandle handle) {
     auto* adapter = reinterpret_cast<ViewportAdapter*>(handle);
     const auto& s = adapter->size();
-    return Vector{ s.horizontalPosition(), s.verticalPosition() };
+    return Vector{ s.horizontal(), s.vertical() };
 }
 
 Vector GetViewportCenter(ViewportHandle handle) {
     auto* adapter = reinterpret_cast<ViewportAdapter*>(handle);
     const auto& c = adapter->center();
-    return Vector{ c.horizontalPosition(), c.verticalPosition() };
+    return Vector{ c.horizontal(), c.vertical() };
 }
 
 void ZoomViewport(ViewportHandle handle, float scale) {

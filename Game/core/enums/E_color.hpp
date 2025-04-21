@@ -3,9 +3,7 @@
 
 #include <cstdint>
 
-namespace core::enums {
-
-enum class Color : uint8_t {
+enum class EColor : uint8_t {
     Black,
     CornFlowerBlue,
     GoldRod,
@@ -21,5 +19,4 @@ enum class Color : uint8_t {
 
     Primary,
 };
-}
 #endif

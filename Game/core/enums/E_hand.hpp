@@ -5,9 +5,9 @@
 
 namespace core::enums {
 
-enum class Hand : uint8_t {
-    OneHand,
-    TwoHand,
-};
+    enum class Hand : uint8_t {
+	  OneHand,
+	  TwoHand,
+    };
 }
 #endif

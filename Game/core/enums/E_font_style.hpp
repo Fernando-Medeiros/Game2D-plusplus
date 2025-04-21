@@ -3,8 +3,5 @@
 
 #include <cstdint>
 
-namespace core::enums {
-
-enum class FontStyle : uint8_t { Regular, Bold, Italic, Underlined, StrikeThrough };
-}
+enum class EFontStyle : uint8_t { Regular, Bold, Italic, Underlined, StrikeThrough };
 #endif

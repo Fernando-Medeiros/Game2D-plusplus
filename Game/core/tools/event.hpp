@@ -5,28 +5,25 @@
 #include <functional>
 #include <unordered_map>
 
-namespace core::tools {
+using EventId = size_t;
+using EventArgs = std::any;
+using EventCallbackWrapper = void(const EventArgs &);
+using EventCallback = std::function<EventCallbackWrapper>;
+using EventCollection = std::unordered_map<EventId, EventCallback>;
 
-    using EventId = size_t;
-    using EventArgs = std::any;
-    using EventCallbackWrapper = void(const EventArgs&);
-    using EventCallback = std::function<EventCallbackWrapper>;
-    using EventCollection = std::unordered_map<EventId, EventCallback>;
+class Event
+{
+private:
+    EventId nextId{0};
+    EventCollection handlers;
 
-    class Event
-    {
-    private:
-	  EventId nextId{ 0 };
-	  EventCollection handlers;
+public:
+    Event() noexcept;
+    ~Event() noexcept = default;
 
-    public:
-	  Event() noexcept;
-	  ~Event() noexcept = default;
-
-	  void invoke(const EventArgs& sender) noexcept;
-	  void unsubscribe(EventId eventId) noexcept;
-	  [[nodiscard]] EventId subscribe(EventCallback handler) noexcept;
-	  [[nodiscard]] EventId subscribe(EventCallbackWrapper* handler) noexcept;
+    void invoke(const EventArgs &sender) noexcept;
+    void unsubscribe(EventId eventId) noexcept;
+    [[nodiscard]] EventId subscribe(EventCallback handler) noexcept;
+    [[nodiscard]] EventId subscribe(EventCallbackWrapper *handler) noexcept;
     };
-} // namespace core::tools
 #endif // TOOLS_EVENT_HPP

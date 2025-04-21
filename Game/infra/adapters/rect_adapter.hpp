@@ -1,40 +1,23 @@
-﻿namespace GameEngine.Adapters;
+﻿#ifndef ADAPTER_RECT_HPP
+#define ADAPTER_RECT_HPP
 
-/// <summary>
-/// Esta classe é responsável por adaptar um rectangulo bidimensional
-/// </summary>
-public readonly struct RectAdapter
+#include <string>
+#include <vector_adapter.hpp>
+
+class RectAdapter
 {
-    public readonly float X;
-    public readonly float Y;
-    public readonly float Width;
-    public readonly float Height;
+private:
+    VectorAdapter _position, _size, _center;
 
-    #region Constructors
-    public static RectAdapter Empty => new(0, 0, 0, 0);
-    public RectAdapter(RectAdapter rect) { X = rect.X; Y = rect.Y; Width = rect.Width; Height = rect.Height; }
-    public RectAdapter(float x, float y, float width, float height) { X = x; Y = y; Width = width; Height = height; }
-    public RectAdapter(VectorAdapter position, VectorAdapter size) { X = position.X; Y = position.Y; Width = size.X; Height = size.Y; }
-    #endregion
+public:
+    RectAdapter() noexcept = default;
+    RectAdapter(VectorAdapter position, VectorAdapter size) noexcept;
+    ~RectAdapter() noexcept = default;
 
-    #region Interface
-    public VectorAdapter Position() => new(X, Y);
-    public VectorAdapter Size() => new(Width, Height);
-    public VectorAdapter Center() => new(Width / 2, Height / 2);
-    public bool Contains(VectorAdapter vector) => ((FloatRect)this).Contains(vector.X, vector.Y);
-    #endregion
-
-    #region SFML Cast Adapter
-    public static implicit operator FloatRect(RectAdapter adapter) => new(adapter.X, adapter.Y, adapter.Width, adapter.Height);
-    public static implicit operator IntRect(RectAdapter adapter) => new((int)adapter.X, (int)adapter.Y, (int)adapter.Width, (int)adapter.Height);
-    public static implicit operator (float Left, float Top, float Width, float Height)(RectAdapter adapter) => (adapter.X, adapter.Y, adapter.Width, adapter.Height);
-
-    public static implicit operator RectAdapter(FloatRect rect) => new(rect.Position, rect.Size);
-    public static implicit operator RectAdapter(IntRect rect) => new(rect.Position, rect.Size);
-    public static implicit operator RectAdapter((float Left, float Top, float Width, float Height) rect) => (rect.Left, rect.Top, rect.Width, rect.Height);
-    #endregion
-
-    #region Override
-    public override string ToString() => $"({nameof(RectAdapter)} -> X:{X}, Y:{Y}, W:{Width}, H:{Height})";
-    #endregion
-}
+    [[nodiscard]] const VectorAdapter& size() const noexcept;
+    [[nodiscard]] const std::string toString() const noexcept;
+    [[nodiscard]] const VectorAdapter& center() const noexcept;
+    [[nodiscard]] const VectorAdapter& position() const noexcept;
+    [[nodiscard]] bool contains(const VectorAdapter& vector) noexcept;
+};
+#endif
