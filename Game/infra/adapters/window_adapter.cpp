@@ -1,9 +1,9 @@
-#include "rectangle_adapter.hpp"
-#include "sprite_adapter.hpp"
-#include "text_adapter.hpp"
 #include <keyboard_transport.hpp>
 #include <magic_enum.hpp>
 #include <mouse_transport.hpp>
+#include <rectangle_adapter.hpp>
+#include <sprite_adapter.hpp>
+#include <text_adapter.hpp>
 #include <window_adapter.hpp>
 
 IWindow &WindowAdapter::withSize(VectorAdapter vector) noexcept
@@ -147,36 +147,24 @@ void WindowAdapter::renderSync(IDrawable &adapter) noexcept
 {
     if (auto *rectangleAdapter = dynamic_cast<RectangleAdapter *>(&adapter)) {
         const Rectangle rectangle = *rectangleAdapter;
-
         DrawRectangleRec(rectangle, WHITE);
 
-        const auto &resource = rectangleAdapter->getDrawable();
-
-        if (std::holds_alternative<Texture2D>(resource)) {
-            const Texture &texture = std::get<Texture>(resource);
-
-            DrawTexture(texture, rectangle.x, rectangle.y, WHITE);
+        if (rectangleAdapter->getTexture() != ETexture::None) {
+            // const Texture &texture = ResourceManager::Load(rectangleAdapter->getTexture());
+            // DrawTexture(texture, rectangle.x, rectangle.y, WHITE);
             return;
         }
     }
 
     if (auto *spriteAdapter = dynamic_cast<SpriteAdapter *>(&adapter)) {
-        const auto &resource = spriteAdapter->getDrawable();
-
-        if (std::holds_alternative<Texture2D>(resource)) {
-            const Texture &texture = std::get<Texture>(resource);
-
-            const VectorAdapter &position = spriteAdapter->getPosition();
-
-            DrawTexture(texture, position.horizontal(), position.vertical(), WHITE);
-            return;
-        }
+        // const Texture &texture = ResourceManager::Load(spriteAdapter->getTexture());
+        // const VectorAdapter &position = spriteAdapter->getPosition();
+        // DrawTexture(texture, position.horizontal(), position.vertical(), WHITE);
         return;
     }
 
     if (auto *textAdapter = dynamic_cast<TextAdapter *>(&adapter)) {
         const VectorAdapter &position = textAdapter->getPosition();
-
         DrawText(textAdapter->getText().c_str(),
                  position.horizontal(),
                  position.vertical(),

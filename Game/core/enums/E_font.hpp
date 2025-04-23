@@ -3,11 +3,8 @@
 
 #include <cstdint>
 
-namespace core::enums {
-
-enum class Font : uint8_t {
+enum class EFont : uint8_t {
     OpenSansRegular,
     OpenSansSemibold,
 };
-}
 #endif

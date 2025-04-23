@@ -1,31 +1,21 @@
 ﻿#ifndef ADAPTER_TEXTURE_RESOURCE_HPP
 #define ADAPTER_TEXTURE_RESOURCE_HPP
 
-#include <I_drawable.hpp>
 #include <raylib.h>
-#include <variant>
 #include <cassert>
 
 class TextureAdapterResource
 {
 private:
-    Texture _texture;
-    bool _valid = false;
+    Texture2D _texture;
+
 public:
-    TextureAdapterResource(const ResourceVariant &resource) noexcept
-    {
-        if (std::holds_alternative<Texture>(resource)) {
-            _texture = std::get<Texture>(resource);
-            _valid = true;
-        }
-    };
+    TextureAdapterResource(const Texture2D &resource) noexcept
+        : _texture{resource}
+    {}
 
-    ~TextureAdapterResource() noexcept
-    {
-        if (_valid)
-            UnloadTexture(_texture);
-    };
+    ~TextureAdapterResource() noexcept { UnloadTexture(_texture); }
 
-    operator Texture() const noexcept { return _texture; };
+    operator Texture() const noexcept { return _texture; }
 };
 #endif

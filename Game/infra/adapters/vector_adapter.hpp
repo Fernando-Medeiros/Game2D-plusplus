@@ -1,8 +1,8 @@
 ﻿#ifndef ADAPTER_VECTOR_HPP
 #define ADAPTER_VECTOR_HPP
 
-#include "raylib.h"
 #include <cstdint>
+#include <raylib.h>
 #include <string>
 
 using Coords = uint16_t;
@@ -12,7 +12,7 @@ class VectorAdapter
 {
 private:
     Position _row{ 0 }, _column{ 0 };
-    Coords _vertical{ 0 }, _horizontal{ 0 };
+    Coords _vertical{0}, _horizontal{0};
 
 public:
     VectorAdapter() noexcept = default;

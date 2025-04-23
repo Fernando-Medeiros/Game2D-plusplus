@@ -7,24 +7,24 @@
 struct KeyboardTransport
 {
 private:
-    std::string code;
-    bool alt, shift, control;
+    const std::string _code;
+    bool _alt, _shift, _control;
 
 public:
     KeyboardTransport(std::string code) noexcept
+        : _code{code}
     {
-        this->code = code;
-        alt = code.contains("Alt");
-        shift = code.contains("Shift");
-        control = code.contains("Control");
+        _alt = code.contains("Alt");
+        _shift = code.contains("Shift");
+        _control = code.contains("Control");
     }
 
     ~KeyboardTransport() noexcept = default;
 
-    [[nodiscard]] const bool &altIsPressed() const noexcept { return alt; };
-    [[nodiscard]] const bool &shiftIsPressed() const noexcept { return shift; };
-    [[nodiscard]] const bool &controlIsPressed() const noexcept { return control; };
-    [[nodiscard]] const std::string &getPressedKey() const noexcept { return code; };
+    [[nodiscard]] const bool &altIsPressed() const noexcept { return _alt; };
+    [[nodiscard]] const bool &shiftIsPressed() const noexcept { return _shift; };
+    [[nodiscard]] const bool &controlIsPressed() const noexcept { return _control; };
+    [[nodiscard]] const std::string &getPressedKey() const noexcept { return _code; };
 };
 
 #endif // KEYBOARD_TRANSPORT_HPP

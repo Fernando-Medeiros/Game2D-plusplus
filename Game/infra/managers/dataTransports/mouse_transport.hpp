@@ -18,7 +18,6 @@ public:
     ~MouseTransport() noexcept = default;
 
     [[nodiscard]] const VectorAdapter &getPosition() const noexcept { return _position; };
-
     [[nodiscard]] const EMouse &getPressedButton() const noexcept { return _pressedButton; };
 };
 #endif // MOUSE_TRANSPORT_HPP

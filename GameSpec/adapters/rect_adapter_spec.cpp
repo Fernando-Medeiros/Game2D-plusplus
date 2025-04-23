@@ -1,6 +1,6 @@
-#include "rect_adapter.hpp"
-#include "vector_adapter.hpp"
 #include <gtest/gtest.h>
+#include <rect_adapter.hpp>
+#include <vector_adapter.hpp>
 
 class RectAdapterTest : public ::testing::Test {
 protected:
