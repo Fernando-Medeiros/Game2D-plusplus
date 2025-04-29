@@ -74,6 +74,7 @@ target_include_directories(GameCore PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/core/tools
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/resources
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataStructs
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataSchemas

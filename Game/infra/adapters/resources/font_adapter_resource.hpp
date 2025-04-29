@@ -14,8 +14,14 @@ public:
         : _font{resource}
     {}
 
-    ~FontAdapterResource() noexcept { UnloadFont(_font); }
+    ~FontAdapterResource () noexcept = default;
 
     operator Font() const noexcept { return _font; }
+
+    void
+    dispose () const noexcept
+    {
+      UnloadFont (_font);
+    }
 };
 #endif

@@ -14,7 +14,7 @@ public:
         : _sound{resource}
     {}
 
-    ~SoundAdapterResource() noexcept { UnloadSound(_sound); }
+    ~SoundAdapterResource () noexcept = default;
 
     void play() noexcept { PlaySound(_sound); }
 
@@ -23,5 +23,11 @@ public:
     void setVolume(float volume) noexcept { SetSoundVolume(_sound, volume); }
 
     operator Sound() const noexcept { return _sound; }
+
+    void
+    dispose () const noexcept
+    {
+      UnloadSound (_sound);
+    }
 };
 #endif

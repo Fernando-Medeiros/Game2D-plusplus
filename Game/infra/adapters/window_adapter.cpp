@@ -1,3 +1,4 @@
+#include <color_adapter.hpp>
 #include <keyboard_transport.hpp>
 #include <magic_enum.hpp>
 #include <mouse_transport.hpp>
@@ -6,169 +7,220 @@
 #include <text_adapter.hpp>
 #include <window_adapter.hpp>
 
-IWindow &WindowAdapter::withSize(VectorAdapter vector) noexcept
+IWindow &
+WindowAdapter::withSize (VectorAdapter vector) noexcept
 {
-    _screenSize = vector;
-    _inicialViewport = ViewportAdapter(vector / 2, vector);
-    _dynamicViewport = ViewportAdapter(vector / 2, vector);
-    return *this;
+  _screenSize = vector;
+  _inicialViewport = ViewportAdapter (vector / 2, vector);
+  _dynamicViewport = ViewportAdapter (vector / 2, vector);
+  return *this;
 };
 
-IWindow &WindowAdapter::withTitle(std::string title) noexcept
+IWindow &
+WindowAdapter::withTitle (const std::string &title) noexcept
 {
-    _title = title;
-    return *this;
+  _title = title;
+  return *this;
 };
 
-IWindow &WindowAdapter::withFramerateLimit(int value) noexcept
+IWindow &
+WindowAdapter::withFramerateLimit (int value) noexcept
 {
-    _framerateLimit = value;
-    return *this;
+  _framerateLimit = value;
+  return *this;
 };
 
-IWindow &WindowAdapter::build() noexcept
+IWindow &
+WindowAdapter::build () noexcept
 {
-    return *this;
+  InitWindow ((int)getWindowSize ().horizontal (),
+              (int)getWindowSize ().vertical (), _title.c_str ());
+
+  InitAudioDevice ();
+
+  setFrameLimit (_framerateLimit);
+
+  return *this;
 };
 
-void WindowAdapter::setFrameLimit(int value) noexcept
+void
+WindowAdapter::setFrameLimit (int value) noexcept
 {
-    SetTargetFPS(std::max(_framerateLimit, value));
+  SetTargetFPS (std::max (_framerateLimit, value));
 };
 
-void WindowAdapter::resize(VectorAdapter vector) noexcept
+void
+WindowAdapter::resize (VectorAdapter vector) noexcept
 {
-    _screenSize = vector;
-    SetWindowSize(_screenSize.horizontal(), _screenSize.vertical());
+  _screenSize = vector;
+  SetWindowSize (_screenSize.horizontal (), _screenSize.vertical ());
 };
 
-void WindowAdapter::setViewport(const ViewportAdapter &viewport) noexcept
+void
+WindowAdapter::setViewport (const ViewportAdapter &viewport) noexcept
 {
-    _screenSize = viewport.size();
-    SetWindowSize(_screenSize.horizontal(), _screenSize.vertical());
+  _screenSize = viewport.size ();
+  SetWindowSize (_screenSize.horizontal (), _screenSize.vertical ());
 };
 
-[[nodiscard]] bool WindowAdapter::isOpen() const noexcept
+[[nodiscard]] bool
+WindowAdapter::isOpen () const noexcept
 {
-    return WindowShouldClose();
+  return !WindowShouldClose ();
 };
 
-[[nodiscard]] const VectorAdapter &WindowAdapter::getWindowSize() const noexcept
+[[nodiscard]] const VectorAdapter &
+WindowAdapter::getWindowSize () const noexcept
 {
-    return _screenSize;
+  return _screenSize;
 };
 
-[[nodiscard]] const ViewportAdapter &WindowAdapter::getDynamicViewport() const noexcept
+[[nodiscard]] const ViewportAdapter &
+WindowAdapter::getDynamicViewport () const noexcept
 {
-    return _dynamicViewport;
+  return _dynamicViewport;
 };
 
-[[nodiscard]] const ViewportAdapter &WindowAdapter::getDefaultViewport() const noexcept
+[[nodiscard]] const ViewportAdapter &
+WindowAdapter::getDefaultViewport () const noexcept
 {
-    return _inicialViewport;
+  return _inicialViewport;
 };
 
-[[nodiscard]] const ViewportAdapter &WindowAdapter::getCurrentViewport() const noexcept
+[[nodiscard]] const ViewportAdapter &
+WindowAdapter::getCurrentViewport () const noexcept
 {
-    return _dynamicViewport;
+  return _dynamicViewport;
 };
 
-[[nodiscard]] const VectorAdapter WindowAdapter::getCoords(
-    const VectorAdapter &vector, const ViewportAdapter &viewport) const noexcept
+[[nodiscard]] const VectorAdapter
+WindowAdapter::getCoords (const VectorAdapter &vector,
+                          const ViewportAdapter &viewport) const noexcept
 {
-    return GetScreenToWorld2D(_screenSize, _dynamicViewport);
+  return GetScreenToWorld2D (_screenSize, _dynamicViewport);
 };
 
-void WindowAdapter::close() noexcept
+void
+WindowAdapter::close () noexcept
 {
-    CloseWindow();
+  CloseWindow ();
 };
 
-void WindowAdapter::display() noexcept
+void
+WindowAdapter::display () noexcept
 {
-    EndDrawing();
+  EndDrawing ();
 };
 
-void WindowAdapter::clear() noexcept
+void
+WindowAdapter::clear () noexcept
 {
-    ClearBackground(BLACK);
+  ClearBackground (toColor (_color));
 };
 
-void WindowAdapter::dispatchEvents() noexcept
+void
+WindowAdapter::dispatchEvents () noexcept
 {
-    // Check window resize
-    int currentWidth = GetScreenWidth();
-    int currentHeight = GetScreenHeight();
+  // Check window resize
+  int currentWidth = GetScreenWidth ();
+  int currentHeight = GetScreenHeight ();
 
-    if (currentWidth != getWindowSize().horizontal()
-        || currentHeight != getWindowSize().vertical()) {
-        onResized->invoke(
-            new RectAdapter(VectorAdapter(), VectorAdapter(currentWidth, currentHeight)));
+  if (currentWidth != getWindowSize ().horizontal ()
+      || currentHeight != getWindowSize ().vertical ())
+    {
+      onResized.invoke (new RectAdapter (
+          VectorAdapter (), VectorAdapter (currentWidth, currentHeight)));
     }
 
-    // Check keyboard input
-    for (const KeyboardKey &key : magic_enum::enum_values<KeyboardKey>()) {
-        std::string strCode = static_cast<std::string>(magic_enum::enum_name(key));
+  // Check keyboard input
+  for (const KeyboardKey &key : magic_enum::enum_values<KeyboardKey> ())
+    {
+      std::string strCode
+          = static_cast<std::string> (magic_enum::enum_name (key));
 
-        if (IsKeyPressed(key))
-            onKeyPressed->invoke(KeyboardTransport(strCode));
+      if (IsKeyPressed (key))
+        onKeyPressed.invoke (KeyboardTransport (strCode));
 
-        if (IsKeyReleased(key))
-            onKeyReleased->invoke(KeyboardTransport(strCode));
+      if (IsKeyReleased (key))
+        onKeyReleased.invoke (KeyboardTransport (strCode));
     }
 
-    // Check mouse movement
-    int mouseX = GetMouseX();
-    int mouseY = GetMouseY();
+  // Check mouse movement
+  int mouseX = GetMouseX ();
+  int mouseY = GetMouseY ();
 
-    onMouseMoved->invoke(MouseTransport(EMouse::None, VectorAdapter(mouseX, mouseY)));
+  onMouseMoved.invoke (
+      MouseTransport (EMouse::None, VectorAdapter (mouseX, mouseY)));
 
-    // Check mouse buttons
-    for (const MouseButton &button : magic_enum::enum_values<MouseButton>()) {
-        if (IsMouseButtonPressed(button))
-            onMouseButtonPressed->invoke(
-                MouseTransport((EMouse) button, VectorAdapter(mouseX, mouseY)));
+  // Check mouse buttons
+  for (const MouseButton &button : magic_enum::enum_values<MouseButton> ())
+    {
+      if (IsMouseButtonPressed (button))
+        onMouseButtonPressed.invoke (
+            MouseTransport ((EMouse)button, VectorAdapter (mouseX, mouseY)));
 
-        if (IsMouseButtonReleased(button))
-            onMouseButtonReleased->invoke(
-                MouseTransport((EMouse) button, VectorAdapter(mouseX, mouseY)));
+      if (IsMouseButtonReleased (button))
+        onMouseButtonReleased.invoke (
+            MouseTransport ((EMouse)button, VectorAdapter (mouseX, mouseY)));
     }
 
-    // Check mouse wheel scroll
-    float scroll = GetMouseWheelMove();
-    if (scroll != 0) {
-        onMouseWheelScrolled->invoke(MouseTransport((EMouse) scroll, VectorAdapter(mouseX, mouseY)));
+  // Check mouse wheel scroll
+  float scroll = GetMouseWheelMove ();
+  if (scroll != 0)
+    {
+      onMouseWheelScrolled.invoke (
+          MouseTransport ((EMouse)scroll, VectorAdapter (mouseX, mouseY)));
     }
 
-    BeginDrawing();
+  BeginDrawing ();
 };
 
-void WindowAdapter::renderSync(IDrawable &adapter) noexcept
+void
+WindowAdapter::render (const IDrawable &adapter) noexcept
 {
-    if (auto *rectangleAdapter = dynamic_cast<RectangleAdapter *>(&adapter)) {
-        const Rectangle rectangle = *rectangleAdapter;
-        DrawRectangleRec(rectangle, WHITE);
+  const VectorAdapter &size = adapter.getSize ();
+  const VectorAdapter &position = adapter.getPosition ();
 
-        if (rectangleAdapter->getTexture() != ETexture::None) {
-            // const Texture &texture = ResourceManager::Load(rectangleAdapter->getTexture());
-            // DrawTexture(texture, rectangle.x, rectangle.y, WHITE);
-            return;
+  if (const auto *rectangleAdapter
+      = dynamic_cast<const RectangleAdapter *> (&adapter))
+    {
+
+      const EColor &backgroundColor = adapter.getBackgroundColor ();
+
+      DrawRectangle (position.horizontal (), position.vertical (),
+                     size.horizontal (), size.vertical (),
+                     toColor (backgroundColor));
+
+      if (rectangleAdapter->getTexture () != ETexture::None)
+        {
+          const auto &texture
+              = resources->load<std::unique_ptr<TextureAdapterResource> > (
+                  rectangleAdapter->getTexture ());
+
+          DrawTexture (*texture, position.horizontal (), position.vertical (),
+                       WHITE);
         }
+      return;
     }
 
-    if (auto *spriteAdapter = dynamic_cast<SpriteAdapter *>(&adapter)) {
-        // const Texture &texture = ResourceManager::Load(spriteAdapter->getTexture());
-        // const VectorAdapter &position = spriteAdapter->getPosition();
-        // DrawTexture(texture, position.horizontal(), position.vertical(), WHITE);
-        return;
+  if (const auto *spriteAdapter
+      = dynamic_cast<const SpriteAdapter *> (&adapter))
+    {
+      const auto &texture
+          = resources->load<std::unique_ptr<TextureAdapterResource> > (
+              spriteAdapter->getTexture ());
+
+      DrawTexture (*texture, position.horizontal (), position.vertical (),
+                   WHITE);
+      return;
     }
 
-    if (auto *textAdapter = dynamic_cast<TextAdapter *>(&adapter)) {
-        const VectorAdapter &position = textAdapter->getPosition();
-        DrawText(textAdapter->getText().c_str(),
-                 position.horizontal(),
-                 position.vertical(),
-                 16,
-                 BLACK);
+  if (const auto *textAdapter = dynamic_cast<const TextAdapter *> (&adapter))
+    {
+      const EColor &textColor = textAdapter->getFontColor ();
+
+      DrawText (textAdapter->getText ().c_str (), position.horizontal (),
+                position.vertical (), textAdapter->getFontSize (),
+                toColor (textColor));
     }
 };

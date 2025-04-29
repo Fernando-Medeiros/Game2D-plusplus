@@ -1,21 +1,103 @@
-#include "raylib.h"
+#include <keyboard_transport.hpp>
+#include <rectangle_adapter.hpp>
+#include <sprite_adapter.hpp>
+#include <text_adapter.hpp>
+#include <window_adapter.hpp>
+#include <window_manager.hpp>
 
-int main()
+int
+main ()
 {
-    const int screenWidth = 800;
-    const int screenHeight = 600;
+  /// TEMP
 
-    InitWindow(screenWidth, screenHeight, "raylib basic window");
-    SetTargetFPS(60);
+  auto text{ std::make_unique<TextAdapter> () };
+  auto sprite{ std::make_unique<SpriteAdapter> () };
+  auto rectangle{ std::make_unique<RectangleAdapter> () };
 
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("It works!", 20, 20, 20, BLACK);
-        EndDrawing();
-    }
+  text->setText ("Hello World");
+  text->setFontSize (22);
+  text->setFontColor (EColor::Tomate);
+  text->setPosition (VectorAdapter (200, 100));
 
-    CloseWindow();
-    return 0;
+  rectangle->setSize (VectorAdapter{ 50, 50 });
+  rectangle->setPosition (VectorAdapter{ 250, 300 });
+  rectangle->setTexture (ETexture::ButtonDefault);
+  rectangle->setBackgroundColor (EColor::CornFlowerBlue);
+
+  sprite->setPosition (VectorAdapter (200, 500));
+  sprite->setTexture (ETexture::ButtonDefault);
+
+  ///////////////////////////////////////////////////////////////////////////////////
+
+  auto windowManager{ std::make_unique<WindowManager> () };
+  auto eventManager{ std::make_shared<EventManager> () };
+  auto resourceManager{ std::make_shared<ResourceManager> () };
+
+  windowManager->withEventManager (eventManager)
+      ->withResourceManager (resourceManager)
+      ->initialize ();
+
+  windowManager->events ([&] (WindowArgs &window) {
+    EventId eventId;
+
+    eventId = window.onKeyPressed.subscribe ([&] (const EventArgs &sender) {
+      eventManager->invoke (EEvent::KeyPressed, sender);
+    });
+
+    eventId = window.onTextEntered.subscribe ([&] (const EventArgs &sender) {
+      eventManager->invoke (EEvent::TextEntered, sender);
+    });
+
+    eventId = window.onKeyReleased.subscribe ([&] (const EventArgs &sender) {
+      eventManager->invoke (EEvent::KeyReleased, sender);
+    });
+
+    eventId = window.onMouseMoved.subscribe ([&] (const EventArgs &sender) {
+      eventManager->invoke (EEvent::MouseMoved, sender);
+    });
+
+    eventId = window.onMouseWheelScrolled.subscribe (
+        [&] (const EventArgs &sender) {
+          eventManager->invoke (EEvent::MouseWheelScrolled, sender);
+        });
+
+    eventId = window.onMouseButtonPressed.subscribe (
+        [&] (const EventArgs &sender) {
+          eventManager->invoke (EEvent::MouseButtonPressed, sender);
+        });
+
+    eventId = window.onMouseButtonReleased.subscribe (
+        [&] (const EventArgs &sender) {
+          eventManager->invoke (EEvent::MouseButtonReleased, sender);
+        });
+
+    eventId = eventManager->subscribe (
+        EEvent::ExitGame,
+        [&] (const EventArgs &sender) { windowManager->dispose (); });
+
+    eventId = eventManager->subscribe (
+        EEvent::KeyPressed, [&] (const EventArgs &sender) {
+          auto keyboard = std::any_cast<KeyboardTransport> (sender);
+
+          if (keyboard.getPressedKey () == "KEY_P")
+            {
+              eventManager->invoke (EEvent::ExitGame, sender);
+            }
+        });
+  });
+
+  windowManager->render ([&] (WindowArgs &window) {
+    window.render (*text);
+    window.render (*rectangle);
+    window.render (*sprite);
+  });
+
+  windowManager->dispose ();
+
+  eventManager.reset ();
+  resourceManager.reset ();
+
+  windowManager.release ();
+
+  return 0;
 }

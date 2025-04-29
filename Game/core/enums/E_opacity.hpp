@@ -3,13 +3,11 @@
 
 #include <cstdint>
 
-namespace core::enums {
-
-enum class Opacity : uint8_t {
-    Opaque = 64,
-    Regular = 128,
-    Light = 255,
-    Transparent = 0,
+enum class EOpacity : uint8_t
+{
+  Opaque = 64,
+  Regular = 128,
+  Light = 255,
+  Transparent = 0,
 };
-}
 #endif

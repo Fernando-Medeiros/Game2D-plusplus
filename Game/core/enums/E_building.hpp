@@ -3,10 +3,8 @@
 
 #include <cstdint>
 
-namespace core::enums {
-
-enum class Building : uint8_t {
-    StoneRoad,
+enum class EBuilding : uint8_t
+{
+  StoneRoad,
 };
-}
 #endif

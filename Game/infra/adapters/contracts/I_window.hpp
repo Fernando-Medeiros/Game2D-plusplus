@@ -5,6 +5,7 @@
 #include <I_drawable.hpp>
 #include <event.hpp>
 #include <memory>
+#include <resource_manager.hpp>
 #include <string>
 #include <vector_adapter.hpp>
 #include <viewport_adapter.hpp>
@@ -12,22 +13,24 @@
 class IWindow
 {
 protected:
-  ViewportAdapter _inicialViewport{}, _dynamicViewport{};
-  VectorAdapter _screenSize{};
-  EColor color{ EColor::Black };
-  std::string _title{ "" };
-  int _framerateLimit{ 30 };
+  ViewportAdapter _inicialViewport, _dynamicViewport;
+  VectorAdapter _screenSize;
+  EColor _color{ EColor::Gray };
+  std::string _title;
+  int _framerateLimit;
 
 public:
-  std::unique_ptr<Event> onClosed;
-  std::unique_ptr<Event> onResized;
-  std::unique_ptr<Event> onTextEntered;
-  std::unique_ptr<Event> onKeyPressed;
-  std::unique_ptr<Event> onKeyReleased;
-  std::unique_ptr<Event> onMouseMoved;
-  std::unique_ptr<Event> onMouseButtonReleased;
-  std::unique_ptr<Event> onMouseButtonPressed;
-  std::unique_ptr<Event> onMouseWheelScrolled;
+  std::shared_ptr<ResourceManager> resources;
+
+  Event onClosed;
+  Event onResized;
+  Event onMouseMoved;
+  Event onKeyPressed;
+  Event onKeyReleased;
+  Event onTextEntered;
+  Event onMouseWheelScrolled;
+  Event onMouseButtonPressed;
+  Event onMouseButtonReleased;
 
   IWindow () noexcept = default;
 
@@ -35,7 +38,7 @@ public:
 
   virtual IWindow &withSize (VectorAdapter vector) noexcept = 0;
 
-  virtual IWindow &withTitle (std::string title) noexcept = 0;
+  virtual IWindow &withTitle (const std::string &title) noexcept = 0;
 
   virtual IWindow &withFramerateLimit (int value) noexcept = 0;
 
@@ -77,6 +80,6 @@ public:
 
   virtual void dispatchEvents () noexcept = 0;
 
-  virtual void renderSync (IDrawable &drawable) noexcept = 0;
+  virtual void render (const IDrawable &drawable) noexcept = 0;
 };
 #endif

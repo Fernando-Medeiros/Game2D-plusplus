@@ -19,8 +19,9 @@ protected:
     VectorAdapter _size{}, _scale{}, _center{}, _position{}, _borderSize{};
     std::string _text{ "" };
     float _rotation{0.0f};
+    int _fontSize{ 16 };
 
-public:
+  public:
     IDrawable() noexcept = default;
 
     virtual ~IDrawable() noexcept = default;
@@ -64,6 +65,13 @@ public:
     setTexture (ETexture value) noexcept
     {
       _texture = value;
+      return *this;
+    }
+
+    virtual IDrawable &
+    setFontSize (int value) noexcept
+    {
+      _fontSize = value;
       return *this;
     }
 
@@ -142,6 +150,12 @@ public:
     getPosition () const noexcept
     {
       return _position;
+    }
+
+    [[nodiscard]] virtual int
+    getFontSize () const noexcept
+    {
+      return _fontSize;
     }
 
     [[nodiscard]] virtual const VectorAdapter &

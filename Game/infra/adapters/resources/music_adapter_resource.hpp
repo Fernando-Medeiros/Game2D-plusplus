@@ -14,7 +14,7 @@ public:
         : _music{resource}
     {}
 
-    ~MusicAdapterResource() noexcept { UnloadMusicStream(_music); }
+    ~MusicAdapterResource () noexcept = default;
 
     void play() noexcept { PlayMusicStream(_music); }
     void stop() noexcept { StopMusicStream(_music); }
@@ -26,5 +26,11 @@ public:
     float getVolume() const noexcept { return GetMasterVolume(); }
 
     operator Music() const noexcept { return _music; }
+
+    void
+    dispose () const noexcept
+    {
+      UnloadMusicStream (_music);
+    }
 };
 #endif

@@ -1,21 +1,25 @@
 ﻿#ifndef ADAPTER_TEXTURE_RESOURCE_HPP
 #define ADAPTER_TEXTURE_RESOURCE_HPP
 
-#include <raylib.h>
 #include <cassert>
+#include <raylib.h>
 
 class TextureAdapterResource
 {
 private:
-    Texture2D _texture;
+  Texture _texture;
 
 public:
-    TextureAdapterResource(const Texture2D &resource) noexcept
-        : _texture{resource}
-    {}
+  TextureAdapterResource (Texture resource) noexcept : _texture{ resource } {}
 
-    ~TextureAdapterResource() noexcept { UnloadTexture(_texture); }
+  ~TextureAdapterResource () noexcept = default;
 
-    operator Texture() const noexcept { return _texture; }
+  operator const Texture & () const noexcept { return _texture; }
+
+  void
+  dispose () const noexcept
+  {
+    UnloadTexture (_texture);
+  }
 };
 #endif

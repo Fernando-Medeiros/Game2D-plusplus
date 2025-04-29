@@ -3,29 +3,27 @@
 
 #include <cstdint>
 
-namespace core::enums {
+enum class EGraphic : uint8_t
+{
+  AnchorLeft,
+  AnchorRight,
+  AnchorTopLeft,
+  AnchorTopRight,
+  AnchorTopCenter,
+  AnchorBottomLeft,
+  AnchorBottomRight,
+  AnchorBottomCenter,
 
-enum class Graphic : uint8_t {
-    AnchorLeft,
-    AnchorRight,
-    AnchorTopLeft,
-    AnchorTopRight,
-    AnchorTopCenter,
-    AnchorBottomLeft,
-    AnchorBottomRight,
-    AnchorBottomCenter,
+  LootNode,
+  SelectedNode,
+  PanelDefault,
 
-    LootNode,
-    SelectedNode,
-    PanelDefault,
+  ButtonDefault,
+  ButtonDefaultHover,
+  ButtonDefaultPressed,
 
-    ButtonDefault,
-    ButtonDefaultHover,
-    ButtonDefaultPressed,
-
-    EntryDefault,
-    EntryDefaultHover,
-    EntryDefaultPressed,
+  EntryDefault,
+  EntryDefaultHover,
+  EntryDefaultPressed,
 };
-}
 #endif

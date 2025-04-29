@@ -1,4 +1,4 @@
-#include "event.hpp"
+#include <event.hpp>
 #include <unordered_map>
 
 Event::Event() noexcept
@@ -32,4 +32,11 @@ void Event::invoke(const EventArgs &sender) noexcept
     for (auto &[_, handler] : handlers) {
         handler(sender);
     }
+}
+
+void
+Event::dispose () noexcept
+{
+  nextId = 0;
+  handlers.clear ();
 }

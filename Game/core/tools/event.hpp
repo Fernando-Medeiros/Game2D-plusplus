@@ -18,12 +18,16 @@ private:
     EventCollection handlers;
 
 public:
-    Event() noexcept;
-    ~Event() noexcept = default;
+  Event () noexcept;
 
-    void invoke(const EventArgs &sender) noexcept;
-    void unsubscribe(EventId eventId) noexcept;
-    [[nodiscard]] EventId subscribe(EventCallback handler) noexcept;
-    [[nodiscard]] EventId subscribe(EventCallbackWrapper *handler) noexcept;
+  void dispose () noexcept;
+
+  void invoke (const EventArgs &sender) noexcept;
+
+  void unsubscribe (EventId eventId) noexcept;
+
+  [[nodiscard]] EventId subscribe (EventCallback handler) noexcept;
+
+  [[nodiscard]] EventId subscribe (EventCallbackWrapper *handler) noexcept;
     };
 #endif // TOOLS_EVENT_HPP
