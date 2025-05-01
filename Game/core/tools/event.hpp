@@ -1,12 +1,23 @@
 #ifndef TOOLS_EVENT_HPP
 #define TOOLS_EVENT_HPP
 
-#include <any>
 #include <functional>
 #include <unordered_map>
 
+class EventArgs
+{
+public:
+  virtual ~EventArgs () noexcept = default;
+
+  template <typename T>
+  [[nodiscard]] const T *
+  toSecurePtr () const
+  {
+    return dynamic_cast<const T *> (this);
+  }
+};
+
 using EventId = size_t;
-using EventArgs = std::any;
 using EventCallbackWrapper = void(const EventArgs &);
 using EventCallback = std::function<EventCallbackWrapper>;
 using EventCollection = std::unordered_map<EventId, EventCallback>;

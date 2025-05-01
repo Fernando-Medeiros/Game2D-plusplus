@@ -1,48 +1,60 @@
-#include <any>
+#include <E_keyboard_key.hpp>
 #include <event.hpp>
 #include <gtest/gtest.h>
-#include <string>
+#include <keyboard_args.hpp>
 
 class EventSpec : public ::testing::Test {
 protected:
     Event event;
-    std::string result;
+    std::unique_ptr<EventArgs> result;
 
     void SetUp() override {
-	  result.clear();
+      result.release ();
     }
 
-    void callback(const EventArgs& args) {
-	  result = std::any_cast<std::string>(args);
+    void
+    callback (const EventArgs &sender)
+    {
+      result = std::move (std::make_unique<EventArgs> (sender));
     }
 
 public:
-    static void staticCallback(const EventArgs& args) {}
+  static void
+  staticCallback (const EventArgs &sender)
+  {
+  }
 };
 
 TEST_F(EventSpec, Should_Subscribe_And_Invoke_Callback) {
-    EventId id = event.subscribe([&](const EventArgs& args) { callback(args); });
+  EventId id
+      = event.subscribe ([&] (const EventArgs &sender) { callback (sender); });
 
-    event.invoke(std::string("Hello"));
+  const EventArgs &expected{ KeyboardArgs (EKeyboardKey::C,
+                                           EKeyboardKey::CONTROL) };
 
-    EXPECT_EQ(id, 1);
-    EXPECT_EQ(result, "Hello");
+  event.invoke (expected);
+
+  EXPECT_EQ (id, 1);
+  EXPECT_EQ (result, std::make_unique<EventArgs> (expected));
 }
 
 TEST_F(EventSpec, Should_Return_Unique_EventId) {
     EventId id1 = event.subscribe([&](const EventArgs&) {});
     EventId id2 = event.subscribe([&](const EventArgs&) {});
 
-    EXPECT_NE(id1, id2);
+    EXPECT_NE (id1, id2);
 }
 
 TEST_F(EventSpec, Should_Unsubscribe_And_Not_Invoke) {
-    EventId id = event.subscribe([&](const EventArgs& args) {callback(args); });
+  EventId id
+      = event.subscribe ([&] (const EventArgs &sender) { callback (sender); });
 
-    event.unsubscribe(id);
-    event.invoke(std::string("Hello"));
+  EventArgs expected{ KeyboardArgs (EKeyboardKey::C, EKeyboardKey::CONTROL) };
 
-    EXPECT_TRUE(result.empty());
+  event.unsubscribe (id);
+  event.invoke (expected);
+
+  EXPECT_TRUE (result == nullptr);
 }
 
 TEST_F(EventSpec, Should_Invoke_Multiple_Callbacks) {
@@ -50,13 +62,18 @@ TEST_F(EventSpec, Should_Invoke_Multiple_Callbacks) {
 
     EventId id1 = event.subscribe([&](const EventArgs&) { ++count; });
     EventId id2 = event.subscribe([&](const EventArgs&) { ++count; });
-    EventId id = event.subscribe(EventSpec::staticCallback);
 
-    event.invoke(std::string("Hello"));
+    EventId id = event.subscribe (EventSpec::staticCallback);
+
+    EventArgs expected{ KeyboardArgs (EKeyboardKey::C,
+                                      EKeyboardKey::CONTROL) };
+
+    event.invoke (expected);
 
     EXPECT_EQ(count, 2);
 }
 
 TEST_F(EventSpec, Should_Handle_Empty_Invoke_Gracefully) {
-    EXPECT_NO_THROW(event.invoke(std::string("Nothing")));
+
+  EXPECT_NO_THROW (event.invoke (EventArgs ()));
 }

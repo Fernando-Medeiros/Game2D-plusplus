@@ -1,10 +1,11 @@
 #include <color_adapter.hpp>
 #include <constants_adapter.hpp>
 #include <enum_adapter.hpp>
-#include <keyboard_transport.hpp>
+#include <keyboard_args.hpp>
 #include <magic_enum/magic_enum.hpp>
-#include <mouse_transport.hpp>
+#include <mouse_args.hpp>
 #include <rectangle_adapter.hpp>
+#include <size_args.hpp>
 #include <sprite_adapter.hpp>
 #include <text_adapter.hpp>
 #include <window_adapter.hpp>
@@ -59,6 +60,8 @@ WindowAdapter::build () noexcept
   InitAudioDevice ();
 
   setFrameLimit (_frame);
+
+  SetExitKey (KeyboardKey::KEY_F1);
 
   return *this;
 }
@@ -176,7 +179,7 @@ WindowAdapter::dispatchEvents () noexcept
   if (currentWidth != getWindowSize ().horizontal ()
       || currentHeight != getWindowSize ().vertical ())
     {
-      onResized.invoke (new RectAdapter (
+      onResized.invoke (SizeArgs (
           VectorAdapter (), VectorAdapter (currentWidth, currentHeight)));
     }
 
@@ -187,34 +190,34 @@ WindowAdapter::dispatchEvents () noexcept
       for (auto &keyDown : constants::combinedKeys)
         if (IsKeyDown (keyDown))
           if (IsKeyPressed (keyPressed))
-            onKeyPressed.invoke (KeyboardTransport (toKeyboardKey (keyPressed),
-                                                    toKeyboardKey (keyDown)));
+            onKeyPressed.invoke (KeyboardArgs (toKeyboardKey (keyPressed),
+                                               toKeyboardKey (keyDown)));
 
       if (IsKeyPressed (keyPressed))
-        onKeyPressed.invoke (KeyboardTransport (toKeyboardKey (keyPressed)));
+        onKeyPressed.invoke (KeyboardArgs (toKeyboardKey (keyPressed)));
 
       if (IsKeyReleased (keyPressed))
-        onKeyReleased.invoke (KeyboardTransport (toKeyboardKey (keyPressed)));
+        onKeyReleased.invoke (KeyboardArgs (toKeyboardKey (keyPressed)));
     }
 
   onMouseMoved.invoke (
-      MouseTransport (EMouse::None, VectorAdapter (mouseX, mouseY)));
+      MouseArgs (EMouse::None, VectorAdapter (mouseX, mouseY)));
 
   for (const MouseButton &button : magic_enum::enum_values<MouseButton> ())
     {
       if (IsMouseButtonPressed (button))
         onMouseButtonPressed.invoke (
-            MouseTransport ((EMouse)button, VectorAdapter (mouseX, mouseY)));
+            MouseArgs ((EMouse)button, VectorAdapter (mouseX, mouseY)));
 
       if (IsMouseButtonReleased (button))
         onMouseButtonReleased.invoke (
-            MouseTransport ((EMouse)button, VectorAdapter (mouseX, mouseY)));
+            MouseArgs ((EMouse)button, VectorAdapter (mouseX, mouseY)));
     }
 
   if (scroll != 0)
     {
       onMouseWheelScrolled.invoke (
-          MouseTransport ((EMouse)scroll, VectorAdapter (mouseX, mouseY)));
+          MouseArgs ((EMouse)scroll, VectorAdapter (mouseX, mouseY)));
     }
 };
 

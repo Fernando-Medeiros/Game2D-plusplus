@@ -1,13 +1,6 @@
 #include <event.hpp>
 #include <unordered_map>
 
-// Event::Event() noexcept
-//     : nextId{0}
-//     , handlers{EventCollection()}
-// {
-//     handlers.reserve(4);
-// }
-
 [[nodiscard]] EventId
 Event::subscribe (const EventCallback &handler) noexcept
 {

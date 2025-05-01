@@ -1,4 +1,4 @@
-#include <keyboard_transport.hpp>
+#include <keyboard_args.hpp>
 #include <rectangle_adapter.hpp>
 #include <sprite_adapter.hpp>
 #include <text_adapter.hpp>
@@ -82,9 +82,12 @@ main ()
 
     eventId = eventManager->subscribe (
         EEvent::KeyPressed, EventCallback ([&] (const EventArgs &sender) {
-          auto keyboard = std::any_cast<KeyboardTransport> (sender);
+          auto keyboard = sender.toSecurePtr<KeyboardArgs> ();
 
-          if (keyboard.getPressedKey () == EKeyboardKey::ESCAPE)
+          if (keyboard == nullptr)
+            return;
+
+          if (keyboard->getPressedKey () == EKeyboardKey::ESCAPE)
             {
               eventManager->invoke (EEvent::ExitGame, sender);
             }

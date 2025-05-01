@@ -7,7 +7,7 @@
 class RectAdapter
 {
 private:
-  VectorAdapter _position{}, _size{}, _center{};
+  VectorAdapter _position, _size, _center;
 
 public:
   RectAdapter (VectorAdapter position, VectorAdapter size) noexcept;

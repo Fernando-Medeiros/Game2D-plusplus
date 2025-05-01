@@ -1,23 +1,24 @@
-#ifndef MOUSE_TRANSPORT_HPP
-#define MOUSE_TRANSPORT_HPP
+#ifndef MOUSE_ARGS_H
+#define MOUSE_ARGS_H
 
 #include <E_mouse.hpp>
+#include <event.hpp>
 #include <vector_adapter.hpp>
 
-struct MouseTransport
+struct MouseArgs : public EventArgs
 {
 private:
     const EMouse _pressedButton;
     const VectorAdapter _position;
 
 public:
-    MouseTransport(EMouse button, VectorAdapter position) noexcept
+    MouseArgs(EMouse button, VectorAdapter position) noexcept
         : _position{position}
         , _pressedButton{button} {};
 
-    ~MouseTransport() noexcept = default;
+    ~MouseArgs() noexcept = default;
 
     [[nodiscard]] const VectorAdapter &getPosition() const noexcept { return _position; };
     [[nodiscard]] const EMouse &getPressedButton() const noexcept { return _pressedButton; };
 };
-#endif // MOUSE_TRANSPORT_HPP
+#endif // MOUSE_ARGS_H

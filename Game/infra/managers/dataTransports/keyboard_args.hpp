@@ -1,23 +1,24 @@
-#ifndef KEYBOARD_TRANSPORT_HPP
-#define KEYBOARD_TRANSPORT_HPP
+#ifndef KEYBOARD_ARGS_H
+#define KEYBOARD_ARGS_H
 
 #include <E_keyboard_key.hpp>
+#include <event.hpp>
 
-struct KeyboardTransport
+struct KeyboardArgs : public EventArgs
 {
 private:
   EKeyboardKey _keyPressed{ EKeyboardKey::None },
       _keyDown{ EKeyboardKey::None };
 
 public:
-  KeyboardTransport (EKeyboardKey keyPressed) noexcept
+  KeyboardArgs (EKeyboardKey keyPressed) noexcept
       : _keyPressed{ keyPressed } {};
 
-  KeyboardTransport (EKeyboardKey keyPressed, EKeyboardKey keyDown) noexcept
+  KeyboardArgs (EKeyboardKey keyPressed, EKeyboardKey keyDown) noexcept
       : _keyPressed{ keyPressed },
         _keyDown{ keyDown } {};
 
-  ~KeyboardTransport () noexcept = default;
+  ~KeyboardArgs () noexcept = default;
 
   [[nodiscard]] const bool
   altIsPressed () const noexcept
@@ -46,4 +47,4 @@ public:
   };
 };
 
-#endif // KEYBOARD_TRANSPORT_HPP
+#endif // KEYBOARD_ARGS_H
