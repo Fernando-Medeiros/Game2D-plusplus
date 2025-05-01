@@ -14,11 +14,12 @@ using EventCollection = std::unordered_map<EventId, EventCallback>;
 class Event
 {
 private:
-    EventId nextId{0};
-    EventCollection handlers;
+  EventId nextId;
+  EventCollection handlers;
 
 public:
-  Event () noexcept;
+  Event () noexcept = default;
+  ~Event () noexcept = default;
 
   void dispose () noexcept;
 
@@ -26,7 +27,7 @@ public:
 
   void unsubscribe (EventId eventId) noexcept;
 
-  [[nodiscard]] EventId subscribe (EventCallback handler) noexcept;
+  [[nodiscard]] EventId subscribe (const EventCallback &handler) noexcept;
 
   [[nodiscard]] EventId subscribe (EventCallbackWrapper *handler) noexcept;
     };

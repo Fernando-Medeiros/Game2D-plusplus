@@ -12,15 +12,18 @@ public:
 
   IWindow &withFramerateLimit (int fps) noexcept override;
 
+  IWindow &withResourceManager (const std::shared_ptr<ResourceManager>
+                                    &resourceManager) noexcept override;
+
   IWindow &build () noexcept override;
+
+  void setDisposed (bool value) noexcept override;
 
   void setFrameLimit (int value) noexcept override;
 
   void resize (VectorAdapter vector) noexcept override;
 
   void setViewport (const ViewportAdapter &viewport) noexcept override;
-
-  [[nodiscard]] bool isOpen () const noexcept override;
 
   [[nodiscard]] const VectorAdapter &getWindowSize () const noexcept override;
 
@@ -36,6 +39,10 @@ public:
   [[nodiscard]] const VectorAdapter
   getCoords (const VectorAdapter &vector,
              const ViewportAdapter &viewport) const noexcept override;
+
+  [[nodiscard]] bool isOpen () const noexcept override;
+
+  [[nodiscard]] bool isDisposed () noexcept override;
 
   void close () noexcept override;
   void clear () noexcept override;

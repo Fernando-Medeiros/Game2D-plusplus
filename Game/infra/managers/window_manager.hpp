@@ -17,13 +17,15 @@ private:
   std::shared_ptr<ResourceManager> resourceManager;
 
 public:
-  WindowManager *
+  WindowManager &
   withEventManager (const std::shared_ptr<EventManager> &ptr) noexcept;
 
-  WindowManager *
+  WindowManager &
   withResourceManager (const std::shared_ptr<ResourceManager> &ptr) noexcept;
 
   void initialize () noexcept;
+
+  void close () noexcept;
 
   void dispose () noexcept;
 

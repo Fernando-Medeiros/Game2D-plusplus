@@ -34,70 +34,69 @@ main ()
   auto resourceManager{ std::make_shared<ResourceManager> () };
 
   windowManager->withEventManager (eventManager)
-      ->withResourceManager (resourceManager)
-      ->initialize ();
+      .withResourceManager (resourceManager)
+      .initialize ();
 
-  windowManager->events ([&] (WindowArgs &window) {
+  windowManager->events (WindowCallback ([&] (WindowArgs &window) {
     EventId eventId;
 
-    eventId = window.onKeyPressed.subscribe ([&] (const EventArgs &sender) {
-      eventManager->invoke (EEvent::KeyPressed, sender);
-    });
+    eventId = window.onKeyPressed.subscribe (
+        EventCallback ([&] (const EventArgs &sender) {
+          eventManager->invoke (EEvent::KeyPressed, sender);
+        }));
 
-    eventId = window.onTextEntered.subscribe ([&] (const EventArgs &sender) {
-      eventManager->invoke (EEvent::TextEntered, sender);
-    });
+    eventId = window.onTextEntered.subscribe (
+        EventCallback ([&] (const EventArgs &sender) {
+          eventManager->invoke (EEvent::TextEntered, sender);
+        }));
 
-    eventId = window.onKeyReleased.subscribe ([&] (const EventArgs &sender) {
-      eventManager->invoke (EEvent::KeyReleased, sender);
-    });
+    eventId = window.onKeyReleased.subscribe (
+        EventCallback ([&] (const EventArgs &sender) {
+          eventManager->invoke (EEvent::KeyReleased, sender);
+        }));
 
-    eventId = window.onMouseMoved.subscribe ([&] (const EventArgs &sender) {
-      eventManager->invoke (EEvent::MouseMoved, sender);
-    });
+    eventId = window.onMouseMoved.subscribe (
+        EventCallback ([&] (const EventArgs &sender) {
+          eventManager->invoke (EEvent::MouseMoved, sender);
+        }));
 
     eventId = window.onMouseWheelScrolled.subscribe (
-        [&] (const EventArgs &sender) {
+        EventCallback ([&] (const EventArgs &sender) {
           eventManager->invoke (EEvent::MouseWheelScrolled, sender);
-        });
+        }));
 
     eventId = window.onMouseButtonPressed.subscribe (
-        [&] (const EventArgs &sender) {
+        EventCallback ([&] (const EventArgs &sender) {
           eventManager->invoke (EEvent::MouseButtonPressed, sender);
-        });
+        }));
 
     eventId = window.onMouseButtonReleased.subscribe (
-        [&] (const EventArgs &sender) {
+        EventCallback ([&] (const EventArgs &sender) {
           eventManager->invoke (EEvent::MouseButtonReleased, sender);
-        });
+        }));
 
     eventId = eventManager->subscribe (
-        EEvent::ExitGame,
-        [&] (const EventArgs &sender) { windowManager->dispose (); });
+        EEvent::ExitGame, EventCallback ([&] (const EventArgs &sender) {
+          windowManager->close ();
+        }));
 
     eventId = eventManager->subscribe (
-        EEvent::KeyPressed, [&] (const EventArgs &sender) {
+        EEvent::KeyPressed, EventCallback ([&] (const EventArgs &sender) {
           auto keyboard = std::any_cast<KeyboardTransport> (sender);
 
           if (keyboard.getPressedKey () == "KEY_P")
             {
               eventManager->invoke (EEvent::ExitGame, sender);
             }
-        });
-  });
+        }));
+  }));
 
-  windowManager->render ([&] (WindowArgs &window) {
+  windowManager->render (WindowCallback ([&] (WindowArgs &window) {
     window.render (*text);
     window.render (*rectangle);
     window.render (*sprite);
-  });
+  }));
 
   windowManager->dispose ();
-
-  eventManager.reset ();
-  resourceManager.reset ();
-
-  windowManager.release ();
-
   return 0;
 }

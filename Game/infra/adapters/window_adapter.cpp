@@ -28,6 +28,14 @@ WindowAdapter::withFramerateLimit (int value) noexcept
 {
   _framerateLimit = value;
   return *this;
+}
+
+IWindow &
+WindowAdapter::withResourceManager (
+    const std::shared_ptr<ResourceManager> &resourceManager) noexcept
+{
+  _resourceManager = resourceManager;
+  return *this;
 };
 
 IWindow &
@@ -41,6 +49,12 @@ WindowAdapter::build () noexcept
   setFrameLimit (_framerateLimit);
 
   return *this;
+}
+
+void
+WindowAdapter::setDisposed (bool value) noexcept
+{
+  _disposed = true;
 };
 
 void
@@ -67,6 +81,12 @@ WindowAdapter::setViewport (const ViewportAdapter &viewport) noexcept
 WindowAdapter::isOpen () const noexcept
 {
   return !WindowShouldClose ();
+}
+
+bool
+WindowAdapter::isDisposed () noexcept
+{
+  return _disposed;
 };
 
 [[nodiscard]] const VectorAdapter &
@@ -194,8 +214,9 @@ WindowAdapter::render (const IDrawable &adapter) noexcept
       if (rectangleAdapter->getTexture () != ETexture::None)
         {
           const auto &texture
-              = resources->load<std::unique_ptr<TextureAdapterResource> > (
-                  rectangleAdapter->getTexture ());
+              = _resourceManager
+                    ->load<std::unique_ptr<TextureAdapterResource> > (
+                        rectangleAdapter->getTexture ());
 
           DrawTexture (*texture, position.horizontal (), position.vertical (),
                        WHITE);
@@ -207,7 +228,7 @@ WindowAdapter::render (const IDrawable &adapter) noexcept
       = dynamic_cast<const SpriteAdapter *> (&adapter))
     {
       const auto &texture
-          = resources->load<std::unique_ptr<TextureAdapterResource> > (
+          = _resourceManager->load<std::unique_ptr<TextureAdapterResource> > (
               spriteAdapter->getTexture ());
 
       DrawTexture (*texture, position.horizontal (), position.vertical (),

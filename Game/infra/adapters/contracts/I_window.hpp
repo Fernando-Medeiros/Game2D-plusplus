@@ -13,15 +13,15 @@
 class IWindow
 {
 protected:
+  std::shared_ptr<ResourceManager> _resourceManager;
   ViewportAdapter _inicialViewport, _dynamicViewport;
   VectorAdapter _screenSize;
   EColor _color{ EColor::Gray };
   std::string _title;
   int _framerateLimit;
+  bool _disposed;
 
 public:
-  std::shared_ptr<ResourceManager> resources;
-
   Event onClosed;
   Event onResized;
   Event onMouseMoved;
@@ -42,15 +42,19 @@ public:
 
   virtual IWindow &withFramerateLimit (int value) noexcept = 0;
 
+  virtual IWindow &withResourceManager (
+      const std::shared_ptr<ResourceManager> &resourceManager) noexcept
+      = 0;
+
   virtual IWindow &build () noexcept = 0;
+
+  virtual void setDisposed (bool value) noexcept = 0;
 
   virtual void setFrameLimit (int value) noexcept = 0;
 
   virtual void resize (VectorAdapter vector) noexcept = 0;
 
   virtual void setViewport (const ViewportAdapter &viewport) noexcept = 0;
-
-  [[nodiscard]] virtual bool isOpen () const noexcept = 0;
 
   [[nodiscard]] virtual const VectorAdapter &getWindowSize () const noexcept
       = 0;
@@ -71,6 +75,10 @@ public:
   getCoords (const VectorAdapter &vector,
              const ViewportAdapter &viewport) const noexcept
       = 0;
+
+  [[nodiscard]] virtual bool isOpen () const noexcept = 0;
+
+  [[nodiscard]] virtual bool isDisposed () noexcept = 0;
 
   virtual void close () noexcept = 0;
 

@@ -1,38 +1,44 @@
 #include <window_manager.hpp>
 
-WindowManager *
+WindowManager &
 WindowManager::withEventManager (
     const std::shared_ptr<EventManager> &ptr) noexcept
 {
   eventManager = ptr;
-  return this;
+  return *this;
 }
 
-WindowManager *
+WindowManager &
 WindowManager::withResourceManager (
     const std::shared_ptr<ResourceManager> &ptr) noexcept
 {
   resourceManager = ptr;
-  return this;
+  return *this;
 }
 
 void
 WindowManager::initialize () noexcept
 {
   window = std::make_unique<WindowAdapter> ();
-  window->resources = resourceManager;
+
+  window->withTitle ("Game 2D")
+      .withSize (VectorAdapter (800, 800))
+      .withFramerateLimit (30)
+      .withResourceManager (resourceManager)
+      .build ();
+}
+
+void
+WindowManager::close () noexcept
+{
+  window->setDisposed (true);
 }
 
 void
 WindowManager::dispose () noexcept
 {
-  window->close ();
-
   eventManager->dispose ();
   resourceManager->dispose ();
-
-  eventManager.reset ();
-  resourceManager.reset ();
 }
 
 void
@@ -44,16 +50,16 @@ WindowManager::events (const WindowCallback &handler) noexcept
 void
 WindowManager::render (const WindowCallback &handler) noexcept
 {
-  window->withTitle ("Game 2D")
-      .withSize (VectorAdapter (500, 600))
-      .withFramerateLimit (30)
-      .build ();
-
   while (window->isOpen ())
     {
       window->clear ();
       window->dispatchEvents ();
       handler (*window);
       window->display ();
+
+      if (window->isDisposed ())
+        break;
     }
+
+  window->close ();
 }

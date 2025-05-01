@@ -1,14 +1,15 @@
 #include <event.hpp>
 #include <unordered_map>
 
-Event::Event() noexcept
-    : nextId{0}
-    , handlers{EventCollection()}
-{
-    handlers.reserve(4);
-}
+// Event::Event() noexcept
+//     : nextId{0}
+//     , handlers{EventCollection()}
+// {
+//     handlers.reserve(4);
+// }
 
-[[nodiscard]] EventId Event::subscribe(EventCallback handler) noexcept
+[[nodiscard]] EventId
+Event::subscribe (const EventCallback &handler) noexcept
 {
     EventId id = ++nextId;
     handlers[id] = std::move(handler);
