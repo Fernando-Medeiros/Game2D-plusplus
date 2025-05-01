@@ -76,7 +76,6 @@ target_include_directories(GameCore PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/shapes
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/constants
-  ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/constants
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/drawables
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/functions
