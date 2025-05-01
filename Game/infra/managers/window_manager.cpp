@@ -22,8 +22,9 @@ WindowManager::initialize () noexcept
   window = std::make_unique<WindowAdapter> ();
 
   window->withTitle ("Game 2D")
-      .withSize (VectorAdapter (800, 800))
-      .withFramerateLimit (30)
+      .withFrame (30)
+      .withFrameLimit (30, 144)
+      .withSize (VectorAdapter (600, 600))
       .withResourceManager (resourceManager)
       .build ();
 }
@@ -52,13 +53,19 @@ WindowManager::render (const WindowCallback &handler) noexcept
 {
   while (window->isOpen ())
     {
-      window->clear ();
-      window->dispatchEvents ();
-      handler (*window);
-      window->display ();
-
       if (window->isDisposed ())
         break;
+
+      window->beginDrawing ();
+      window->clear ();
+
+      if (window->isFocused ())
+        {
+          window->dispatchEvents ();
+          handler (*window);
+        }
+
+      window->endDrawing ();
     }
 
   window->close ();

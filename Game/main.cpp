@@ -84,7 +84,7 @@ main ()
         EEvent::KeyPressed, EventCallback ([&] (const EventArgs &sender) {
           auto keyboard = std::any_cast<KeyboardTransport> (sender);
 
-          if (keyboard.getPressedKey () == "KEY_P")
+          if (keyboard.getPressedKey () == EKeyboardKey::ESCAPE)
             {
               eventManager->invoke (EEvent::ExitGame, sender);
             }

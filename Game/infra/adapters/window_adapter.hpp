@@ -10,7 +10,9 @@ public:
 
   IWindow &withTitle (const std::string &title) noexcept override;
 
-  IWindow &withFramerateLimit (int fps) noexcept override;
+  IWindow &withFrame (int fps) noexcept override;
+
+  IWindow &withFrameLimit (int minFrame, int maxFrame) noexcept override;
 
   IWindow &withResourceManager (const std::shared_ptr<ResourceManager>
                                     &resourceManager) noexcept override;
@@ -44,9 +46,12 @@ public:
 
   [[nodiscard]] bool isDisposed () noexcept override;
 
+  [[nodiscard]] bool isFocused () noexcept override;
+
   void close () noexcept override;
   void clear () noexcept override;
-  void display () noexcept override;
+  void beginDrawing () noexcept override;
+  void endDrawing () noexcept override;
   void dispatchEvents () noexcept override;
   void render (const IDrawable &drawable) noexcept override;
 };

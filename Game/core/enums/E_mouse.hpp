@@ -3,16 +3,13 @@
 
 #include <cstdint>
 
-/// Enumeração de botões do mouse.
-enum class EMouse : int8_t {
-    None = -99,
-    ScrollDown = -1,
-    Left = 0,
-    ScrollUp = 1,
-    Right,
-    Middle,
-    XButton1,
-    XButton2,
-    ButtonCount,
+enum class EMouse : int8_t
+{
+  None,
+  Left,
+  Right,
+  Middle,
+  ScrollUp,
+  ScrollDown,
 };
 #endif

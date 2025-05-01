@@ -18,7 +18,7 @@ protected:
   VectorAdapter _screenSize;
   EColor _color{ EColor::Gray };
   std::string _title;
-  int _framerateLimit;
+  int _maxFrame, _minFrame, _frame;
   bool _disposed;
 
 public:
@@ -40,7 +40,9 @@ public:
 
   virtual IWindow &withTitle (const std::string &title) noexcept = 0;
 
-  virtual IWindow &withFramerateLimit (int value) noexcept = 0;
+  virtual IWindow &withFrameLimit (int minFrame, int maxFrame) noexcept = 0;
+
+  virtual IWindow &withFrame (int value) noexcept = 0;
 
   virtual IWindow &withResourceManager (
       const std::shared_ptr<ResourceManager> &resourceManager) noexcept
@@ -80,11 +82,15 @@ public:
 
   [[nodiscard]] virtual bool isDisposed () noexcept = 0;
 
+  [[nodiscard]] virtual bool isFocused () noexcept = 0;
+
   virtual void close () noexcept = 0;
 
   virtual void clear () noexcept = 0;
 
-  virtual void display () noexcept = 0;
+  virtual void beginDrawing () noexcept = 0;
+
+  virtual void endDrawing () noexcept = 0;
 
   virtual void dispatchEvents () noexcept = 0;
 

@@ -2,6 +2,7 @@
 #ifndef RESOURCE_MANAGER_TPP
 #define RESOURCE_MANAGER_TPP
 
+#include <E_biome.hpp>
 #include <format>
 #include <resource_manager.hpp>
 
@@ -52,8 +53,8 @@ ResourceManager::loadFont (const E &key) noexcept
 
       std::string path = std::format ("./resources/fonts/{}.ttf", name);
 
-      _fonts.emplace (key,
-                      std::make_unique<FontAdapterResource> (LoadFont (path)));
+      _fonts.emplace (key, std::make_unique<FontAdapterResource> (
+                               LoadFont (path.c_str ())));
     }
 
   return _fonts.at (key);
@@ -69,8 +70,8 @@ ResourceManager::loadSound (const E &key) noexcept
 
       std::string path = std::format ("./resources/sounds/{}.ogg", name);
 
-      _sounds.emplace (
-          key, std::make_unique<SoundAdapterResource> (LoadSound (path)));
+      _sounds.emplace (key, std::make_unique<SoundAdapterResource> (
+                                LoadSound (path.c_str ())));
     }
 
   return _sounds.at (key);
@@ -84,6 +85,6 @@ ResourceManager::loadMusic (const E &key) noexcept
 
   std::string path = std::format ("./resources/musics/{}.mp3", name);
 
-  return MusicAdapterResource (LoadMusicStream (path.c_str ()));
+  return MusicAdapterResource (LoadMusicStream (path));
 }
 #endif

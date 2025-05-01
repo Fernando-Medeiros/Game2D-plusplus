@@ -1,30 +1,49 @@
 #ifndef KEYBOARD_TRANSPORT_HPP
 #define KEYBOARD_TRANSPORT_HPP
 
-#include <E_mouse.hpp>
-#include <string>
+#include <E_keyboard_key.hpp>
 
 struct KeyboardTransport
 {
 private:
-    const std::string _code;
-    bool _alt, _shift, _control;
+  EKeyboardKey _keyPressed{ EKeyboardKey::None },
+      _keyDown{ EKeyboardKey::None };
 
 public:
-    KeyboardTransport(std::string code) noexcept
-        : _code{code}
-    {
-        _alt = code.contains("Alt");
-        _shift = code.contains("Shift");
-        _control = code.contains("Control");
-    }
+  KeyboardTransport (EKeyboardKey keyPressed) noexcept
+      : _keyPressed{ keyPressed } {};
 
-    ~KeyboardTransport() noexcept = default;
+  KeyboardTransport (EKeyboardKey keyPressed, EKeyboardKey keyDown) noexcept
+      : _keyPressed{ keyPressed },
+        _keyDown{ keyDown } {};
 
-    [[nodiscard]] const bool &altIsPressed() const noexcept { return _alt; };
-    [[nodiscard]] const bool &shiftIsPressed() const noexcept { return _shift; };
-    [[nodiscard]] const bool &controlIsPressed() const noexcept { return _control; };
-    [[nodiscard]] const std::string &getPressedKey() const noexcept { return _code; };
+  ~KeyboardTransport () noexcept = default;
+
+  [[nodiscard]] const bool
+  altIsPressed () const noexcept
+  {
+    return _keyDown == EKeyboardKey::ALT;
+  };
+
+  [[nodiscard]] const bool
+
+  shiftIsPressed () const noexcept
+  {
+    return _keyDown == EKeyboardKey::SHIFT;
+  };
+
+  [[nodiscard]] const bool
+
+  controlIsPressed () const noexcept
+  {
+    return _keyDown == EKeyboardKey::CONTROL;
+  };
+
+  [[nodiscard]] const EKeyboardKey &
+  getPressedKey () const noexcept
+  {
+    return _keyPressed;
+  };
 };
 
 #endif // KEYBOARD_TRANSPORT_HPP

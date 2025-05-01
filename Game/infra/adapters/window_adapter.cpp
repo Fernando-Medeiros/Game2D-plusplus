@@ -1,6 +1,8 @@
 #include <color_adapter.hpp>
+#include <constants_adapter.hpp>
+#include <enum_adapter.hpp>
 #include <keyboard_transport.hpp>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 #include <mouse_transport.hpp>
 #include <rectangle_adapter.hpp>
 #include <sprite_adapter.hpp>
@@ -24,9 +26,17 @@ WindowAdapter::withTitle (const std::string &title) noexcept
 };
 
 IWindow &
-WindowAdapter::withFramerateLimit (int value) noexcept
+WindowAdapter::withFrame (int value) noexcept
 {
-  _framerateLimit = value;
+  _frame = value;
+  return *this;
+}
+
+IWindow &
+WindowAdapter::withFrameLimit (int minFrame, int maxFrame) noexcept
+{
+  _minFrame = minFrame;
+  _maxFrame = maxFrame;
   return *this;
 }
 
@@ -41,12 +51,14 @@ WindowAdapter::withResourceManager (
 IWindow &
 WindowAdapter::build () noexcept
 {
+  SetConfigFlags (FLAG_VSYNC_HINT);
+
   InitWindow ((int)getWindowSize ().horizontal (),
               (int)getWindowSize ().vertical (), _title.c_str ());
 
   InitAudioDevice ();
 
-  setFrameLimit (_framerateLimit);
+  setFrameLimit (_frame);
 
   return *this;
 }
@@ -60,7 +72,9 @@ WindowAdapter::setDisposed (bool value) noexcept
 void
 WindowAdapter::setFrameLimit (int value) noexcept
 {
-  SetTargetFPS (std::max (_framerateLimit, value));
+  _frame = std::max (std::min (value, _maxFrame), _minFrame);
+
+  SetTargetFPS (_frame);
 };
 
 void
@@ -87,6 +101,12 @@ bool
 WindowAdapter::isDisposed () noexcept
 {
   return _disposed;
+}
+
+bool
+WindowAdapter::isFocused () noexcept
+{
+  return IsWindowFocused ();
 };
 
 [[nodiscard]] const VectorAdapter &
@@ -127,7 +147,13 @@ WindowAdapter::close () noexcept
 };
 
 void
-WindowAdapter::display () noexcept
+WindowAdapter::beginDrawing () noexcept
+{
+  BeginDrawing ();
+};
+
+void
+WindowAdapter::endDrawing () noexcept
 {
   EndDrawing ();
 };
@@ -141,7 +167,9 @@ WindowAdapter::clear () noexcept
 void
 WindowAdapter::dispatchEvents () noexcept
 {
-  // Check window resize
+  int mouseX = GetMouseX ();
+  int mouseY = GetMouseY ();
+  float scroll = GetMouseWheelMove ();
   int currentWidth = GetScreenWidth ();
   int currentHeight = GetScreenHeight ();
 
@@ -152,27 +180,26 @@ WindowAdapter::dispatchEvents () noexcept
           VectorAdapter (), VectorAdapter (currentWidth, currentHeight)));
     }
 
-  // Check keyboard input
-  for (const KeyboardKey &key : magic_enum::enum_values<KeyboardKey> ())
+  if (auto key = GetKeyPressed (); key != 0)
     {
-      std::string strCode
-          = static_cast<std::string> (magic_enum::enum_name (key));
+      auto keyPressed = (KeyboardKey)(key);
 
-      if (IsKeyPressed (key))
-        onKeyPressed.invoke (KeyboardTransport (strCode));
+      for (auto &keyDown : constants::combinedKeys)
+        if (IsKeyDown (keyDown))
+          if (IsKeyPressed (keyPressed))
+            onKeyPressed.invoke (KeyboardTransport (toKeyboardKey (keyPressed),
+                                                    toKeyboardKey (keyDown)));
 
-      if (IsKeyReleased (key))
-        onKeyReleased.invoke (KeyboardTransport (strCode));
+      if (IsKeyPressed (keyPressed))
+        onKeyPressed.invoke (KeyboardTransport (toKeyboardKey (keyPressed)));
+
+      if (IsKeyReleased (keyPressed))
+        onKeyReleased.invoke (KeyboardTransport (toKeyboardKey (keyPressed)));
     }
-
-  // Check mouse movement
-  int mouseX = GetMouseX ();
-  int mouseY = GetMouseY ();
 
   onMouseMoved.invoke (
       MouseTransport (EMouse::None, VectorAdapter (mouseX, mouseY)));
 
-  // Check mouse buttons
   for (const MouseButton &button : magic_enum::enum_values<MouseButton> ())
     {
       if (IsMouseButtonPressed (button))
@@ -184,15 +211,11 @@ WindowAdapter::dispatchEvents () noexcept
             MouseTransport ((EMouse)button, VectorAdapter (mouseX, mouseY)));
     }
 
-  // Check mouse wheel scroll
-  float scroll = GetMouseWheelMove ();
   if (scroll != 0)
     {
       onMouseWheelScrolled.invoke (
           MouseTransport ((EMouse)scroll, VectorAdapter (mouseX, mouseY)));
     }
-
-  BeginDrawing ();
 };
 
 void

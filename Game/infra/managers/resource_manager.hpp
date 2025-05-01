@@ -2,12 +2,11 @@
 #ifndef RESOURCE_MANAGER_HPP
 #define RESOURCE_MANAGER_HPP
 
-#include <E_biome.hpp>
 #include <E_font.hpp>
 #include <E_sound.hpp>
 #include <E_texture.hpp>
 #include <font_adapter_resource.hpp>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 #include <memory>
 #include <music_adapter_resource.hpp>
 #include <sound_adapter_resource.hpp>
