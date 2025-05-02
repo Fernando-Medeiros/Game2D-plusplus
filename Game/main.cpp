@@ -22,7 +22,7 @@ main ()
   rectangle->setSize (VectorAdapter{ 50, 50 });
   rectangle->setPosition (VectorAdapter{ 250, 300 });
   rectangle->setTexture (ETexture::ButtonDefault);
-  rectangle->setBackgroundColor (EColor::CornFlowerBlue);
+  rectangle->setFillColor (EColor::CornFlowerBlue);
 
   sprite->setPosition (VectorAdapter (200, 500));
   sprite->setTexture (ETexture::ButtonDefault);

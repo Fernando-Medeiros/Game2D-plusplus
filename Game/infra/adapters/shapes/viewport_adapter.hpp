@@ -1,17 +1,15 @@
 ﻿#ifndef ADAPTER_VIEWPORT_HPP
 #define ADAPTER_VIEWPORT_HPP
 
-#include <raylib.h>
+#include <constants_adapter.hpp>
 #include <string>
 #include <vector_adapter.hpp>
-
-using Zoom = float;
 
 class ViewportAdapter
 {
 private:
   Zoom _zoom{ 1.0f };
-  VectorAdapter _size{}, _center{}, _position{};
+  VectorAdapter _size, _center, _position;
 
 public:
   ViewportAdapter () noexcept = default;
@@ -35,9 +33,9 @@ public:
 
   void center (VectorAdapter center) noexcept;
 
-  operator const Camera2D () const noexcept
+  operator const ExtViewport () const noexcept
   {
-    const Camera2D camera{ _size, _center, 0, _zoom };
+    const ExtViewport camera{ _size, _center, 0, _zoom };
     return camera;
   };
 };

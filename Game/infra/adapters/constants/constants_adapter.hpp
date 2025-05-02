@@ -5,13 +5,25 @@
 #include <magic_enum/magic_enum.hpp>
 #include <raylib.h>
 
-// VECTOR ------------------
+// VECTOR --------------------
 using Coords = uint16_t;
 using Position = uint8_t;
 using ExtVector2 = Vector2;
-// VECTOR ------------------
+// VECTOR --------------------
 
-// INPUT --------------------
+// VIEWPORT ------------------
+using Zoom = float;
+using ExtViewport = Camera2D;
+// VIEWPORT ------------------
+
+// RESOURCE ------------------
+using ExtFont = Font;
+using ExtSound = Sound;
+using ExtMusic = Music;
+using ExtTexture = Texture;
+// RESOURCE ------------------
+
+// INPUT ---------------------
 using ExtMouseButton = MouseButton;
 using ExtKeyboardKey = KeyboardKey;
 
@@ -24,13 +36,17 @@ constexpr std::array COMBINED_KEYBOARD_KEYS{
 constexpr std::array MOUSE_BUTTONS{
   magic_enum::enum_values<ExtMouseButton> ()
 };
+// INPUT ---------------------
 
+// CONCEPTS ------------------
 template <typename E>
 concept IsExtKeyboard = std::is_enum_v<E> && std::is_same_v<E, ExtKeyboardKey>;
 
 template <typename E>
 concept IsExtMouseButton
     = std::is_enum_v<E> && std::is_same_v<E, ExtMouseButton>;
-// INPUT --------------------
+
+template <typename E> concept IsEnum = std::is_enum_v<E>;
+// CONCEPTS ------------------
 
 #endif // CONSTANTS_ADAPTER_HPP

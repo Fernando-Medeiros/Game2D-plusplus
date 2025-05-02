@@ -5,7 +5,7 @@
 
 enum class ETexture : uint16_t
 {
-  None,
+  NONE,
 
   AnchorLeft,
   AnchorRight,

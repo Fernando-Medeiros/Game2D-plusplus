@@ -33,25 +33,20 @@ private:
 public:
   void dispose () noexcept;
 
-  template <typename T, typename E>
-  requires std::is_enum_v<E> const T &load (const E &key);
+  template <typename T, IsEnum E> const T &load (const E &key);
 
 private:
-  template <typename E>
-  requires std::is_enum_v<E> [[nodiscard]] const auto &
-  loadTexture (const E &key) noexcept;
+  template <IsEnum E>
+  [[nodiscard]] const auto &loadTexture (const E &key) noexcept;
 
-  template <typename E>
-  requires std::is_enum_v<E> [[nodiscard]] const auto &
-  loadFont (const E &key) noexcept;
+  template <IsEnum E>
+  [[nodiscard]] const auto &loadFont (const E &key) noexcept;
 
-  template <typename E>
-  requires std::is_enum_v<E> [[nodiscard]] const auto &
-  loadSound (const E &key) noexcept;
+  template <IsEnum E>
+  [[nodiscard]] const auto &loadSound (const E &key) noexcept;
 
-  template <typename E>
-  requires std::is_enum_v<E> [[nodiscard]] const auto
-  loadMusic (const E &key) noexcept;
+  template <IsEnum E>
+  [[nodiscard]] const auto loadMusic (const E &key) noexcept;
 };
 
 #include <resource_manager.tpp>

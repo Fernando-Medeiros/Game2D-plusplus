@@ -6,8 +6,8 @@
 #include <format>
 #include <resource_manager.hpp>
 
-template <typename T, typename E>
-requires std::is_enum_v<E> const T &
+template <typename T, IsEnum E>
+const T &
 ResourceManager::load (const E &key)
 {
   if constexpr (std::is_same_v<E, EBiome>)
@@ -26,8 +26,8 @@ ResourceManager::load (const E &key)
     static_assert ([] { return false; }(), "Unsupported enum type");
 };
 
-template <typename E>
-requires std::is_enum_v<E> [[nodiscard]] const auto &
+template <IsEnum E>
+[[nodiscard]] const auto &
 ResourceManager::loadTexture (const E &key) noexcept
 {
   if (!_textures.contains (key))
@@ -43,8 +43,8 @@ ResourceManager::loadTexture (const E &key) noexcept
   return _textures.at (key);
 }
 
-template <typename E>
-requires std::is_enum_v<E> [[nodiscard]] const auto &
+template <IsEnum E>
+[[nodiscard]] const auto &
 ResourceManager::loadFont (const E &key) noexcept
 {
   if (!_fonts.contains (key))
@@ -60,8 +60,8 @@ ResourceManager::loadFont (const E &key) noexcept
   return _fonts.at (key);
 }
 
-template <typename E>
-requires std::is_enum_v<E> [[nodiscard]] const auto &
+template <IsEnum E>
+[[nodiscard]] const auto &
 ResourceManager::loadSound (const E &key) noexcept
 {
   if (!_sounds.contains (key))
@@ -77,8 +77,8 @@ ResourceManager::loadSound (const E &key) noexcept
   return _sounds.at (key);
 }
 
-template <typename E>
-requires std::is_enum_v<E> [[nodiscard]] const auto
+template <IsEnum E>
+[[nodiscard]] const auto
 ResourceManager::loadMusic (const E &key) noexcept
 {
   auto name = magic_enum::enum_name (key);

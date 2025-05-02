@@ -238,25 +238,22 @@ WindowAdapter::dispatchEvents () noexcept
 void
 WindowAdapter::render (const IDrawable &adapter) noexcept
 {
-  const VectorAdapter &size = adapter.getSize ();
-  const VectorAdapter &position = adapter.getPosition ();
-
-  if (const auto *rectangleAdapter
-      = dynamic_cast<const RectangleAdapter *> (&adapter))
+  if (const auto *rectangle = adapter.toSecurePtr<IRectangle> ())
     {
-
-      const EColor &backgroundColor = adapter.getBackgroundColor ();
+      const EColor &fillColor = rectangle->getFillColor ();
+      const VectorAdapter &size = rectangle->getSize ();
+      const VectorAdapter &position = rectangle->getPosition ();
 
       DrawRectangle (position.horizontal (), position.vertical (),
                      size.horizontal (), size.vertical (),
-                     toColor (backgroundColor));
+                     toColor (fillColor));
 
-      if (rectangleAdapter->getTexture () != ETexture::None)
+      if (rectangle->getTexture () != ETexture::NONE)
         {
           const auto &texture
               = _resourceManager
                     ->load<std::unique_ptr<TextureAdapterResource> > (
-                        rectangleAdapter->getTexture ());
+                        rectangle->getTexture ());
 
           DrawTexture (*texture, position.horizontal (), position.vertical (),
                        WHITE);
@@ -264,24 +261,32 @@ WindowAdapter::render (const IDrawable &adapter) noexcept
       return;
     }
 
-  if (const auto *spriteAdapter
-      = dynamic_cast<const SpriteAdapter *> (&adapter))
+  if (const auto *sprite = adapter.toSecurePtr<ISprite> ())
     {
-      const auto &texture
-          = _resourceManager->load<std::unique_ptr<TextureAdapterResource> > (
-              spriteAdapter->getTexture ());
+      const VectorAdapter &size = sprite->getSize ();
+      const VectorAdapter &position = sprite->getPosition ();
 
-      DrawTexture (*texture, position.horizontal (), position.vertical (),
-                   WHITE);
+      if (sprite->getTexture () != ETexture::NONE)
+        {
+          const auto &texture
+              = _resourceManager
+                    ->load<std::unique_ptr<TextureAdapterResource> > (
+                        sprite->getTexture ());
+
+          DrawTexture (*texture, position.horizontal (), position.vertical (),
+                       WHITE);
+        }
       return;
     }
 
-  if (const auto *textAdapter = dynamic_cast<const TextAdapter *> (&adapter))
+  if (const auto *text = adapter.toSecurePtr<IText> ())
     {
-      const EColor &textColor = textAdapter->getFontColor ();
+      const EColor &fontColor = text->getFontColor ();
+      const VectorAdapter &size = text->getSize ();
+      const VectorAdapter &position = text->getPosition ();
 
-      DrawText (textAdapter->getText ().c_str (), position.horizontal (),
-                position.vertical (), textAdapter->getFontSize (),
-                toColor (textColor));
+      DrawText (text->getText ().c_str (), position.horizontal (),
+                position.vertical (), text->getFontSize (),
+                toColor (fontColor));
     }
 };

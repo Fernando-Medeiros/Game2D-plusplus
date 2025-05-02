@@ -1,18 +1,16 @@
 ﻿#ifndef ADAPTER_SOUND_RESOURCE_HPP
 #define ADAPTER_SOUND_RESOURCE_HPP
 
-#include <cassert>
-#include <raylib.h>
+#include <constants_adapter.hpp>
 
 class SoundAdapterResource
 {
 private:
-    Sound _sound;
+  ExtSound _sound;
 
 public:
-    SoundAdapterResource(const Sound &resource) noexcept
-        : _sound{resource}
-    {}
+  SoundAdapterResource (const ExtSound &resource) noexcept : _sound{ resource }
+  {}
 
     ~SoundAdapterResource () noexcept = default;
 
@@ -22,7 +20,7 @@ public:
 
     void setVolume(float volume) noexcept { SetSoundVolume(_sound, volume); }
 
-    operator Sound() const noexcept { return _sound; }
+    operator ExtSound () const noexcept { return _sound; }
 
     void
     dispose () const noexcept

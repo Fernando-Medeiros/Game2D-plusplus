@@ -1,27 +1,24 @@
 ﻿#ifndef ADAPTER_FONT_RESOURCE_HPP
 #define ADAPTER_FONT_RESOURCE_HPP
 
-#include <raylib.h>
-#include <cassert>
+#include <constants_adapter.hpp>
 
 class FontAdapterResource
 {
 private:
-    Font _font;
+  ExtFont _font;
 
 public:
-    FontAdapterResource(const Font &resource) noexcept
-        : _font{resource}
-    {}
+  FontAdapterResource (const ExtFont &resource) noexcept : _font{ resource } {}
 
-    ~FontAdapterResource () noexcept = default;
+  ~FontAdapterResource () noexcept = default;
 
-    operator Font() const noexcept { return _font; }
+  operator ExtFont () const noexcept { return _font; }
 
-    void
-    dispose () const noexcept
-    {
-      UnloadFont (_font);
-    }
+  void
+  dispose () const noexcept
+  {
+    UnloadFont (_font);
+  }
 };
 #endif
