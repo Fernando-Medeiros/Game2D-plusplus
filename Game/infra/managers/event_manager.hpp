@@ -26,7 +26,7 @@ private:
   Event MouseButtonReleased;
 
 public:
-  void invoke (const EEvent &event, const EventArgs &sender) noexcept;
+  void invoke (const EEvent &event, const IEventArgs &sender) noexcept;
 
   void unsubscribe (const EEvent &event, const EventId &eventId) noexcept;
 

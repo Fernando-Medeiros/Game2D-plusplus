@@ -5,20 +5,29 @@
 #include <event.hpp>
 #include <vector_adapter.hpp>
 
-struct MouseArgs : public EventArgs
+struct MouseArgs : public IEventArgs
 {
 private:
-    const EMouse _pressedButton;
-    const VectorAdapter _position;
+  EMouseButton _pressedButton;
+  VectorAdapter _position;
 
 public:
-    MouseArgs(EMouse button, VectorAdapter position) noexcept
-        : _position{position}
-        , _pressedButton{button} {};
+  MouseArgs (const EMouseButton &button, const VectorAdapter &position) noexcept
+      : _position{ position },
+        _pressedButton{ button } {};
 
-    ~MouseArgs() noexcept = default;
+  ~MouseArgs () noexcept = default;
 
-    [[nodiscard]] const VectorAdapter &getPosition() const noexcept { return _position; };
-    [[nodiscard]] const EMouse &getPressedButton() const noexcept { return _pressedButton; };
+  [[nodiscard]] const VectorAdapter &
+  getPosition () const noexcept
+  {
+    return _position;
+  };
+
+  [[nodiscard]] const EMouseButton &
+  getPressed () const noexcept
+  {
+    return _pressedButton;
+  };
 };
 #endif // MOUSE_ARGS_H

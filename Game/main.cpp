@@ -41,53 +41,53 @@ main ()
     EventId eventId;
 
     eventId = window.onKeyPressed.subscribe (
-        EventCallback ([&] (const EventArgs &sender) {
+        EventCallback ([&] (const IEventArgs &sender) {
           eventManager->invoke (EEvent::KeyPressed, sender);
         }));
 
     eventId = window.onTextEntered.subscribe (
-        EventCallback ([&] (const EventArgs &sender) {
+        EventCallback ([&] (const IEventArgs &sender) {
           eventManager->invoke (EEvent::TextEntered, sender);
         }));
 
     eventId = window.onKeyReleased.subscribe (
-        EventCallback ([&] (const EventArgs &sender) {
+        EventCallback ([&] (const IEventArgs &sender) {
           eventManager->invoke (EEvent::KeyReleased, sender);
         }));
 
     eventId = window.onMouseMoved.subscribe (
-        EventCallback ([&] (const EventArgs &sender) {
+        EventCallback ([&] (const IEventArgs &sender) {
           eventManager->invoke (EEvent::MouseMoved, sender);
         }));
 
     eventId = window.onMouseWheelScrolled.subscribe (
-        EventCallback ([&] (const EventArgs &sender) {
+        EventCallback ([&] (const IEventArgs &sender) {
           eventManager->invoke (EEvent::MouseWheelScrolled, sender);
         }));
 
     eventId = window.onMouseButtonPressed.subscribe (
-        EventCallback ([&] (const EventArgs &sender) {
+        EventCallback ([&] (const IEventArgs &sender) {
           eventManager->invoke (EEvent::MouseButtonPressed, sender);
         }));
 
     eventId = window.onMouseButtonReleased.subscribe (
-        EventCallback ([&] (const EventArgs &sender) {
+        EventCallback ([&] (const IEventArgs &sender) {
           eventManager->invoke (EEvent::MouseButtonReleased, sender);
         }));
 
     eventId = eventManager->subscribe (
-        EEvent::ExitGame, EventCallback ([&] (const EventArgs &sender) {
+        EEvent::ExitGame, EventCallback ([&] (const IEventArgs &sender) {
           windowManager->close ();
         }));
 
     eventId = eventManager->subscribe (
-        EEvent::KeyPressed, EventCallback ([&] (const EventArgs &sender) {
+        EEvent::KeyPressed, EventCallback ([&] (const IEventArgs &sender) {
           auto keyboard = sender.toSecurePtr<KeyboardArgs> ();
 
           if (keyboard == nullptr)
             return;
 
-          if (keyboard->getPressedKey () == EKeyboardKey::ESCAPE)
+          if (keyboard->getPressed () == EKeyboardKey::ESCAPE)
             {
               eventManager->invoke (EEvent::ExitGame, sender);
             }

@@ -4,11 +4,11 @@
 #include <E_keyboard_key.hpp>
 #include <event.hpp>
 
-struct KeyboardArgs : public EventArgs
+struct KeyboardArgs : public IEventArgs
 {
 private:
-  EKeyboardKey _keyPressed{ EKeyboardKey::None },
-      _keyDown{ EKeyboardKey::None };
+  EKeyboardKey _keyPressed{ EKeyboardKey::NONE },
+      _keyDown{ EKeyboardKey::NONE };
 
 public:
   KeyboardArgs (EKeyboardKey keyPressed) noexcept
@@ -41,7 +41,7 @@ public:
   };
 
   [[nodiscard]] const EKeyboardKey &
-  getPressedKey () const noexcept
+  getPressed () const noexcept
   {
     return _keyPressed;
   };

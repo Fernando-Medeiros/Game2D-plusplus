@@ -5,7 +5,7 @@
 
 enum class EKeyboardKey : uint8_t
 {
-  None,
+  NONE,
   ZERO,
   ONE,
   TWO,

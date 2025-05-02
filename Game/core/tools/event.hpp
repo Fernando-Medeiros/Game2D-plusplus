@@ -4,10 +4,10 @@
 #include <functional>
 #include <unordered_map>
 
-class EventArgs
+class IEventArgs
 {
 public:
-  virtual ~EventArgs () noexcept = default;
+  virtual ~IEventArgs () noexcept = default;
 
   template <typename T>
   [[nodiscard]] const T *
@@ -18,7 +18,7 @@ public:
 };
 
 using EventId = size_t;
-using EventCallbackWrapper = void(const EventArgs &);
+using EventCallbackWrapper = void(const IEventArgs &);
 using EventCallback = std::function<EventCallbackWrapper>;
 using EventCollection = std::unordered_map<EventId, EventCallback>;
 
@@ -34,7 +34,7 @@ public:
 
   void dispose () noexcept;
 
-  void invoke (const EventArgs &sender) noexcept;
+  void invoke (const IEventArgs &sender) noexcept;
 
   void unsubscribe (EventId eventId) noexcept;
 

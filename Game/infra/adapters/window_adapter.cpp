@@ -61,7 +61,7 @@ WindowAdapter::build () noexcept
 
   setFrameLimit (_frame);
 
-  SetExitKey (KeyboardKey::KEY_F1);
+  SetExitKey (ExtKeyboardKey::KEY_F1);
 
   return *this;
 }
@@ -170,24 +170,25 @@ WindowAdapter::clear () noexcept
 void
 WindowAdapter::dispatchEvents () noexcept
 {
-  int mouseX = GetMouseX ();
-  int mouseY = GetMouseY ();
-  float scroll = GetMouseWheelMove ();
-  int currentWidth = GetScreenWidth ();
-  int currentHeight = GetScreenHeight ();
+  int screenWidth = GetScreenWidth ();
+  int screenHeight = GetScreenHeight ();
+  float scrollPosition = GetMouseWheelMove ();
+  VectorAdapter mousePosition = GetMousePosition ();
 
-  if (currentWidth != getWindowSize ().horizontal ()
-      || currentHeight != getWindowSize ().vertical ())
+  /// Evento para alterar a largura e altura da janela...
+  if (screenWidth != getWindowSize ().horizontal ()
+      || screenHeight != getWindowSize ().vertical ())
     {
-      onResized.invoke (SizeArgs (
-          VectorAdapter (), VectorAdapter (currentWidth, currentHeight)));
+      onResized.invoke (SizeArgs (VectorAdapter (screenWidth, screenHeight)));
     }
 
+  /// Evento para enviar as teclas pressionadas...
   if (auto key = GetKeyPressed (); key != 0)
     {
-      auto keyPressed = (KeyboardKey)(key);
+      auto keyPressed = magic_enum::enum_cast<ExtKeyboardKey> (key).value_or (
+          ExtKeyboardKey::KEY_NULL);
 
-      for (auto &keyDown : constants::combinedKeys)
+      for (auto &keyDown : COMBINED_KEYBOARD_KEYS)
         if (IsKeyDown (keyDown))
           if (IsKeyPressed (keyPressed))
             onKeyPressed.invoke (KeyboardArgs (toKeyboardKey (keyPressed),
@@ -200,24 +201,37 @@ WindowAdapter::dispatchEvents () noexcept
         onKeyReleased.invoke (KeyboardArgs (toKeyboardKey (keyPressed)));
     }
 
-  onMouseMoved.invoke (
-      MouseArgs (EMouse::None, VectorAdapter (mouseX, mouseY)));
-
-  for (const MouseButton &button : magic_enum::enum_values<MouseButton> ())
+  /// Evento para enviar a posição do mouse e o botão pressionado...
+  if (mousePosition.horizontal () <= screenWidth
+      && mousePosition.vertical () <= screenHeight
+      && mousePosition.horizontal () >= 0 && mousePosition.vertical () >= 0)
     {
-      if (IsMouseButtonPressed (button))
-        onMouseButtonPressed.invoke (
-            MouseArgs ((EMouse)button, VectorAdapter (mouseX, mouseY)));
+      for (auto &mouseButton : MOUSE_BUTTONS)
+        {
+          if (IsMouseButtonPressed (mouseButton))
+            onMouseButtonPressed.invoke (
+                MouseArgs (toMouseKey (mouseButton),
+                           VectorAdapter (mousePosition.horizontal (),
+                                          mousePosition.vertical ())));
 
-      if (IsMouseButtonReleased (button))
-        onMouseButtonReleased.invoke (
-            MouseArgs ((EMouse)button, VectorAdapter (mouseX, mouseY)));
-    }
+          if (IsMouseButtonReleased (mouseButton))
+            onMouseButtonReleased.invoke (
+                MouseArgs (toMouseKey (mouseButton),
+                           VectorAdapter (mousePosition.horizontal (),
+                                          mousePosition.vertical ())));
+        }
 
-  if (scroll != 0)
-    {
-      onMouseWheelScrolled.invoke (
-          MouseArgs ((EMouse)scroll, VectorAdapter (mouseX, mouseY)));
+      auto mouseButton = scrollPosition == 0   ? EMouseButton::NONE
+                         : scrollPosition == 1 ? EMouseButton::SCROLLUP
+                                               : EMouseButton::SCROLLDOWN;
+
+      auto sender
+          = MouseArgs (mouseButton, VectorAdapter (mousePosition.horizontal (),
+                                                   mousePosition.vertical ()));
+      onMouseMoved.invoke (sender);
+
+      if (mouseButton != EMouseButton::NONE)
+        onMouseWheelScrolled.invoke (sender);
     }
 };
 

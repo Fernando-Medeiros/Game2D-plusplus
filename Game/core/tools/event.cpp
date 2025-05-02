@@ -12,7 +12,7 @@ Event::subscribe (const EventCallback &handler) noexcept
 [[nodiscard]] EventId Event::subscribe(EventCallbackWrapper *handler) noexcept
 {
     EventId id = ++nextId;
-    handlers[id] = [handler](const EventArgs &args) { handler(args); };
+    handlers[id] = [handler] (const IEventArgs &args) { handler (args); };
     return id;
 }
 
@@ -21,7 +21,8 @@ void Event::unsubscribe(EventId eventId) noexcept
     handlers.erase(eventId);
 }
 
-void Event::invoke(const EventArgs &sender) noexcept
+void
+Event::invoke (const IEventArgs &sender) noexcept
 {
     for (auto &[_, handler] : handlers) {
         handler(sender);

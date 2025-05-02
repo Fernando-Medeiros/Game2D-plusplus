@@ -1,7 +1,7 @@
 #include <event_manager.hpp>
 
 void
-EventManager::invoke (const EEvent &event, const EventArgs &sender) noexcept
+EventManager::invoke (const EEvent &event, const IEventArgs &sender) noexcept
 {
   switch (event)
     {

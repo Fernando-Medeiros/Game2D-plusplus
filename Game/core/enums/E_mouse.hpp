@@ -3,13 +3,20 @@
 
 #include <cstdint>
 
-enum class EMouse : int8_t
+enum class EMouseButton : uint8_t
 {
-  None,
-  Left,
-  Right,
-  Middle,
-  ScrollUp,
-  ScrollDown,
+  NONE,
+  //
+  LEFT,
+  RIGHT,
+  MIDDLE,
+  //
+  BACK,
+  SIDE,
+  EXTRA,
+  FORWARD,
+  //
+  SCROLLUP,
+  SCROLLDOWN,
 };
 #endif

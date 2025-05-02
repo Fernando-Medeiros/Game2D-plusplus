@@ -4,11 +4,16 @@
 #include <event.hpp>
 #include <rect_adapter.hpp>
 
-class SizeArgs : public EventArgs
+class SizeArgs : public IEventArgs
 {
   RectAdapter _rect;
 
 public:
+  SizeArgs (const VectorAdapter &size) noexcept
+      : _rect{ VectorAdapter (), size }
+  {
+  }
+
   SizeArgs (const VectorAdapter &position, const VectorAdapter &size) noexcept
       : _rect{ position, size }
   {
