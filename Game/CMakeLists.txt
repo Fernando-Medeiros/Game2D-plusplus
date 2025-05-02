@@ -52,16 +52,7 @@ file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/shapes/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/constants/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/drawables/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/functions/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/contracts/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/resources/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataSchemas/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataStructs/*.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataTransports/*.hpp
 )
 
 add_library(GameCore SHARED ${CPP_FILES} ${HPP_FILES})

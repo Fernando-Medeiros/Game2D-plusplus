@@ -49,10 +49,15 @@ public:
   [[nodiscard]] bool isFocused () noexcept override;
 
   void close () noexcept override;
+
   void clear () noexcept override;
+
   void beginDrawing () noexcept override;
+
   void endDrawing () noexcept override;
+
   void dispatchEvents () noexcept override;
+
   void render (const IDrawable &drawable) noexcept override;
 };
 #endif

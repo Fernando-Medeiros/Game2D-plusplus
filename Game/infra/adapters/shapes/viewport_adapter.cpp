@@ -54,3 +54,9 @@ ViewportAdapter::toString () const noexcept
   return std::format ("Viewport -> {0} {1} {2}", _position.toString (),
                       _center.toString (), _size.toString ());
 };
+
+ViewportAdapter::operator const ExtViewport () const noexcept
+{
+  const ExtViewport camera{ _size, _center, 0, _zoom };
+  return camera;
+};

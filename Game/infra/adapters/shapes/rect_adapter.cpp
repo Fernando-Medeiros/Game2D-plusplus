@@ -2,10 +2,11 @@
 #include <string>
 #include <vector_adapter.hpp>
 
-RectAdapter::RectAdapter(VectorAdapter position, VectorAdapter size) noexcept :
-    _size{ size },
-    _position{ position },
-    _center{ size / 2 } {
+RectAdapter::RectAdapter (VectorAdapter position, VectorAdapter size) noexcept
+    : _size{ size },
+      _position{ position },
+      _center{ size / 2 }
+{
 }
 
 [[nodiscard]] const VectorAdapter& RectAdapter::size() const noexcept { return _size; };

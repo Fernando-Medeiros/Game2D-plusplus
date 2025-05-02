@@ -13,26 +13,50 @@ public:
   {
   }
 
-    ~MusicAdapterResource () noexcept = default;
+  ~MusicAdapterResource () noexcept = default;
 
-    void play() noexcept { PlayMusicStream(_music); }
+  void
+  play () noexcept
+  {
+    PlayMusicStream (_music);
+  }
 
-    void stop() noexcept { StopMusicStream(_music); }
+  void
+  stop () noexcept
+  {
+    StopMusicStream (_music);
+  }
 
-    void update() noexcept { UpdateMusicStream(_music); }
+  void
+  update () noexcept
+  {
+    UpdateMusicStream (_music);
+  }
 
-    void setLoop(bool loop) noexcept { _music.looping = loop; }
+  void
+  setLoop (bool loop) noexcept
+  {
+    _music.looping = loop;
+  }
 
-    void setVolume(float volume) noexcept { SetMusicVolume(_music, volume); }
+  void
+  setVolume (float volume) noexcept
+  {
+    SetMusicVolume (_music, volume);
+  }
 
-    float getVolume() const noexcept { return GetMasterVolume(); }
+  float
+  getVolume () const noexcept
+  {
+    return GetMasterVolume ();
+  }
 
-    operator ExtMusic () const noexcept { return _music; }
+  operator ExtMusic () const noexcept { return _music; }
 
-    void
-    dispose () const noexcept
-    {
-      UnloadMusicStream (_music);
-    }
+  void
+  dispose () const noexcept
+  {
+    UnloadMusicStream (_music);
+  }
 };
 #endif

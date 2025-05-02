@@ -1,6 +1,4 @@
 #include <format>
-#include <raylib.h>
-#include <string>
 #include <vector_adapter.hpp>
 
 VectorAdapter::VectorAdapter(const Vector2& copy) noexcept :
@@ -29,4 +27,93 @@ VectorAdapter::VectorAdapter(Coords x, Coords y, Position row, Position column) 
 [[nodiscard]] const std::string VectorAdapter::toString() const noexcept
 {
     return std::format("VA -> H:{0} V:{1} R:{2} C:{3}", _horizontal, _vertical, _row, _column);
+};
+
+VectorAdapter &
+VectorAdapter::operator+ (const VectorAdapter &right) noexcept
+{
+  _horizontal += right._horizontal;
+  _vertical += right._vertical;
+  return *this;
+};
+
+VectorAdapter &
+VectorAdapter::operator- (const VectorAdapter &right) noexcept
+{
+  _horizontal -= right._horizontal;
+  _vertical -= right._vertical;
+  return *this;
+};
+
+VectorAdapter &
+VectorAdapter::operator* (const VectorAdapter &right) noexcept
+{
+  _horizontal *= right._horizontal;
+  _vertical *= right._vertical;
+  return *this;
+};
+
+VectorAdapter &
+VectorAdapter::operator/ (const VectorAdapter &right) noexcept
+{
+  _horizontal /= right._horizontal;
+  _vertical /= right._vertical;
+  return *this;
+};
+
+VectorAdapter &
+VectorAdapter::operator* (const Coords &value) noexcept
+{
+  _horizontal *= value;
+  _vertical *= value;
+  return *this;
+};
+
+VectorAdapter &
+VectorAdapter::operator+ (const Coords &value) noexcept
+{
+  _horizontal += value;
+  _vertical += value;
+  return *this;
+};
+
+VectorAdapter &
+VectorAdapter::operator- (const Coords &value) noexcept
+{
+  _horizontal -= value;
+  _vertical -= value;
+  return *this;
+};
+
+VectorAdapter &
+VectorAdapter::operator/ (const Coords &value) noexcept
+{
+  _horizontal /= value;
+  _vertical /= value;
+  return *this;
+};
+
+bool
+VectorAdapter::operator== (const VectorAdapter &right) const noexcept
+{
+  return this->horizontal () == right.horizontal ()
+         && this->vertical () == right.vertical ()
+         && this->rowPosition () == right.rowPosition ()
+         && this->columnPosition () == right.columnPosition ();
+};
+
+[[nodiscard]] VectorAdapter::operator ExtVector2 () noexcept
+{
+  ExtVector2 vector{};
+  vector.y = _vertical;
+  vector.x = _horizontal;
+  return vector;
+};
+
+[[nodiscard]] VectorAdapter::operator ExtVector2 () const noexcept
+{
+  ExtVector2 vector{};
+  vector.y = _vertical;
+  vector.x = _horizontal;
+  return vector;
 };

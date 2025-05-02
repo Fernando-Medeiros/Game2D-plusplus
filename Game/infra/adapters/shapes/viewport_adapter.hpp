@@ -33,10 +33,6 @@ public:
 
   void center (VectorAdapter center) noexcept;
 
-  operator const ExtViewport () const noexcept
-  {
-    const ExtViewport camera{ _size, _center, 0, _zoom };
-    return camera;
-  };
+  operator const ExtViewport () const noexcept;
 };
 #endif // !ADAPTER_VIEWPORT_HPP

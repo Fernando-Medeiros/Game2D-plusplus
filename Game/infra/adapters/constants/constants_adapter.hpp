@@ -48,5 +48,4 @@ concept IsExtMouseButton
 
 template <typename E> concept IsEnum = std::is_enum_v<E>;
 // CONCEPTS ------------------
-
 #endif // CONSTANTS_ADAPTER_HPP

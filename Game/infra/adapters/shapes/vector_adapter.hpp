@@ -31,90 +31,26 @@ public:
 
     [[nodiscard]] const std::string toString () const noexcept;
 
-    constexpr VectorAdapter& operator+(const VectorAdapter& right) noexcept
-    {
-	  _horizontal += right._horizontal;
-	  _vertical += right._vertical;
-	  return *this;
-    };
+    VectorAdapter &operator+ (const VectorAdapter &right) noexcept;
 
-    constexpr VectorAdapter& operator-(const VectorAdapter& right) noexcept
-    {
-	  _horizontal -= right._horizontal;
-	  _vertical -= right._vertical;
-	  return *this;
-    };
+    VectorAdapter &operator- (const VectorAdapter &right) noexcept;
 
-    constexpr VectorAdapter& operator*(const VectorAdapter& right) noexcept
-    {
-	  _horizontal *= right._horizontal;
-	  _vertical *= right._vertical;
-	  return *this;
-    };
+    VectorAdapter &operator* (const VectorAdapter &right) noexcept;
 
-    constexpr VectorAdapter& operator/(const VectorAdapter& right) noexcept
-    {
-	  _horizontal /= right._horizontal;
-	  _vertical /= right._vertical;
-	  return *this;
-    };
+    VectorAdapter &operator/ (const VectorAdapter &right) noexcept;
 
-    constexpr VectorAdapter &
-    operator* (const Coords &value) noexcept
-    {
-	  _horizontal *= value;
-	  _vertical *= value;
-	  return *this;
-    };
+    VectorAdapter &operator* (const Coords &value) noexcept;
 
-    constexpr VectorAdapter &
-    operator+ (const Coords &value) noexcept
-    {
-	  _horizontal += value;
-	  _vertical += value;
-	  return *this;
-    };
+    VectorAdapter &operator+ (const Coords &value) noexcept;
 
-    constexpr VectorAdapter &
-    operator- (const Coords &value) noexcept
-    {
-	  _horizontal -= value;
-	  _vertical -= value;
-	  return *this;
-    };
+    VectorAdapter &operator- (const Coords &value) noexcept;
 
-    constexpr VectorAdapter &
-    operator/ (const Coords &value) noexcept
-    {
-	  _horizontal /= value;
-	  _vertical /= value;
-	  return *this;
-    };
+    VectorAdapter &operator/ (const Coords &value) noexcept;
 
-    bool operator==(const VectorAdapter& right) const noexcept
-    {
-	  return this->horizontal() == right.horizontal()
-		&& this->vertical() == right.vertical()
-		&& this->rowPosition() == right.rowPosition()
-		&& this->columnPosition() == right.columnPosition();
-    };
+    bool operator== (const VectorAdapter &right) const noexcept;
 
-    [[nodiscard]] constexpr
-    operator ExtVector2 () noexcept
-    {
-      ExtVector2 vector{};
-      vector.y = _vertical;
-      vector.x = _horizontal;
-      return vector;
-    };
+    [[nodiscard]] operator ExtVector2 () noexcept;
 
-    [[nodiscard]] constexpr
-    operator ExtVector2 () const noexcept
-    {
-      ExtVector2 vector{};
-      vector.y = _vertical;
-      vector.x = _horizontal;
-      return vector;
-    };
+    [[nodiscard]] operator ExtVector2 () const noexcept;
 };
 #endif
