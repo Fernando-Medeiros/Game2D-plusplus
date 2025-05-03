@@ -6,11 +6,26 @@
 
 Começei o projeto com SFML e fiz adaptadores para testar com SFML e Raylib.
 
-## Tarefas
-Progresso:
-- [x] Enums;
-- [ ] Adapters (EXTERN GRAPHIC LIB);
-- [ ] Managers (PIPELINE, RESOURCES, EVENTS, CONTAINER);
-- [ ] Widgets (GUI ELEMENTS);
-- [ ] Schemas (STATE, CONFIG);
-- [ ] Views (SCENES, IMPL);
+## Progresso
+| Core           | Adapters         | Managers       | Widgets         | Views / Huds   |
+|----------------|------------------|----------------|-----------------|----------------|
+| [x] Event      | [x] Rect         | [ ] State      | [ ] Button	   |				|
+| [x] Enums      | [x] Vector       | [x] Sound      | [ ] ImageButton |				|
+| [ ] Entities   | [x] Viewport     | [x] Event      | [ ] TextButton  |				|
+|                | [x] Text         | [ ] Route      | [ ] TextEntry   |				|
+|                | [x] Circle       | [ ] Camera     | [ ] RitchTextBox|				|
+|                | [x] Sprite       | [x] Window     | [ ] StackPanel  |				|
+|                | [x] Rectangle    | [ ] Pipeline   | [ ] GridPanel   |				|
+|                | [x] Font         | [x] Resource   |				   |				|
+|                | [x] Sound        |                |                 |                |
+|                | [x] Music        |                |                 |                |
+|                | [x] Texture      |                |                 |                |
+|                | [x] Window	    |                |                 |                |
+|                | [x] Enum Fn      |                |                 |                |
+|                | [x] Alias/Consts |                |                 |                |
+|                |				    |                |                 |                |
+|                |				    |                |                 |                |
+
+
+## Estrutura do projeto
+![image](./docs/DIAGRAM.SVG)
