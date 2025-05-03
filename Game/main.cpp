@@ -1,5 +1,8 @@
+#include <enum_adapter.hpp>
 #include <keyboard_args.hpp>
 #include <rectangle_adapter.hpp>
+#include <sound_args.hpp>
+#include <sound_manager.hpp>
 #include <sprite_adapter.hpp>
 #include <text_adapter.hpp>
 #include <window_adapter.hpp>
@@ -27,18 +30,24 @@ main ()
   sprite->setPosition (VectorAdapter (200, 500));
   sprite->setTexture (ETexture::ButtonDefault);
 
-  ///////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////
 
   auto windowManager{ std::make_unique<WindowManager> () };
+  auto soundManager{ std::make_shared<SoundManager> () };
   auto eventManager{ std::make_shared<EventManager> () };
   auto resourceManager{ std::make_shared<ResourceManager> () };
 
-  windowManager->withEventManager (eventManager)
+  soundManager->withResourceManager (resourceManager);
+
+  windowManager->withSoundManager (soundManager)
+      .withEventManager (eventManager)
       .withResourceManager (resourceManager)
       .initialize ();
 
   windowManager->events (WindowCallback ([&] (WindowArgs &window) {
     EventId eventId;
+
+    /// WINDOW EVENTS //////////////////////////////////////////////////////
 
     eventId = window.onKeyPressed.subscribe (
         EventCallback ([&] (const IEventArgs &sender) {
@@ -75,6 +84,13 @@ main ()
           eventManager->invoke (EEvent::MouseButtonReleased, sender);
         }));
 
+    /// LISTERNERS //////////////////////////////////////////////////////
+
+    eventId = eventManager->subscribe (
+        EEvent::Sound, EventCallback ([&] (const IEventArgs &sender) {
+          soundManager->execute (sender);
+        }));
+
     eventId = eventManager->subscribe (
         EEvent::ExitGame, EventCallback ([&] (const IEventArgs &sender) {
           windowManager->close ();
@@ -90,7 +106,7 @@ main ()
           if (keyboard->getPressed () == EKeyboardKey::ESCAPE)
             {
               eventManager->invoke (EEvent::ExitGame, sender);
-            }
+            }        
         }));
   }));
 

@@ -14,13 +14,23 @@ public:
 
     ~SoundAdapterResource () noexcept = default;
 
-    void play() noexcept { PlaySound(_sound); }
+    void
+    play () noexcept
+    {
+      PlaySound (_sound);
+    }
 
-    float getVolume() noexcept { return GetMasterVolume(); }
+    float
+    getVolume () noexcept
+    {
+      return GetMasterVolume ();
+    }
 
-    void setVolume(float volume) noexcept { SetSoundVolume(_sound, volume); }
-
-    operator ExtSound () const noexcept { return _sound; }
+    void
+    setVolume (float volume) noexcept
+    {
+      SetSoundVolume (_sound, volume);
+    }
 
     void
     dispose () const noexcept

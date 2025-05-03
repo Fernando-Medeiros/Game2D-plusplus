@@ -59,6 +59,7 @@ add_library(GameCore SHARED ${CPP_FILES} ${HPP_FILES})
 target_link_libraries(GameCore PUBLIC raylib magic_enum)
 
 add_executable(GameApp main.cpp)
+add_dependencies(GameApp copy_resources)
 target_link_libraries(GameApp PRIVATE GameCore)
 
 target_include_directories(GameCore PUBLIC

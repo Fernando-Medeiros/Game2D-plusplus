@@ -146,6 +146,7 @@ WindowAdapter::getCoords (const VectorAdapter &vector,
 void
 WindowAdapter::close () noexcept
 {
+  CloseAudioDevice ();
   CloseWindow ();
 };
 
@@ -248,12 +249,12 @@ WindowAdapter::render (const IDrawable &adapter) noexcept
                      size.horizontal (), size.vertical (),
                      toColor (fillColor));
 
-      if (rectangle->getTexture () != ETexture::NONE)
+      if (const auto &textureEnum = rectangle->getTexture ();
+          textureEnum != ETexture::NONE)
         {
           const auto &texture
-              = _resourceManager
-                    ->load<std::unique_ptr<TextureAdapterResource> > (
-                        rectangle->getTexture ());
+              = _resourceManager->load<ResourceManager::TextureResource> (
+                  textureEnum);
 
           DrawTexture (*texture, position.horizontal (), position.vertical (),
                        WHITE);
@@ -266,12 +267,12 @@ WindowAdapter::render (const IDrawable &adapter) noexcept
       const VectorAdapter &size = sprite->getSize ();
       const VectorAdapter &position = sprite->getPosition ();
 
-      if (sprite->getTexture () != ETexture::NONE)
+      if (const auto &textureEnum = sprite->getTexture ();
+          textureEnum != ETexture::NONE)
         {
           const auto &texture
-              = _resourceManager
-                    ->load<std::unique_ptr<TextureAdapterResource> > (
-                        sprite->getTexture ());
+              = _resourceManager->load<ResourceManager::TextureResource> (
+                  textureEnum);
 
           DrawTexture (*texture, position.horizontal (), position.vertical (),
                        WHITE);

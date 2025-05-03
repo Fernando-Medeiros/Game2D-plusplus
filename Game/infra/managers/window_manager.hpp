@@ -3,6 +3,7 @@
 #define WINDOW_MANAGER_HPP
 
 #include <event_manager.hpp>
+#include <sound_manager.hpp>
 #include <window_adapter.hpp>
 
 using WindowArgs = WindowAdapter;
@@ -12,11 +13,15 @@ using WindowCallback = std::function<WindowCallbackWrapper>;
 class WindowManager
 {
 private:
-  std::unique_ptr<WindowAdapter> window;
-  std::shared_ptr<EventManager> eventManager;
-  std::shared_ptr<ResourceManager> resourceManager;
+  std::unique_ptr<WindowAdapter> _window;
+  std::shared_ptr<EventManager> _eventManager;
+  std::shared_ptr<SoundManager> _soundManager;
+  std::shared_ptr<ResourceManager> _resourceManager;
 
 public:
+  WindowManager &
+  withSoundManager (const std::shared_ptr<SoundManager> &ptr) noexcept;
+
   WindowManager &
   withEventManager (const std::shared_ptr<EventManager> &ptr) noexcept;
 

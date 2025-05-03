@@ -51,8 +51,6 @@ public:
     return GetMasterVolume ();
   }
 
-  operator ExtMusic () const noexcept { return _music; }
-
   void
   dispose () const noexcept
   {

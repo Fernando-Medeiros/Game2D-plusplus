@@ -3,8 +3,10 @@
 
 #include <cstdint>
 
-enum class EFont : uint8_t {
-    OpenSansRegular,
-    OpenSansSemibold,
+enum class EFont : uint8_t
+{
+  Romulus,
+  OpenSansRegular,
+  OpenSansSemibold,
 };
 #endif

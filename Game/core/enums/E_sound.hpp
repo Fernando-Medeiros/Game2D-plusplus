@@ -5,6 +5,7 @@
 
 enum class ESound : uint8_t
 {
+  None,
   /// region Ambient
   Rain,
   /// region UI

@@ -4,7 +4,7 @@ WindowManager &
 WindowManager::withEventManager (
     const std::shared_ptr<EventManager> &ptr) noexcept
 {
-  eventManager = ptr;
+  _eventManager = ptr;
   return *this;
 }
 
@@ -12,61 +12,72 @@ WindowManager &
 WindowManager::withResourceManager (
     const std::shared_ptr<ResourceManager> &ptr) noexcept
 {
-  resourceManager = ptr;
+  _resourceManager = ptr;
+  return *this;
+}
+
+WindowManager &
+WindowManager::withSoundManager (
+    const std::shared_ptr<SoundManager> &ptr) noexcept
+{
+  _soundManager = ptr;
   return *this;
 }
 
 void
 WindowManager::initialize () noexcept
 {
-  window = std::make_unique<WindowAdapter> ();
+  _window = std::make_unique<WindowAdapter> ();
 
-  window->withTitle ("Game 2D")
-      .withFrame (30)
+  _window->withTitle ("Game 2D")
+      .withFrame (70)
       .withFrameLimit (30, 144)
       .withSize (VectorAdapter (600, 600))
-      .withResourceManager (resourceManager)
+      .withResourceManager (_resourceManager)
       .build ();
 }
 
 void
 WindowManager::close () noexcept
 {
-  window->setDisposed (true);
+  _window->setDisposed (true);
 }
 
 void
 WindowManager::dispose () noexcept
 {
-  eventManager->dispose ();
-  resourceManager->dispose ();
+  _soundManager->dispose ();
+  _eventManager->dispose ();
+  _resourceManager->dispose ();
 }
 
 void
 WindowManager::events (const WindowCallback &handler) noexcept
 {
-  handler (*window);
+  handler (*_window);
 }
 
 void
 WindowManager::render (const WindowCallback &handler) noexcept
 {
-  while (window->isOpen ())
+  while (_window->isOpen ())
     {
-      if (window->isDisposed ())
+      if (_window->isDisposed ())
         break;
 
-      window->beginDrawing ();
-      window->clear ();
+      _soundManager->update ();
 
-      if (window->isFocused ())
+      _window->beginDrawing ();
+      _window->clear ();
+
+      if (_window->isFocused ())
         {
-          window->dispatchEvents ();
-          handler (*window);
+          _window->dispatchEvents ();
+          handler (*_window);
         }
 
-      window->endDrawing ();
+      _window->endDrawing ();
     }
 
-  window->close ();
+  _window->close ();
 }
