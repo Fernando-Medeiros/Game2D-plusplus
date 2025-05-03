@@ -13,12 +13,10 @@ public:
   {
   }
 
-  ~TextureAdapterResource () noexcept = default;
-
   operator const ExtTexture & () const noexcept { return _texture; }
 
   void
-  dispose () const noexcept
+  dispose () noexcept
   {
     UnloadTexture (_texture);
   }

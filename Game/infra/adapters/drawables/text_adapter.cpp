@@ -1,6 +1,20 @@
 ﻿#include <text_adapter.hpp>
 
 IText &
+TextAdapter::setFont (EFont font) noexcept
+{
+  _font = font;
+  return *this;
+}
+
+IText &
+TextAdapter::setFontSpacing (int value) noexcept
+{
+  _fontSpacing = value;
+  return *this;
+}
+
+IText &
 TextAdapter::setFontSize (int value) noexcept
 {
   _fontSize = value;
@@ -77,8 +91,14 @@ TextAdapter::setFillColor (EColor value) noexcept
   return *this;
 }
 
-EFont &
-TextAdapter::getFont () noexcept
+int
+TextAdapter::getFontSpacing () const noexcept
+{
+  return _fontSpacing;
+}
+
+const EFont &
+TextAdapter::getFont () const noexcept
 {
   return _font;
 }

@@ -52,7 +52,7 @@ public:
   }
 
   void
-  dispose () const noexcept
+  dispose () noexcept
   {
     UnloadMusicStream (_music);
   }

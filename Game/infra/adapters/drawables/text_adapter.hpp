@@ -7,16 +7,20 @@
 class TextAdapter : public IText, public IDrawable
 {
 private:
-  EFont _font{ EFont::OpenSansRegular };
+  EFont _font{ EFont::None };
   EFontStyle _fontStyle{ EFontStyle::Regular };
   EColor _fontColor{ EColor::White }, _outlineColor{ EColor::White },
       _fillColor{ EColor::CornFlowerBlue };
   VectorAdapter _size, _scale, _center, _position, _outlineSize;
   std::string _text{ "" };
   float _rotation{ 0.0f };
-  int _fontSize{ 16 };
+  int _fontSize{ 16 }, _fontSpacing{ 1 };
 
 public:
+  IText &setFont (EFont font) noexcept override;
+
+  IText &setFontSpacing (int value) noexcept override;
+
   IText &setFontSize (int value) noexcept override;
 
   IText &setRotation (float value) noexcept override;
@@ -39,11 +43,13 @@ public:
 
   IText &setFillColor (EColor value) noexcept override;
 
-  [[nodiscard]] EFont &getFont () noexcept override;
+  [[nodiscard]] int getFontSpacing () const noexcept override;
 
   [[nodiscard]] int getFontSize () const noexcept override;
 
   [[nodiscard]] float getRotation () const noexcept override;
+
+  [[nodiscard]] const EFont &getFont () const noexcept override;
 
   [[nodiscard]] std::string getText () const noexcept override;
 

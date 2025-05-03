@@ -282,12 +282,24 @@ WindowAdapter::render (const IDrawable &adapter) noexcept
 
   if (const auto *text = adapter.toSecurePtr<IText> ())
     {
-      const EColor &fontColor = text->getFontColor ();
-      const VectorAdapter &size = text->getSize ();
+      const int &textSize = text->getFontSize ();
+      const EColor &textColor = text->getFontColor ();
       const VectorAdapter &position = text->getPosition ();
 
+      if (const auto &fontEnum = text->getFont (); fontEnum != EFont::None)
+        {
+          const int &fontSpacing = text->getFontSpacing ();
+
+          const auto &font
+              = _resourceManager->load<ResourceManager::FontResource> (
+                  fontEnum);
+
+          DrawTextEx (*font, text->getText ().c_str (), position, textSize,
+                      fontSpacing, toColor (textColor));
+          return;
+        }
+
       DrawText (text->getText ().c_str (), position.horizontal (),
-                position.vertical (), text->getFontSize (),
-                toColor (fontColor));
+                position.vertical (), textSize, toColor (textColor));
     }
 };

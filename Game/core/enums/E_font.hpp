@@ -5,6 +5,8 @@
 
 enum class EFont : uint8_t
 {
+  None,
+
   Romulus,
   OpenSansRegular,
   OpenSansSemibold,

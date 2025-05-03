@@ -18,8 +18,10 @@ main ()
   auto rectangle{ std::make_unique<RectangleAdapter> () };
 
   text->setText ("Hello World");
-  text->setFontSize (22);
-  text->setFontColor (EColor::Tomate);
+  text->setFontSize (30);
+  text->setFontSpacing (3);
+  text->setFont (EFont::Romulus);
+  text->setFontColor (EColor::White);
   text->setPosition (VectorAdapter (200, 100));
 
   rectangle->setSize (VectorAdapter{ 50, 50 });

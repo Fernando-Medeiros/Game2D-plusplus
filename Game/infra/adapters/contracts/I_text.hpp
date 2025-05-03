@@ -15,7 +15,11 @@ public:
 
   virtual IText &setFontSize (int value) noexcept = 0;
 
+  virtual IText &setFontSpacing (int value) noexcept = 0;
+
   virtual IText &setRotation (float value) noexcept = 0;
+
+  virtual IText &setFont (EFont font) noexcept = 0;
 
   virtual IText &setText (std::string value) noexcept = 0;
 
@@ -35,13 +39,15 @@ public:
 
   virtual IText &setFillColor (EColor value) noexcept = 0;
 
-  [[nodiscard]] virtual EFont &getFont () noexcept = 0;
+  [[nodiscard]] virtual int getFontSpacing () const noexcept = 0;
 
   [[nodiscard]] virtual int getFontSize () const noexcept = 0;
 
   [[nodiscard]] virtual float getRotation () const noexcept = 0;
 
   [[nodiscard]] virtual std::string getText () const noexcept = 0;
+
+  [[nodiscard]] virtual const EFont &getFont () const noexcept = 0;
 
   [[nodiscard]] virtual const EColor &getFontColor () const noexcept = 0;
 

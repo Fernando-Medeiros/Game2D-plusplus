@@ -9,14 +9,12 @@ private:
   ExtFont _font;
 
 public:
-  FontAdapterResource (const ExtFont &resource) noexcept : _font{ resource } {}
-
-  ~FontAdapterResource () noexcept = default;
+  FontAdapterResource (const ExtFont &font) noexcept : _font{ font } {}
 
   operator ExtFont () const noexcept { return _font; }
 
   void
-  dispose () const noexcept
+  dispose () noexcept
   {
     UnloadFont (_font);
   }

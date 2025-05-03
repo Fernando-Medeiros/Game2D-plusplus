@@ -4,15 +4,19 @@ void
 ResourceManager::dispose () noexcept
 {
   for (const auto &[_, resource] : _fonts)
-    resource.get ()->dispose ();
+    resource->dispose ();
+
+  for (const auto &[_, resource] : _musics)
+    resource->dispose ();
 
   for (const auto &[_, resource] : _sounds)
-    resource.get ()->dispose ();
+    resource->dispose ();
 
   for (const auto &[_, resource] : _textures)
-    resource.get ()->dispose ();
+    resource->dispose ();
 
   _fonts.clear ();
+  _musics.clear ();
   _sounds.clear ();
   _textures.clear ();
 }

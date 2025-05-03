@@ -33,7 +33,7 @@ public:
     }
 
     void
-    dispose () const noexcept
+    dispose () noexcept
     {
       UnloadSound (_sound);
     }
