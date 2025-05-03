@@ -28,4 +28,4 @@ Começei o projeto com SFML e fiz adaptadores para testar com SFML e Raylib.
 
 
 ## Estrutura do projeto
-![image](./docs/DIAGRAM.SVG)
+![image](./docs/DIAGRAM.png)
