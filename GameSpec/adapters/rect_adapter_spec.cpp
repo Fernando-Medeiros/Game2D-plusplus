@@ -16,7 +16,7 @@ TEST_F(RectAdapterTest, PositionAndSizeAccess) {
 
 TEST_F(RectAdapterTest, CenterCalculation) {
     VectorAdapter expectedCenter{ size };
-    expectedCenter / 2;
+    expectedCenter /= 2;
 
     EXPECT_EQ(rect.center(), expectedCenter);
 }

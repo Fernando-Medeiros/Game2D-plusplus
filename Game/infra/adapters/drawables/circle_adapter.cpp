@@ -1,16 +1,9 @@
 #include <circle_adapter.hpp>
 
 ICircle &
-CircleAdapter::setRotation (float value) noexcept
+CircleAdapter::setRadius (float value) noexcept
 {
-  _rotation = value;
-  return *this;
-};
-
-ICircle &
-CircleAdapter::setSize (VectorAdapter value) noexcept
-{
-  _size = value;
+  _radius = value;
   return *this;
 }
 
@@ -36,7 +29,7 @@ CircleAdapter::setTexture (ETexture value) noexcept
 }
 
 ICircle &
-CircleAdapter::setOutlineSize (VectorAdapter value) noexcept
+CircleAdapter::setOutlineSize (float value) noexcept
 {
   _outlineSize = value;
   return *this;
@@ -57,9 +50,9 @@ CircleAdapter::setFillColor (EColor value) noexcept
 }
 
 float
-CircleAdapter::getRotation () const noexcept
+CircleAdapter::getRadius () const noexcept
 {
-  return _rotation;
+  return _radius;
 }
 
 const VectorAdapter &
@@ -86,7 +79,7 @@ CircleAdapter::getPosition () const noexcept
   return _position;
 }
 
-const VectorAdapter &
+const float &
 CircleAdapter::getOutlineSize () const noexcept
 {
   return _outlineSize;

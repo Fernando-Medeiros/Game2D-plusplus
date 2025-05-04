@@ -12,7 +12,6 @@ using ExtVector2 = Vector2;
 // VECTOR --------------------
 
 // VIEWPORT ------------------
-using Zoom = float;
 using ExtViewport = Camera2D;
 // VIEWPORT ------------------
 

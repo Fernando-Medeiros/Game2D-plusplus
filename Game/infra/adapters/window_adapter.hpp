@@ -14,8 +14,11 @@ public:
 
   IWindow &withFrameLimit (int minFrame, int maxFrame) noexcept override;
 
-  IWindow &withResourceManager (const std::shared_ptr<ResourceManager>
-                                    &resourceManager) noexcept override;
+  IWindow &withCameraManager (
+      const std::shared_ptr<CameraManager> &ptr) noexcept override;
+
+  IWindow &withResourceManager (
+      const std::shared_ptr<ResourceManager> &ptr) noexcept override;
 
   IWindow &build () noexcept override;
 
@@ -25,12 +28,7 @@ public:
 
   void resize (VectorAdapter vector) noexcept override;
 
-  void setViewport (const ViewportAdapter &viewport) noexcept override;
-
   [[nodiscard]] const VectorAdapter &getWindowSize () const noexcept override;
-
-  [[nodiscard]] const ViewportAdapter &
-  getDynamicViewport () const noexcept override;
 
   [[nodiscard]] const ViewportAdapter &
   getDefaultViewport () const noexcept override;
@@ -51,6 +49,10 @@ public:
   void close () noexcept override;
 
   void clear () noexcept override;
+
+  void beginViewport () noexcept override;
+
+  void endViewport () noexcept override;
 
   void beginDrawing () noexcept override;
 

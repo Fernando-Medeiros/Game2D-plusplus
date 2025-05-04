@@ -1,13 +1,14 @@
-#include "viewport_adapter.hpp"
 #include "viewport_adapter_api.hpp"
 #include <vector_adapter.hpp>
+#include <viewport_adapter.hpp>
 
-ViewportHandle CreateViewport(Vector size, Vector center) {
-    auto* adapter = new ViewportAdapter(
-	  VectorAdapter(size.x, size.y),
-	  VectorAdapter(center.x, center.y)
-    );
-    return reinterpret_cast<ViewportHandle>(adapter);
+ViewportHandle
+CreateViewport (Vector target, Vector size, Vector center)
+{
+  auto *adapter = new ViewportAdapter (VectorAdapter (target.x, target.y),
+                                       VectorAdapter (size.x, size.y),
+                                       VectorAdapter (center.x, center.y));
+  return reinterpret_cast<ViewportHandle> (adapter);
 }
 
 void DestroyViewport(ViewportHandle handle) {
@@ -17,17 +18,17 @@ void DestroyViewport(ViewportHandle handle) {
 
 Vector GetViewportSize(ViewportHandle handle) {
     auto* adapter = reinterpret_cast<ViewportAdapter*>(handle);
-    const auto& s = adapter->size();
+    const auto &s = adapter->getSize ();
     return Vector{ s.horizontal(), s.vertical() };
 }
 
 Vector GetViewportCenter(ViewportHandle handle) {
     auto* adapter = reinterpret_cast<ViewportAdapter*>(handle);
-    const auto& c = adapter->center();
+    const auto &c = adapter->getCenter ();
     return Vector{ c.horizontal(), c.vertical() };
 }
 
 void ZoomViewport(ViewportHandle handle, float scale) {
     auto* adapter = reinterpret_cast<ViewportAdapter*>(handle);
-    adapter->zoom(scale);
+    adapter->setZoom (scale);
 }

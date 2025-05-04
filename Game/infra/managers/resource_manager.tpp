@@ -4,6 +4,7 @@
 
 #include <E_biome.hpp>
 #include <E_music.hpp>
+#include <constants_core.hpp>
 #include <enum_adapter.hpp>
 #include <format>
 #include <resource_manager.hpp>
@@ -34,8 +35,8 @@ ResourceManager::loadTexture (const E &key) noexcept
 {
   if (!_textures.contains (key))
     {
-      std::string path
-          = std::format ("./resources/textures/{}.png", getEnumName (key));
+      auto path = std::format ("{}{}{}", TEXTURES_PATH, getEnumName (key),
+                               TEXTURE_EXT);
 
       _textures.emplace (key, std::make_unique<TextureAdapterResource> (
                                   LoadTexture (path.c_str ())));
@@ -50,8 +51,8 @@ ResourceManager::loadFont (const E &key) noexcept
 {
   if (!_fonts.contains (key))
     {
-      std::string path
-          = std::format ("./resources/fonts/{}.ttf", getEnumName (key));
+      auto path
+          = std::format ("{}{}{}", FONTS_PATH, getEnumName (key), FONT_EXT);
 
       _fonts.emplace (key, std::make_unique<FontAdapterResource> (
                                LoadFont (path.c_str ())));
@@ -66,8 +67,8 @@ ResourceManager::loadSound (const E &key) noexcept
 {
   if (!_sounds.contains (key))
     {
-      std::string path
-          = std::format ("./resources/sounds/{}.ogg", getEnumName (key));
+      auto path
+          = std::format ("{}{}{}", SOUNDS_PATH, getEnumName (key), SOUND_EXT);
 
       _sounds.emplace (key, std::make_unique<SoundAdapterResource> (
                                 LoadSound (path.c_str ())));
@@ -84,8 +85,8 @@ ResourceManager::loadMusic (const E &key) noexcept
 
   if (!_musics.contains (key))
     {
-      std::string path
-          = std::format ("./resources/musics/{}.mp3", getEnumName (key));
+      auto path
+          = std::format ("{}{}{}", MUSICS_PATH, getEnumName (key), MUSIC_EXT);
 
       _musics.emplace (key, std::make_unique<MusicAdapterResource> (
                                 LoadMusicStream (path.c_str ())));

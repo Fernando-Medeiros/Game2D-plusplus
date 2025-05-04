@@ -21,36 +21,36 @@ TEST_F(VectorAdapterSpec, Should_Return_Correct_Initial_Position) {
 }
 
 TEST_F(VectorAdapterSpec, Should_Add_Scalar_Correctly) {
-    vector + modifier;
+  vector += modifier;
 
-    EXPECT_EQ(vector.vertical(), vertical + modifier);
-    EXPECT_EQ(vector.horizontal(), horizontal + modifier);
+  EXPECT_EQ (vector.vertical (), vertical + modifier);
+  EXPECT_EQ (vector.horizontal (), horizontal + modifier);
 }
 
 TEST_F(VectorAdapterSpec, Should_Multiply_By_Scalar_Correctly) {
-    vector* modifier;
+  vector *= modifier;
 
-    EXPECT_EQ(vector.vertical(), vertical * modifier);
-    EXPECT_EQ(vector.horizontal(), horizontal * modifier);
+  EXPECT_EQ (vector.vertical (), vertical * modifier);
+  EXPECT_EQ (vector.horizontal (), horizontal * modifier);
 }
 
 TEST_F(VectorAdapterSpec, Should_Divide_By_Scalar_Correctly) {
-    vector / modifier;
+  vector /= modifier;
 
-    EXPECT_EQ(vector.vertical(), vertical / modifier);
-    EXPECT_EQ(vector.horizontal(), horizontal / modifier);
+  EXPECT_EQ (vector.vertical (), vertical / modifier);
+  EXPECT_EQ (vector.horizontal (), horizontal / modifier);
 }
 
 TEST_F(VectorAdapterSpec, Should_Subtract_Scalar_Correctly) {
-    vector - modifier;
+  vector -= modifier;
 
-    EXPECT_EQ(vector.vertical(), vertical - modifier);
-    EXPECT_EQ(vector.horizontal(), horizontal - modifier);
+  EXPECT_EQ (vector.vertical (), vertical - modifier);
+  EXPECT_EQ (vector.horizontal (), horizontal - modifier);
 }
 
 TEST_F(VectorAdapterSpec, Should_Subtract_Another_Vector_Correctly) {
     VectorAdapter other(horizontal, vertical);
-    vector - other;
+    vector -= other;
 
     EXPECT_EQ(vector.vertical(), 0);
     EXPECT_EQ(vector.horizontal(), 0);
@@ -58,7 +58,7 @@ TEST_F(VectorAdapterSpec, Should_Subtract_Another_Vector_Correctly) {
 
 TEST_F(VectorAdapterSpec, Should_Multiply_By_Another_Vector_Correctly) {
     VectorAdapter other(2, 3);
-    vector* other;
+    vector *= other;
 
     EXPECT_EQ(vector.vertical(), vertical * other.vertical());
     EXPECT_EQ(vector.horizontal(), horizontal * other.horizontal());
@@ -66,7 +66,7 @@ TEST_F(VectorAdapterSpec, Should_Multiply_By_Another_Vector_Correctly) {
 
 TEST_F(VectorAdapterSpec, Should_Divide_By_Another_Vector_Correctly) {
     VectorAdapter other(2, 4);
-    vector / other;
+    vector /= other;
 
     EXPECT_EQ(vector.vertical(), vertical / other.vertical());
     EXPECT_EQ(vector.horizontal(), horizontal / other.horizontal());
@@ -74,7 +74,7 @@ TEST_F(VectorAdapterSpec, Should_Divide_By_Another_Vector_Correctly) {
 
 TEST_F(VectorAdapterSpec, Should_Add_Another_Vector_Correctly) {
     VectorAdapter other(horizontal, vertical);
-    vector + other;
+    vector += other;
 
     EXPECT_EQ(vector.vertical(), vertical + other.vertical());
     EXPECT_EQ(vector.horizontal(), horizontal + other.horizontal());

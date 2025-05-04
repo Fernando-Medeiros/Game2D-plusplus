@@ -11,9 +11,7 @@ class ICircle
 public:
   virtual ~ICircle () noexcept = default;
 
-  virtual ICircle &setRotation (float value) noexcept = 0;
-
-  virtual ICircle &setSize (VectorAdapter value) noexcept = 0;
+  virtual ICircle &setRadius (float value) noexcept = 0;
 
   virtual ICircle &setScale (VectorAdapter value) noexcept = 0;
 
@@ -21,13 +19,15 @@ public:
 
   virtual ICircle &setTexture (ETexture value) noexcept = 0;
 
-  virtual ICircle &setOutlineSize (VectorAdapter value) noexcept = 0;
+  virtual ICircle &setOutlineSize (float value) noexcept = 0;
 
   virtual ICircle &setOutlineColor (EColor value) noexcept = 0;
 
   virtual ICircle &setFillColor (EColor value) noexcept = 0;
 
-  [[nodiscard]] virtual float getRotation () const noexcept = 0;
+  [[nodiscard]] virtual float getRadius () const noexcept = 0;
+
+  [[nodiscard]] virtual const float &getOutlineSize () const noexcept = 0;
 
   [[nodiscard]] virtual const VectorAdapter &getSize () const noexcept = 0;
 
@@ -36,9 +36,6 @@ public:
   [[nodiscard]] virtual const ETexture &getTexture () const noexcept = 0;
 
   [[nodiscard]] virtual const VectorAdapter &getPosition () const noexcept = 0;
-
-  [[nodiscard]] virtual const VectorAdapter &getOutlineSize () const noexcept
-      = 0;
 
   [[nodiscard]] virtual const RectAdapter getRect () const noexcept = 0;
 

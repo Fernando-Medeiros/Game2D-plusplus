@@ -44,6 +44,7 @@ FetchContent_MakeAvailable(magic_enum)
 
 file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/constants/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.cpp
 )
@@ -51,6 +52,7 @@ file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
 file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/enums/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core/tools/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core/constants/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
 )
@@ -65,6 +67,7 @@ target_link_libraries(GameApp PRIVATE GameCore)
 target_include_directories(GameCore PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/core/enums
   ${CMAKE_CURRENT_SOURCE_DIR}/core/tools
+  ${CMAKE_CURRENT_SOURCE_DIR}/core/constants
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/shapes
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/constants

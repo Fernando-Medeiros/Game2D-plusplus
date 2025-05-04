@@ -2,29 +2,33 @@
 #define SIZE_ARGS_HPP
 
 #include <event.hpp>
-#include <rect_adapter.hpp>
+#include <vector_adapter.hpp>
 
 class SizeArgs : public IEventArgs
 {
-  RectAdapter _rect;
+  VectorAdapter _size, _position;
 
 public:
-  SizeArgs (const VectorAdapter &size) noexcept
-      : _rect{ VectorAdapter (), size }
-  {
-  }
+  SizeArgs (const VectorAdapter &size) noexcept : _size{ size } {}
 
-  SizeArgs (const VectorAdapter &position, const VectorAdapter &size) noexcept
-      : _rect{ position, size }
+  SizeArgs (const VectorAdapter &size, const VectorAdapter &position) noexcept
+      : _size{ size },
+        _position{ position }
   {
   }
 
   ~SizeArgs () noexcept = default;
 
-  [[nodiscard]] const RectAdapter &
-  getRect () const noexcept
+  [[nodiscard]] VectorAdapter
+  getSize () const noexcept
   {
-    return _rect;
+    return _size;
+  }
+
+  [[nodiscard]] VectorAdapter
+  getPosition () const noexcept
+  {
+    return _position;
   }
 };
 

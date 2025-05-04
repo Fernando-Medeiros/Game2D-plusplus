@@ -11,7 +11,7 @@ EventManager::invoke (const EEvent &event, const IEventArgs &sender) noexcept
     case EEvent::Route:
       RouteChanged.invoke (sender);
       break;
-    case EEvent::Camera:
+    case EEvent::CameraCenter:
       CameraChanged.invoke (sender);
       break;
     case EEvent::Logger:
@@ -71,7 +71,7 @@ EventManager::unsubscribe (const EEvent &event,
     case EEvent::Route:
       RouteChanged.unsubscribe (eventId);
       break;
-    case EEvent::Camera:
+    case EEvent::CameraCenter:
       CameraChanged.unsubscribe (eventId);
       break;
     case EEvent::Logger:
@@ -133,7 +133,7 @@ EventManager::subscribe (const EEvent &event,
     case EEvent::Route:
       eventId = RouteChanged.subscribe (handler);
       break;
-    case EEvent::Camera:
+    case EEvent::CameraCenter:
       eventId = CameraChanged.subscribe (handler);
       break;
     case EEvent::Logger:

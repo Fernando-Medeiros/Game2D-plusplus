@@ -31,23 +31,43 @@ public:
 
     [[nodiscard]] const std::string toString () const noexcept;
 
-    VectorAdapter &operator+ (const VectorAdapter &right) noexcept;
+    VectorAdapter &operator+= (const VectorAdapter &x) noexcept;
 
-    VectorAdapter &operator- (const VectorAdapter &right) noexcept;
+    VectorAdapter &operator-= (const VectorAdapter &x) noexcept;
 
-    VectorAdapter &operator* (const VectorAdapter &right) noexcept;
+    VectorAdapter &operator/= (const VectorAdapter &x) noexcept;
 
-    VectorAdapter &operator/ (const VectorAdapter &right) noexcept;
+    VectorAdapter &operator*= (const VectorAdapter &x) noexcept;
 
-    VectorAdapter &operator* (const Coords &value) noexcept;
+    VectorAdapter &operator+= (const Coords &value) noexcept;
 
-    VectorAdapter &operator+ (const Coords &value) noexcept;
+    VectorAdapter &operator-= (const Coords &value) noexcept;
 
-    VectorAdapter &operator- (const Coords &value) noexcept;
+    VectorAdapter &operator/= (const Coords &value) noexcept;
 
-    VectorAdapter &operator/ (const Coords &value) noexcept;
+    VectorAdapter &operator*= (const Coords &value) noexcept;
 
-    bool operator== (const VectorAdapter &right) const noexcept;
+    [[nodiscard]] VectorAdapter
+    operator+ (const VectorAdapter &x) const noexcept;
+
+    [[nodiscard]] VectorAdapter
+    operator- (const VectorAdapter &x) const noexcept;
+
+    [[nodiscard]] VectorAdapter
+    operator* (const VectorAdapter &x) const noexcept;
+
+    [[nodiscard]] VectorAdapter
+    operator/ (const VectorAdapter &x) const noexcept;
+
+    [[nodiscard]] VectorAdapter operator* (const Coords &value) const noexcept;
+
+    [[nodiscard]] VectorAdapter operator+ (const Coords &value) const noexcept;
+
+    [[nodiscard]] VectorAdapter operator- (const Coords &value) const noexcept;
+
+    [[nodiscard]] VectorAdapter operator/ (const Coords &value) const noexcept;
+
+    [[nodiscard]] bool operator== (const VectorAdapter &x) const noexcept;
 
     [[nodiscard]] operator ExtVector2 () noexcept;
 

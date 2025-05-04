@@ -6,35 +6,37 @@
 class ViewportAdapterSpec : public ::testing::Test {
 protected:
     VectorAdapter size{ 50, 50 };
+    VectorAdapter target{ 20, 20 };
     VectorAdapter center{ 25, 25 };
 
-    ViewportAdapter viewport{ size, center };
+    ViewportAdapter viewport{ target, size, center };
 
     void SetUp() override {}
 };
 
 TEST_F(ViewportAdapterSpec, Should_Initialize_With_Correct_Size_And_Center) {
-    EXPECT_FLOAT_EQ(viewport.size().horizontal(), size.horizontal());
-    EXPECT_FLOAT_EQ(viewport.size().vertical(), size.vertical());
+  EXPECT_FLOAT_EQ (viewport.getSize ().horizontal (), size.horizontal ());
+  EXPECT_FLOAT_EQ (viewport.getSize ().vertical (), size.vertical ());
 
-    EXPECT_FLOAT_EQ(viewport.center().horizontal(), center.horizontal());
-    EXPECT_FLOAT_EQ(viewport.center().vertical(), center.vertical());
+  EXPECT_FLOAT_EQ (viewport.getCenter ().horizontal (), center.horizontal ());
+  EXPECT_FLOAT_EQ (viewport.getCenter ().vertical (), center.vertical ());
 }
 
 TEST_F(ViewportAdapterSpec, Should_Allow_Updating_Size) {
     VectorAdapter newSize{ 100, 100 };
-    viewport.size(newSize);
+    viewport.setSize (newSize);
 
-    EXPECT_FLOAT_EQ(viewport.size().horizontal(), newSize.horizontal());
-    EXPECT_FLOAT_EQ(viewport.size().vertical(), newSize.vertical());
+    EXPECT_FLOAT_EQ (viewport.getSize ().horizontal (), newSize.horizontal ());
+    EXPECT_FLOAT_EQ (viewport.getSize ().vertical (), newSize.vertical ());
 }
 
 TEST_F(ViewportAdapterSpec, Should_Allow_Updating_Center) {
     VectorAdapter newCenter{ 10, 10 };
-    viewport.center(newCenter);
+    viewport.setCenter (newCenter);
 
-    EXPECT_FLOAT_EQ(viewport.center().horizontal(), newCenter.horizontal());
-    EXPECT_FLOAT_EQ(viewport.center().vertical(), newCenter.vertical());
+    EXPECT_FLOAT_EQ (viewport.getCenter ().horizontal (),
+                     newCenter.horizontal ());
+    EXPECT_FLOAT_EQ (viewport.getCenter ().vertical (), newCenter.vertical ());
 }
 
 // TODO
@@ -55,7 +57,7 @@ TEST_F(ViewportAdapterSpec, Should_Convert_To_Camera2D) {
 }
 
 TEST_F(ViewportAdapterSpec, Should_Apply_Zoom) {
-    viewport.zoom(2);
-    Camera2D cam = viewport;
-    EXPECT_FLOAT_EQ(cam.zoom, 2);
+  viewport.setZoom (2);
+  Camera2D cam = viewport;
+  EXPECT_FLOAT_EQ (cam.zoom, 2);
 }

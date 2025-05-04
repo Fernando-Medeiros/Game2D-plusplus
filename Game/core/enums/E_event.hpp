@@ -6,7 +6,7 @@
 enum class EEvent : uint8_t
 {
   /// region Binding
-  Camera,
+  CameraCenter,
   ExitGame,
   Logger,
   Notification,

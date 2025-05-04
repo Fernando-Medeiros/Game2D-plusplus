@@ -29,77 +29,137 @@ VectorAdapter::VectorAdapter(Coords x, Coords y, Position row, Position column) 
     return std::format("VA -> H:{0} V:{1} R:{2} C:{3}", _horizontal, _vertical, _row, _column);
 };
 
+////////////////////////////////////////////////////////////////////////
+
 VectorAdapter &
-VectorAdapter::operator+ (const VectorAdapter &right) noexcept
+VectorAdapter::operator+= (const VectorAdapter &x) noexcept
 {
-  _horizontal += right._horizontal;
-  _vertical += right._vertical;
+  _horizontal = _horizontal + x._horizontal;
+  _vertical = _vertical + x._vertical;
+  return *this;
+}
+
+VectorAdapter &
+VectorAdapter::operator-= (const VectorAdapter &x) noexcept
+{
+  _horizontal = _horizontal - x._horizontal;
+  _vertical = _vertical - x._vertical;
+  return *this;
+}
+
+VectorAdapter &
+VectorAdapter::operator/= (const VectorAdapter &x) noexcept
+{
+  _horizontal = _horizontal / x._horizontal;
+  _vertical = _vertical / x._vertical;
+  return *this;
+}
+
+VectorAdapter &
+VectorAdapter::operator*= (const VectorAdapter &x) noexcept
+{
+  _horizontal = _horizontal * x._horizontal;
+  _vertical = _vertical * x._vertical;
   return *this;
 };
 
 VectorAdapter &
-VectorAdapter::operator- (const VectorAdapter &right) noexcept
+VectorAdapter::operator+= (const Coords &value) noexcept
 {
-  _horizontal -= right._horizontal;
-  _vertical -= right._vertical;
+  _horizontal = _horizontal + value;
+  _vertical = _vertical + value;
   return *this;
-};
+}
 
 VectorAdapter &
-VectorAdapter::operator* (const VectorAdapter &right) noexcept
+VectorAdapter::operator-= (const Coords &value) noexcept
 {
-  _horizontal *= right._horizontal;
-  _vertical *= right._vertical;
+  _horizontal = _horizontal - value;
+  _vertical = _vertical - value;
   return *this;
-};
+}
 
 VectorAdapter &
-VectorAdapter::operator/ (const VectorAdapter &right) noexcept
+VectorAdapter::operator/= (const Coords &value) noexcept
 {
-  _horizontal /= right._horizontal;
-  _vertical /= right._vertical;
+  _horizontal = _horizontal / value;
+  _vertical = _vertical / value;
   return *this;
-};
+}
 
 VectorAdapter &
-VectorAdapter::operator* (const Coords &value) noexcept
+VectorAdapter::operator*= (const Coords &value) noexcept
 {
-  _horizontal *= value;
-  _vertical *= value;
+  _horizontal = _horizontal * value;
+  _vertical = _vertical * value;
   return *this;
 };
 
-VectorAdapter &
-VectorAdapter::operator+ (const Coords &value) noexcept
+////////////////////////////////////////////////////////////////////////
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator+ (const VectorAdapter &x) const noexcept
 {
-  _horizontal += value;
-  _vertical += value;
-  return *this;
+  return VectorAdapter (_horizontal + x._horizontal, _vertical + x._vertical);
 };
 
-VectorAdapter &
-VectorAdapter::operator- (const Coords &value) noexcept
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator- (const VectorAdapter &x) const noexcept
 {
-  _horizontal -= value;
-  _vertical -= value;
-  return *this;
+  return VectorAdapter (_horizontal - x._horizontal, _vertical - x._vertical);
 };
 
-VectorAdapter &
-VectorAdapter::operator/ (const Coords &value) noexcept
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator* (const VectorAdapter &x) const noexcept
 {
-  _horizontal /= value;
-  _vertical /= value;
-  return *this;
+  return VectorAdapter (_horizontal * x._horizontal, _vertical * x._vertical);
 };
 
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator/ (const VectorAdapter &x) const noexcept
+{
+  return VectorAdapter (_horizontal / x._horizontal, _vertical / x._vertical);
+}
+
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator* (const Coords &value) const noexcept
+{
+  return VectorAdapter (_horizontal * value, _vertical * value);
+};
+
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator+ (const Coords &value) const noexcept
+{
+  return VectorAdapter (_horizontal + value, _vertical + value);
+};
+
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator- (const Coords &value) const noexcept
+{
+  return VectorAdapter (_horizontal - value, _vertical - value);
+};
+
+[[nodiscard]]
+VectorAdapter
+VectorAdapter::operator/ (const Coords &value) const noexcept
+{
+  return VectorAdapter (_horizontal / value, _vertical / value);
+};
+
+[[nodiscard]]
 bool
-VectorAdapter::operator== (const VectorAdapter &right) const noexcept
+VectorAdapter::operator== (const VectorAdapter &x) const noexcept
 {
-  return this->horizontal () == right.horizontal ()
-         && this->vertical () == right.vertical ()
-         && this->rowPosition () == right.rowPosition ()
-         && this->columnPosition () == right.columnPosition ();
+  return this->horizontal () == x.horizontal ()
+         && this->vertical () == x.vertical ()
+         && this->rowPosition () == x.rowPosition ()
+         && this->columnPosition () == x.columnPosition ();
 };
 
 [[nodiscard]] VectorAdapter::operator ExtVector2 () noexcept

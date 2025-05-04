@@ -2,36 +2,41 @@
 #define ADAPTER_VIEWPORT_HPP
 
 #include <constants_adapter.hpp>
-#include <string>
 #include <vector_adapter.hpp>
 
 class ViewportAdapter
 {
 private:
-  Zoom _zoom{ 1.0f };
-  VectorAdapter _size, _center, _position;
+  float _zoom{ 1.0f }, _rotation{ 0.0f };
+  VectorAdapter _target, _center, _size;
 
 public:
   ViewportAdapter () noexcept = default;
 
-  ViewportAdapter (const VectorAdapter &size,
+  ViewportAdapter (const VectorAdapter &size, const VectorAdapter &target,
                    const VectorAdapter &center) noexcept;
 
   ~ViewportAdapter () noexcept = default;
 
-  [[nodiscard]] const VectorAdapter &size () const noexcept;
+  [[nodiscard]] const float &getZoom () const noexcept;
 
-  [[nodiscard]] const VectorAdapter &center () const noexcept;
+  [[nodiscard]] const float &getRotation () const noexcept;
 
-  [[nodiscard]] const VectorAdapter &position () const noexcept;
+  [[nodiscard]] const VectorAdapter &getSize () const noexcept;
 
-  [[nodiscard]] const std::string toString () const noexcept;
+  [[nodiscard]] const VectorAdapter &getTarget () const noexcept;
 
-  void zoom (Zoom scale) noexcept;
+  [[nodiscard]] const VectorAdapter &getCenter () const noexcept;
 
-  void size (VectorAdapter size) noexcept;
+  void setZoom (float value) noexcept;
 
-  void center (VectorAdapter center) noexcept;
+  void setRotation (float value) noexcept;
+
+  void setSize (VectorAdapter vector) noexcept;
+
+  void setTarget (VectorAdapter vector) noexcept;
+
+  void setCenter (VectorAdapter vector) noexcept;
 
   operator const ExtViewport () const noexcept;
 };

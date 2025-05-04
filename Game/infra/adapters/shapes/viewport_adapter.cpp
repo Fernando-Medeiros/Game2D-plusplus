@@ -1,62 +1,78 @@
-#include <format>
-#include <string>
 #include <vector_adapter.hpp>
 #include <viewport_adapter.hpp>
 
 ViewportAdapter::ViewportAdapter (const VectorAdapter &size,
+                                  const VectorAdapter &target,
                                   const VectorAdapter &center) noexcept
     : _zoom{ 1.0 },
       _size{ size },
-      _center{ center },
-      _position{ center }
+      _target{ target },
+      _center{ center }
 {
 }
 
-[[nodiscard]] const VectorAdapter &
-ViewportAdapter::size () const noexcept
+const float &
+ViewportAdapter::getZoom () const noexcept
+{
+  return _zoom;
+}
+
+const float &
+ViewportAdapter::getRotation () const noexcept
+{
+  return _rotation;
+}
+
+const VectorAdapter &
+ViewportAdapter::getSize () const noexcept
 {
   return _size;
 }
 
 [[nodiscard]] const VectorAdapter &
-ViewportAdapter::center () const noexcept
+ViewportAdapter::getTarget () const noexcept
+{
+  return _target;
+}
+
+[[nodiscard]] const VectorAdapter &
+ViewportAdapter::getCenter () const noexcept
 {
   return _center;
 }
 
-[[nodiscard]] const VectorAdapter &
-ViewportAdapter::position () const noexcept
+void
+ViewportAdapter::setZoom (float value) noexcept
 {
-  return _position;
+  _zoom += value;
 }
 
 void
-ViewportAdapter::zoom (Zoom zoom) noexcept
+ViewportAdapter::setRotation (float value) noexcept
 {
-  _zoom = zoom;
+  _rotation = value;
 }
 
 void
-ViewportAdapter::size (VectorAdapter size) noexcept
+ViewportAdapter::setSize (VectorAdapter vector) noexcept
 {
-  _size = size;
+  _size = vector;
 }
 
 void
-ViewportAdapter::center (VectorAdapter center) noexcept
+ViewportAdapter::setTarget (VectorAdapter vector) noexcept
 {
-  _center = center;
+  _target = vector;
 }
 
-[[nodiscard]] const std::string
-ViewportAdapter::toString () const noexcept
+void
+ViewportAdapter::setCenter (VectorAdapter vector) noexcept
 {
-  return std::format ("Viewport -> {0} {1} {2}", _position.toString (),
-                      _center.toString (), _size.toString ());
-};
+  _center = vector;
+}
 
 ViewportAdapter::operator const ExtViewport () const noexcept
 {
-  const ExtViewport camera{ _size, _center, 0, _zoom };
+  const ExtViewport camera{ _center, _target, _rotation, _zoom };
   return camera;
 };

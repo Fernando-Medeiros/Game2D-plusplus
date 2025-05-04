@@ -3,6 +3,7 @@
 
 #include <E_color.hpp>
 #include <I_drawable.hpp>
+#include <camera_manager.hpp>
 #include <event.hpp>
 #include <memory>
 #include <resource_manager.hpp>
@@ -13,10 +14,12 @@
 class IWindow
 {
 protected:
+  std::shared_ptr<CameraManager> _cameraManager;
   std::shared_ptr<ResourceManager> _resourceManager;
-  ViewportAdapter _inicialViewport, _dynamicViewport;
+  ViewportAdapter _inicialViewport;
   VectorAdapter _screenSize;
   EColor _color{ EColor::Gray };
+  ETexture _favicon{ ETexture::NONE };
   std::string _title;
   int _maxFrame, _minFrame, _frame;
   bool _disposed;
@@ -44,8 +47,12 @@ public:
 
   virtual IWindow &withFrame (int value) noexcept = 0;
 
-  virtual IWindow &withResourceManager (
-      const std::shared_ptr<ResourceManager> &resourceManager) noexcept
+  virtual IWindow &
+  withCameraManager (const std::shared_ptr<CameraManager> &ptr) noexcept
+      = 0;
+
+  virtual IWindow &
+  withResourceManager (const std::shared_ptr<ResourceManager> &ptr) noexcept
       = 0;
 
   virtual IWindow &build () noexcept = 0;
@@ -56,13 +63,7 @@ public:
 
   virtual void resize (VectorAdapter vector) noexcept = 0;
 
-  virtual void setViewport (const ViewportAdapter &viewport) noexcept = 0;
-
   [[nodiscard]] virtual const VectorAdapter &getWindowSize () const noexcept
-      = 0;
-
-  [[nodiscard]] virtual const ViewportAdapter &
-  getDynamicViewport () const noexcept
       = 0;
 
   [[nodiscard]] virtual const ViewportAdapter &
@@ -87,6 +88,10 @@ public:
   virtual void close () noexcept = 0;
 
   virtual void clear () noexcept = 0;
+
+  virtual void beginViewport () noexcept = 0;
+
+  virtual void endViewport () noexcept = 0;
 
   virtual void beginDrawing () noexcept = 0;
 

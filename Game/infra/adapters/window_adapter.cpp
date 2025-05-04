@@ -1,3 +1,4 @@
+#include <I_circle.hpp>
 #include <color_adapter.hpp>
 #include <constants_adapter.hpp>
 #include <enum_adapter.hpp>
@@ -14,8 +15,9 @@ IWindow &
 WindowAdapter::withSize (VectorAdapter vector) noexcept
 {
   _screenSize = vector;
-  _inicialViewport = ViewportAdapter (vector / 2, vector);
-  _dynamicViewport = ViewportAdapter (vector / 2, vector);
+  _inicialViewport.setSize (vector);
+  _inicialViewport.setCenter (vector / 2);
+  _inicialViewport.setTarget (vector / 2);
   return *this;
 };
 
@@ -42,10 +44,18 @@ WindowAdapter::withFrameLimit (int minFrame, int maxFrame) noexcept
 }
 
 IWindow &
-WindowAdapter::withResourceManager (
-    const std::shared_ptr<ResourceManager> &resourceManager) noexcept
+WindowAdapter::withCameraManager (
+    const std::shared_ptr<CameraManager> &ptr) noexcept
 {
-  _resourceManager = resourceManager;
+  _cameraManager = ptr;
+  return *this;
+}
+
+IWindow &
+WindowAdapter::withResourceManager (
+    const std::shared_ptr<ResourceManager> &ptr) noexcept
+{
+  _resourceManager = ptr;
   return *this;
 };
 
@@ -53,6 +63,7 @@ IWindow &
 WindowAdapter::build () noexcept
 {
   SetConfigFlags (FLAG_VSYNC_HINT);
+  SetConfigFlags (FLAG_WINDOW_RESIZABLE);
 
   InitWindow ((int)getWindowSize ().horizontal (),
               (int)getWindowSize ().vertical (), _title.c_str ());
@@ -65,6 +76,8 @@ WindowAdapter::build () noexcept
 
   return *this;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////
 
 void
 WindowAdapter::setDisposed (bool value) noexcept
@@ -87,12 +100,7 @@ WindowAdapter::resize (VectorAdapter vector) noexcept
   SetWindowSize (_screenSize.horizontal (), _screenSize.vertical ());
 };
 
-void
-WindowAdapter::setViewport (const ViewportAdapter &viewport) noexcept
-{
-  _screenSize = viewport.size ();
-  SetWindowSize (_screenSize.horizontal (), _screenSize.vertical ());
-};
+/////////////////////////////////////////////////////////////////////////////////////
 
 [[nodiscard]] bool
 WindowAdapter::isOpen () const noexcept
@@ -119,12 +127,6 @@ WindowAdapter::getWindowSize () const noexcept
 };
 
 [[nodiscard]] const ViewportAdapter &
-WindowAdapter::getDynamicViewport () const noexcept
-{
-  return _dynamicViewport;
-};
-
-[[nodiscard]] const ViewportAdapter &
 WindowAdapter::getDefaultViewport () const noexcept
 {
   return _inicialViewport;
@@ -133,14 +135,14 @@ WindowAdapter::getDefaultViewport () const noexcept
 [[nodiscard]] const ViewportAdapter &
 WindowAdapter::getCurrentViewport () const noexcept
 {
-  return _dynamicViewport;
+  return _cameraManager->getViewport ();
 };
 
 [[nodiscard]] const VectorAdapter
 WindowAdapter::getCoords (const VectorAdapter &vector,
                           const ViewportAdapter &viewport) const noexcept
 {
-  return GetScreenToWorld2D (_screenSize, _dynamicViewport);
+  return GetScreenToWorld2D (vector, viewport);
 };
 
 void
@@ -166,7 +168,21 @@ void
 WindowAdapter::clear () noexcept
 {
   ClearBackground (toColor (_color));
+}
+
+void
+WindowAdapter::beginViewport () noexcept
+{
+  BeginMode2D (getCurrentViewport ());
+}
+
+void
+WindowAdapter::endViewport () noexcept
+{
+  EndMode2D ();
 };
+
+/////////////////////////////////////////////////////////////////////////////////////
 
 void
 WindowAdapter::dispatchEvents () noexcept
@@ -180,7 +196,9 @@ WindowAdapter::dispatchEvents () noexcept
   if (screenWidth != getWindowSize ().horizontal ()
       || screenHeight != getWindowSize ().vertical ())
     {
-      onResized.invoke (SizeArgs (VectorAdapter (screenWidth, screenHeight)));
+      this->resize (VectorAdapter (screenWidth, screenHeight));
+
+      onResized.invoke (SizeArgs (_screenSize));
     }
 
   /// Evento para enviar as teclas pressionadas...
@@ -259,6 +277,17 @@ WindowAdapter::render (const IDrawable &adapter) noexcept
           DrawTexture (*texture, position.horizontal (), position.vertical (),
                        WHITE);
         }
+      return;
+    }
+
+  if (const auto *circle = adapter.toSecurePtr<ICircle> ())
+    {
+      const float radius = circle->getRadius ();
+      const EColor &fillColor = circle->getFillColor ();
+      VectorAdapter position = circle->getPosition ();
+
+      DrawCircleV (VectorAdapter (position) + radius, radius,
+                   toColor (fillColor));
       return;
     }
 
