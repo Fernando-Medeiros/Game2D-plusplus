@@ -10,8 +10,6 @@ private:
   ViewportAdapter _viewport;
 
 public:
-  CameraManager () noexcept = default;
-
   [[nodiscard]] const ViewportAdapter &getViewport () const noexcept;
 
   void execute (const IEventArgs &sender) noexcept;

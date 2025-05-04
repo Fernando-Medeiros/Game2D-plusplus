@@ -6,56 +6,39 @@ EventManager::invoke (const EEvent &event, const IEventArgs &sender) noexcept
   switch (event)
     {
     case EEvent::Sound:
-      SoundRequested.invoke (sender);
-      break;
+      return SoundRequested.invoke (sender);
     case EEvent::Route:
-      RouteChanged.invoke (sender);
-      break;
+      return RouteChanged.invoke (sender);
     case EEvent::CameraCenter:
-      CameraChanged.invoke (sender);
-      break;
+      return CameraChanged.invoke (sender);
     case EEvent::Logger:
-      LoggerChanged.invoke (sender);
-      break;
+      return LoggerChanged.invoke (sender);
     case EEvent::ExitGame:
-      EndGameChanged.invoke (sender);
-      break;
+      return EndGameChanged.invoke (sender);
     case EEvent::SaveGame:
-      SaveGameChanged.invoke (sender);
-      break;
+      return SaveGameChanged.invoke (sender);
     case EEvent::NodeSelected:
-      NodeSelected.invoke (sender);
-      break;
+      return NodeSelected.invoke (sender);
     case EEvent::Animation:
-      AnimationChanaged.invoke (sender);
-      break;
+      return AnimationChanaged.invoke (sender);
     case EEvent::Notification:
-      NotificationChanged.invoke (sender);
-      break;
+      return NotificationChanged.invoke (sender);
     case EEvent::WindowResized:
-      WindowResized.invoke (sender);
-      break;
+      return WindowResized.invoke (sender);
     case EEvent::TextEntered:
-      TextEntered.invoke (sender);
-      break;
+      return TextEntered.invoke (sender);
     case EEvent::KeyPressed:
-      KeyPressed.invoke (sender);
-      break;
+      return KeyPressed.invoke (sender);
     case EEvent::KeyReleased:
-      KeyReleased.invoke (sender);
-      break;
+      return KeyReleased.invoke (sender);
     case EEvent::MouseMoved:
-      MouseMoved.invoke (sender);
-      break;
+      return MouseMoved.invoke (sender);
     case EEvent::MouseWheelScrolled:
-      MouseWheelScrolled.invoke (sender);
-      break;
+      return MouseWheelScrolled.invoke (sender);
     case EEvent::MouseButtonPressed:
-      MouseButtonPressed.invoke (sender);
-      break;
+      return MouseButtonPressed.invoke (sender);
     case EEvent::MouseButtonReleased:
-      MouseButtonReleased.invoke (sender);
-      break;
+      return MouseButtonReleased.invoke (sender);
     };
 }
 
@@ -66,121 +49,84 @@ EventManager::unsubscribe (const EEvent &event,
   switch (event)
     {
     case EEvent::Sound:
-      SoundRequested.unsubscribe (eventId);
-      break;
+      return SoundRequested.unsubscribe (eventId);
     case EEvent::Route:
-      RouteChanged.unsubscribe (eventId);
-      break;
+      return RouteChanged.unsubscribe (eventId);
     case EEvent::CameraCenter:
-      CameraChanged.unsubscribe (eventId);
-      break;
+      return CameraChanged.unsubscribe (eventId);
     case EEvent::Logger:
-      LoggerChanged.unsubscribe (eventId);
-      break;
+      return LoggerChanged.unsubscribe (eventId);
     case EEvent::ExitGame:
-      EndGameChanged.unsubscribe (eventId);
-      break;
+      return EndGameChanged.unsubscribe (eventId);
     case EEvent::SaveGame:
-      SaveGameChanged.unsubscribe (eventId);
-      break;
+      return SaveGameChanged.unsubscribe (eventId);
     case EEvent::NodeSelected:
-      NodeSelected.unsubscribe (eventId);
-      break;
+      return NodeSelected.unsubscribe (eventId);
     case EEvent::Animation:
-      AnimationChanaged.unsubscribe (eventId);
-      break;
+      return AnimationChanaged.unsubscribe (eventId);
     case EEvent::Notification:
-      NotificationChanged.unsubscribe (eventId);
-      break;
+      return NotificationChanged.unsubscribe (eventId);
     case EEvent::WindowResized:
-      WindowResized.unsubscribe (eventId);
-      break;
+      return WindowResized.unsubscribe (eventId);
     case EEvent::TextEntered:
-      TextEntered.unsubscribe (eventId);
-      break;
+      return TextEntered.unsubscribe (eventId);
     case EEvent::KeyPressed:
-      KeyPressed.unsubscribe (eventId);
-      break;
+      return KeyPressed.unsubscribe (eventId);
     case EEvent::KeyReleased:
-      KeyReleased.unsubscribe (eventId);
-      break;
+      return KeyReleased.unsubscribe (eventId);
     case EEvent::MouseMoved:
-      MouseMoved.unsubscribe (eventId);
-      break;
+      return MouseMoved.unsubscribe (eventId);
     case EEvent::MouseWheelScrolled:
-      MouseWheelScrolled.unsubscribe (eventId);
-      break;
+      return MouseWheelScrolled.unsubscribe (eventId);
     case EEvent::MouseButtonPressed:
-      MouseButtonPressed.unsubscribe (eventId);
-      break;
+      return MouseButtonPressed.unsubscribe (eventId);
     case EEvent::MouseButtonReleased:
-      MouseButtonReleased.unsubscribe (eventId);
-      break;
+      return MouseButtonReleased.unsubscribe (eventId);
     };
 }
 
 [[nodiscard]] EventId
 EventManager::subscribe (const EEvent &event,
-                         const EventCallback handler) noexcept
+                         const EventCallback &handler) noexcept
 {
-  EventId eventId;
-
   switch (event)
     {
     case EEvent::Sound:
-      eventId = SoundRequested.subscribe (handler);
-      break;
+      return SoundRequested.subscribe (handler);
     case EEvent::Route:
-      eventId = RouteChanged.subscribe (handler);
-      break;
+      return RouteChanged.subscribe (handler);
     case EEvent::CameraCenter:
-      eventId = CameraChanged.subscribe (handler);
-      break;
+      return CameraChanged.subscribe (handler);
     case EEvent::Logger:
-      eventId = LoggerChanged.subscribe (handler);
-      break;
+      return LoggerChanged.subscribe (handler);
     case EEvent::ExitGame:
-      eventId = EndGameChanged.subscribe (handler);
-      break;
+      return EndGameChanged.subscribe (handler);
     case EEvent::SaveGame:
-      eventId = SaveGameChanged.subscribe (handler);
-      break;
+      return SaveGameChanged.subscribe (handler);
     case EEvent::NodeSelected:
-      eventId = NodeSelected.subscribe (handler);
-      break;
+      return NodeSelected.subscribe (handler);
     case EEvent::Animation:
-      eventId = AnimationChanaged.subscribe (handler);
-      break;
+      return AnimationChanaged.subscribe (handler);
     case EEvent::Notification:
-      eventId = NotificationChanged.subscribe (handler);
-      break;
+      return NotificationChanged.subscribe (handler);
     case EEvent::WindowResized:
-      eventId = WindowResized.subscribe (handler);
-      break;
+      return WindowResized.subscribe (handler);
     case EEvent::TextEntered:
-      eventId = TextEntered.subscribe (handler);
-      break;
+      return TextEntered.subscribe (handler);
     case EEvent::KeyPressed:
-      eventId = KeyPressed.subscribe (handler);
-      break;
+      return KeyPressed.subscribe (handler);
     case EEvent::KeyReleased:
-      eventId = KeyReleased.subscribe (handler);
-      break;
+      return KeyReleased.subscribe (handler);
     case EEvent::MouseMoved:
-      eventId = MouseMoved.subscribe (handler);
-      break;
+      return MouseMoved.subscribe (handler);
     case EEvent::MouseWheelScrolled:
-      eventId = MouseWheelScrolled.subscribe (handler);
-      break;
+      return MouseWheelScrolled.subscribe (handler);
     case EEvent::MouseButtonPressed:
-      eventId = MouseButtonPressed.subscribe (handler);
-      break;
+      return MouseButtonPressed.subscribe (handler);
     case EEvent::MouseButtonReleased:
-      eventId = MouseButtonReleased.subscribe (handler);
-      break;
+      return MouseButtonReleased.subscribe (handler);
     };
-
-  return eventId;
+  return -1;
 }
 
 void

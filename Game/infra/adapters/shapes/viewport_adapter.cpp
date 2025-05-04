@@ -2,12 +2,10 @@
 #include <viewport_adapter.hpp>
 
 ViewportAdapter::ViewportAdapter (const VectorAdapter &size,
-                                  const VectorAdapter &target,
-                                  const VectorAdapter &center) noexcept
-    : _zoom{ 1.0 },
-      _size{ size },
+                                  const VectorAdapter &target) noexcept
+    : _size{ size },
       _target{ target },
-      _center{ center }
+      _center{ size / 2 }
 {
 }
 
@@ -44,7 +42,7 @@ ViewportAdapter::getCenter () const noexcept
 void
 ViewportAdapter::setZoom (float value) noexcept
 {
-  _zoom += value;
+  _zoom = value;
 }
 
 void
@@ -57,18 +55,13 @@ void
 ViewportAdapter::setSize (VectorAdapter vector) noexcept
 {
   _size = vector;
+  _center = _size / 2;
 }
 
 void
 ViewportAdapter::setTarget (VectorAdapter vector) noexcept
 {
   _target = vector;
-}
-
-void
-ViewportAdapter::setCenter (VectorAdapter vector) noexcept
-{
-  _center = vector;
 }
 
 ViewportAdapter::operator const ExtViewport () const noexcept

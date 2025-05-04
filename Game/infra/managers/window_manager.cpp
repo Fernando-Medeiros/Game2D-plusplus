@@ -41,9 +41,9 @@ WindowManager::initialize () noexcept
   _window = std::make_unique<WindowAdapter> ();
 
   _window->withTitle (GAME_TITLE)
-      .withFrame (70)
-      .withFrameLimit (30, 144)
-      .withSize (VectorAdapter (600, 600))
+      .withFrame (MIN_FRAME)
+      .withFrameLimit (MIN_FRAME, MAX_FRAME)
+      .withSize (VectorAdapter (DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT))
       .withCameraManager (_cameraManager)
       .withResourceManager (_resourceManager)
       .build ();
@@ -81,7 +81,6 @@ WindowManager::render (const WindowCallback &handler) noexcept
       _soundManager->update ();
 
       _window->beginDrawing ();
-      _window->beginViewport ();
 
       _window->clear ();
 
@@ -91,7 +90,6 @@ WindowManager::render (const WindowCallback &handler) noexcept
           handler (*_window);
         }
 
-      _window->endViewport ();
       _window->endDrawing ();
     }
 

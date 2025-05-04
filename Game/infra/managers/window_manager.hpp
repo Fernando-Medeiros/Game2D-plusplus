@@ -16,16 +16,16 @@ class WindowManager
 private:
   std::unique_ptr<WindowAdapter> _window;
   std::shared_ptr<EventManager> _eventManager;
-  std::shared_ptr<CameraManager> _cameraManager;
   std::shared_ptr<SoundManager> _soundManager;
+  std::shared_ptr<CameraManager> _cameraManager;
   std::shared_ptr<ResourceManager> _resourceManager;
 
 public:
   WindowManager &
-  withSoundManager (const std::shared_ptr<SoundManager> &ptr) noexcept;
+  withEventManager (const std::shared_ptr<EventManager> &ptr) noexcept;
 
   WindowManager &
-  withEventManager (const std::shared_ptr<EventManager> &ptr) noexcept;
+  withSoundManager (const std::shared_ptr<SoundManager> &ptr) noexcept;
 
   WindowManager &
   withCameraManager (const std::shared_ptr<CameraManager> &ptr) noexcept;

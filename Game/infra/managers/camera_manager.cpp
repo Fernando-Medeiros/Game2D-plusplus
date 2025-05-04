@@ -2,6 +2,7 @@
 #include <camera_args.hpp>
 #include <camera_manager.hpp>
 #include <constants_core.hpp>
+#include <keyboard_args.hpp>
 #include <mouse_args.hpp>
 #include <size_args.hpp>
 
@@ -11,49 +12,57 @@ CameraManager::getViewport () const noexcept
   return _viewport;
 }
 
-// TODO :: CORRIGIR O CALCULO DO CENTRO DA CAMERA
 void
 CameraManager::execute (const IEventArgs &sender) noexcept
 {
   if (const auto *args = sender.toSecurePtr<SizeArgs> ())
     {
-      _viewport.setSize (args->getSize ());
-      _viewport.setTarget (args->getSize () / 2);
-      _viewport.setCenter (args->getSize () / 2);
-      _viewport.setZoom (-_viewport.getZoom () + 1.0f);
+      const auto size = args->getSize ();
+
+      _viewport.setSize (size);
+      _viewport.setTarget (size / 2);
+      _viewport.setZoom (DEFAULT_ZOOM);
       return;
     }
 
   if (const auto *args = sender.toSecurePtr<CameraArgs> ())
     {
-      auto target = args->getTarget ();
-      auto size = _viewport.getSize ();
+      const auto target = args->getTarget ();
+      const auto size = _viewport.getSize ();
 
-      auto cameraCenter = target;
+      int baseY = size.vertical () / 2;
+      int baseX = size.horizontal () / 2;
 
-      auto y = cameraCenter.vertical ();
-      auto x = cameraCenter.horizontal ();
+      int centerX
+          = std::clamp<int> (target.horizontal (), baseX, WORLD_WIDTH - baseX);
 
-      x = std::clamp<int> (x, 0, WORLD_WIDTH - size.horizontal ());
+      int centerY
+          = std::clamp<int> (target.vertical (), baseY, WORLD_HEIGHT - baseY);
 
-      y = std::clamp<int> (y, 0, WORLD_HEIGHT - size.vertical ());
-
-      _viewport.setCenter (VectorAdapter (x, y));
-      _viewport.setTarget (target);
+      _viewport.setTarget (VectorAdapter (centerX, centerY));
       return;
     }
 
-  if (const auto *args = sender.toSecurePtr<MouseArgs> ())
+  const auto *mouse = sender.toSecurePtr<MouseArgs> ();
+  const auto *keyboard = sender.toSecurePtr<KeyboardArgs> ();
+
+  if (mouse || keyboard)
     {
-      if (args->getPressed () == EMouseButton::SCROLLUP)
-        {
-          _viewport.setZoom (0.05f);
-        }
-      if (args->getPressed () == EMouseButton::SCROLLDOWN)
-        {
-          _viewport.setZoom (-0.05f);
-        }
-      return;
+      const auto &zoom = _viewport.getZoom ();
+
+      const EMouseButton button
+          = mouse != nullptr ? mouse->getPressed () : EMouseButton::NONE;
+
+      const EKeyboardKey key
+          = keyboard != nullptr ? keyboard->getPressed () : EKeyboardKey::NONE;
+
+      if (button == EMouseButton::SCROLLUP || key == EKeyboardKey::Z)
+        if (zoom + ZOOM_VALUE <= MAX_ZOOM)
+          _viewport.setZoom (zoom + ZOOM_VALUE);
+
+      if (button == EMouseButton::SCROLLDOWN || key == EKeyboardKey::X)
+        if (zoom - ZOOM_VALUE >= MIN_ZOOM)
+          _viewport.setZoom (zoom - ZOOM_VALUE);
     }
 }
 

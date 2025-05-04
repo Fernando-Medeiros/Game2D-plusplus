@@ -16,7 +16,6 @@ WindowAdapter::withSize (VectorAdapter vector) noexcept
 {
   _screenSize = vector;
   _inicialViewport.setSize (vector);
-  _inicialViewport.setCenter (vector / 2);
   _inicialViewport.setTarget (vector / 2);
   return *this;
 };

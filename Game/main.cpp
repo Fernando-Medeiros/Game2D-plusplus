@@ -15,32 +15,83 @@
 int
 main ()
 {
-  /// TEMP
+  /// TEMP TEST
 
   auto player{ std::make_unique<CircleAdapter> () };
   auto text{ std::make_unique<TextAdapter> () };
   auto sprite{ std::make_unique<SpriteAdapter> () };
   auto rectangle{ std::make_unique<RectangleAdapter> () };
+  auto screen{ std::make_unique<RectangleAdapter> () };
+  auto world{ std::make_unique<RectangleAdapter> () };
 
-  player->setRadius (15);
-  player->setOutlineSize (5);
-  player->setFillColor (EColor::Black);
-  player->setOutlineColor (EColor::White);
+  screen
+      ->setSize (VectorAdapter{ DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT })
+      .setPosition (VectorAdapter{ 0, 0 })
+      .setFillColor (EColor::CornFlowerBlue);
 
-  text->setText ("Hello World");
-  text->setFontSize (30);
-  text->setFontSpacing (3);
-  text->setFont (EFont::Romulus);
-  text->setFontColor (EColor::White);
-  text->setPosition (VectorAdapter (200, 100));
+  world->setSize (VectorAdapter{ (int)WORLD_WIDTH, (int)WORLD_HEIGHT })
+      .setPosition (VectorAdapter{ 0, 0 })
+      .setFillColor (EColor::DarkSeaGreen);
 
-  rectangle->setSize (VectorAdapter{ 50, 50 });
-  rectangle->setPosition (VectorAdapter{ 250, 300 });
-  rectangle->setTexture (ETexture::ButtonDefault);
-  rectangle->setFillColor (EColor::CornFlowerBlue);
+  player->setRadius (15)
+      .setOutlineSize (5)
+      .setFillColor (EColor::Black)
+      .setOutlineColor (EColor::White);
 
-  sprite->setPosition (VectorAdapter (200, 500));
-  sprite->setTexture (ETexture::ButtonDefault);
+  text->setText ("Hello World")
+      .setFontSize (30)
+      .setFontSpacing (3)
+      .setFont (EFont::Romulus)
+      .setFontColor (EColor::White)
+      .setPosition (VectorAdapter (200, 100));
+
+  rectangle->setSize (VectorAdapter{ 50, 50 })
+      .setPosition (VectorAdapter{ 250, 300 })
+      .setTexture (ETexture::ButtonDefault)
+      .setFillColor (EColor::CornFlowerBlue);
+
+  sprite->setPosition (VectorAdapter (200, 500))
+      .setTexture (ETexture::ButtonDefault);
+
+  auto TEMP_EVENT_DEBUG =
+      [&player] (const std::shared_ptr<EventManager> &eventManager,
+                 const IEventArgs &sender) {
+        auto keyboard = sender.toSecurePtr<KeyboardArgs> ();
+
+        if (keyboard == nullptr)
+          return;
+
+        const int space = 32;
+        const auto key = keyboard->getPressed ();
+        auto y = player->getPosition ().vertical ();
+        auto x = player->getPosition ().horizontal ();
+
+        // SOUND TEST
+        if (key == EKeyboardKey::G)
+          eventManager->invoke (EEvent::Sound,
+                                SoundArgs (ESound::ButtonClicked));
+
+        if (key == EKeyboardKey::H)
+          eventManager->invoke (EEvent::Sound, SoundArgs (EMusic::DarkForest));
+
+        // PLAYER MOVEMENT
+        if (key == EKeyboardKey::RIGHT)
+          x += space;
+
+        else if (key == EKeyboardKey::LEFT)
+          x -= space;
+
+        else if (key == EKeyboardKey::UP)
+          y -= space;
+
+        else if (key == EKeyboardKey::DOWN)
+          y += space;
+
+        player->setPosition (VectorAdapter (x, y));
+
+        eventManager->invoke (EEvent::CameraCenter,
+                              CameraArgs (player->getPosition ()));
+      };
 
   ////////////////////////////////////////////////////////////////////////
 
@@ -58,7 +109,10 @@ main ()
       .withResourceManager (resourceManager)
       .initialize ();
 
-  windowManager->events (WindowCallback ([&] (WindowArgs &window) {
+  windowManager->events (WindowCallback ([&eventManager, &cameraManager,
+                                          &soundManager, &windowManager,
+                                          &TEMP_EVENT_DEBUG] (
+                                             WindowArgs &window) {
     EventId eventId;
 
     /// WINDOW EVENTS //////////////////////////////////////////////////////
@@ -100,8 +154,8 @@ main ()
 
     eventId = window.onResized.subscribe (
         EventCallback ([&] (const IEventArgs &sender) {
-          eventManager->invoke (EEvent::CameraCenter, sender);
           eventManager->invoke (EEvent::WindowResized, sender);
+          eventManager->invoke (EEvent::CameraCenter, sender);
         }));
 
     /// LISTERNERS //////////////////////////////////////////////////////
@@ -133,25 +187,33 @@ main ()
 
     eventId = eventManager->subscribe (
         EEvent::KeyPressed, EventCallback ([&] (const IEventArgs &sender) {
+          cameraManager->execute (sender);
+
           auto keyboard = sender.toSecurePtr<KeyboardArgs> ();
 
           if (keyboard == nullptr)
             return;
 
           if (keyboard->getPressed () == EKeyboardKey::ESCAPE)
-            {
-              eventManager->invoke (EEvent::ExitGame, sender);
-            }
+            eventManager->invoke (EEvent::ExitGame, sender);
+
+          TEMP_EVENT_DEBUG (eventManager, sender);
         }));
-        
   }));
 
-  windowManager->render (WindowCallback ([&] (WindowArgs &window) {
-    window.render (*text);
-    window.render (*rectangle);
-    window.render (*sprite);
-    window.render (*player);
-  }));
+  windowManager->render (
+      WindowCallback ([&screen, &text, &rectangle, &sprite, &world,
+                       &player] (WindowArgs &window) {
+        window.render (*screen);
+        window.render (*text);
+        window.render (*rectangle);
+        window.render (*sprite);
+
+        window.beginViewport ();
+        window.render (*world);
+        window.render (*player);
+        window.endViewport ();
+      }));
 
   windowManager->dispose ();
   return 0;

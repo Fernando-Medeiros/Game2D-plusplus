@@ -9,7 +9,7 @@ protected:
     VectorAdapter target{ 20, 20 };
     VectorAdapter center{ 25, 25 };
 
-    ViewportAdapter viewport{ target, size, center };
+    ViewportAdapter viewport{ size, target };
 
     void SetUp() override {}
 };
@@ -32,7 +32,7 @@ TEST_F(ViewportAdapterSpec, Should_Allow_Updating_Size) {
 
 TEST_F(ViewportAdapterSpec, Should_Allow_Updating_Center) {
     VectorAdapter newCenter{ 10, 10 };
-    viewport.setCenter (newCenter);
+    viewport.setSize (newCenter);
 
     EXPECT_FLOAT_EQ (viewport.getCenter ().horizontal (),
                      newCenter.horizontal ());

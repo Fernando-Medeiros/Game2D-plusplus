@@ -5,29 +5,29 @@
 #include <E_opacity.hpp>
 #include <raylib.h>
 
-Color
-toColor (const EColor &color)
+constexpr Color
+toColor (const EColor &color, const EOpacity &opacity = EOpacity::Light)
 {
   Color colorResult = WHITE;
 
   switch (color)
     {
     case EColor::Black:
-      return colorResult = Color (0, 0, 0, 255);
+      return colorResult = Color (0, 0, 0, (int)opacity);
     case EColor::Gray:
-      return colorResult = Color (102, 102, 102, 255);
+      return colorResult = Color (102, 102, 102, (int)opacity);
     case EColor::Tomate:
-      return colorResult = Color (255, 99, 71, 255);
+      return colorResult = Color (255, 99, 71, (int)opacity);
     case EColor::Primary:
-      return colorResult = Color (54, 46, 43, 255);
+      return colorResult = Color (54, 46, 43, (int)opacity);
     case EColor::White:
-      return colorResult = Color (255, 255, 255, 255);
+      return colorResult = Color (255, 255, 255, (int)opacity);
     case EColor::GoldRod:
-      return colorResult = Color (218, 165, 32, 255);
+      return colorResult = Color (218, 165, 32, (int)opacity);
     case EColor::CornFlowerBlue:
-      return colorResult = Color (100, 149, 237, 255);
+      return colorResult = Color (100, 149, 237, (int)opacity);
     case EColor::DarkSeaGreen:
-      return colorResult = Color (0, 114, 119, 47);
+      return colorResult = Color (0, 114, 119, (int)opacity);
     case EColor::Light:
       return colorResult = Color (255, 255, 255, (int)EOpacity::Light);
     case EColor::Opaque:

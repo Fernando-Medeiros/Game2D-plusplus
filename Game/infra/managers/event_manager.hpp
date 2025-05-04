@@ -31,7 +31,7 @@ public:
   void unsubscribe (const EEvent &event, const EventId &eventId) noexcept;
 
   [[nodiscard]] EventId subscribe (const EEvent &event,
-                                   const EventCallback handler) noexcept;
+                                   const EventCallback &handler) noexcept;
 
   void dispose () noexcept;
 };

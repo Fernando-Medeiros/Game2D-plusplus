@@ -3,11 +3,11 @@
 #include <viewport_adapter.hpp>
 
 ViewportHandle
-CreateViewport (Vector target, Vector size, Vector center)
+CreateViewport (Vector target, Vector size)
 {
-  auto *adapter = new ViewportAdapter (VectorAdapter (target.x, target.y),
-                                       VectorAdapter (size.x, size.y),
-                                       VectorAdapter (center.x, center.y));
+  auto *adapter = new ViewportAdapter (VectorAdapter (size.x, size.y),
+                                       VectorAdapter (target.x, target.y));
+
   return reinterpret_cast<ViewportHandle> (adapter);
 }
 
