@@ -33,6 +33,14 @@ WindowManager::withSoundManager (
   return *this;
 }
 
+WindowManager &
+WindowManager::withRouterManager (
+    const std::shared_ptr<RouterManager> &ptr) noexcept
+{
+  _routerManager = ptr;
+  return *this;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////
 
 void
@@ -58,6 +66,7 @@ WindowManager::close () noexcept
 void
 WindowManager::dispose () noexcept
 {
+  _routerManager->dispose ();
   _cameraManager->dispose ();
   _soundManager->dispose ();
   _eventManager->dispose ();

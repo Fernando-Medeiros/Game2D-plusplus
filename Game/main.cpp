@@ -3,7 +3,9 @@
 #include <circle_adapter.hpp>
 #include <enum_adapter.hpp>
 #include <keyboard_args.hpp>
+#include <logger_hud.hpp>
 #include <rectangle_adapter.hpp>
+#include <router_manager.hpp>
 #include <size_args.hpp>
 #include <sound_args.hpp>
 #include <sound_manager.hpp>
@@ -11,6 +13,7 @@
 #include <text_adapter.hpp>
 #include <window_adapter.hpp>
 #include <window_manager.hpp>
+#include <world_scene.hpp>
 
 int
 main ()
@@ -99,13 +102,18 @@ main ()
   auto eventManager{ std::make_shared<EventManager> () };
   auto windowManager{ std::make_unique<WindowManager> () };
   auto cameraManager{ std::make_shared<CameraManager> () };
+  auto routerManager{ std::make_shared<RouterManager> () };
   auto resourceManager{ std::make_shared<ResourceManager> () };
 
   soundManager->withResourceManager (resourceManager);
 
+  routerManager->addTransient<WorldScene> (ESceneRoute::World)
+      .addTransient<LoggerHud> (EHudRoute::Logger);
+
   windowManager->withSoundManager (soundManager)
       .withEventManager (eventManager)
       .withCameraManager (cameraManager)
+      .withRouterManager (routerManager)
       .withResourceManager (resourceManager)
       .initialize ();
 

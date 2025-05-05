@@ -47,6 +47,9 @@ file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/constants/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/huds/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/scenes/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/elements/*.cpp
 )
 
 file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
@@ -55,6 +58,10 @@ file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/core/constants/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/contracts/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/huds/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/scenes/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/elements/*.hpp
 )
 
 add_library(GameCore SHARED ${CPP_FILES} ${HPP_FILES})
@@ -76,9 +83,11 @@ target_include_directories(GameCore PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/functions
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/adapters/resources
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers
-  ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataStructs
-  ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataSchemas
+  ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/contracts
   ${CMAKE_CURRENT_SOURCE_DIR}/infra/managers/dataTransports
+  ${CMAKE_CURRENT_SOURCE_DIR}/game/huds
+  ${CMAKE_CURRENT_SOURCE_DIR}/game/scenes
+  ${CMAKE_CURRENT_SOURCE_DIR}/game/elements
 )
 
 target_compile_definitions(GameCore PUBLIC

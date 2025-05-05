@@ -10,7 +10,7 @@ public:
   virtual ~IEventArgs () noexcept = default;
 
   template <typename T>
-  [[nodiscard]] const T *
+  requires std::derived_from<T, IEventArgs> [[nodiscard]] const T *
   toSecurePtr () const
   {
     return dynamic_cast<const T *> (this);

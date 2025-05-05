@@ -1,14 +1,11 @@
-﻿#ifndef ENUM_HPPUD_ROUTE_HPP
-#define ENUM_HPPUD_ROUTE_HPP
+﻿#ifndef E_HUD_ROUTE_HPP
+#define E_HUD_ROUTE_HPP
 
 #include <cstdint>
 
-namespace core::enums {
-
-enum class HudRoute : uint8_t {
-    Setting,
-    Statistic,
-    WorldMap,
+enum class EHudRoute : uint8_t
+{
+  Setting,
+  Logger,
 };
-}
 #endif
