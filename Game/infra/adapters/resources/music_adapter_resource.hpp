@@ -7,6 +7,7 @@ class MusicAdapterResource
 {
 private:
   ExtMusic _music;
+  bool _disposed{ false };
 
 public:
   MusicAdapterResource (const ExtMusic &resource) noexcept : _music{ resource }
@@ -54,6 +55,10 @@ public:
   void
   dispose () noexcept
   {
+    if (_disposed)
+      return;
+
+    _disposed = true;
     UnloadMusicStream (_music);
   }
 };

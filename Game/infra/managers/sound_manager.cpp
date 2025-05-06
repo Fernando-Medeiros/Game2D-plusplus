@@ -41,11 +41,11 @@ SoundManager::execute (const IEventArgs &sender) noexcept
         {
           _music->stop ();
           _music->dispose ();
-          _music.release ();
+          _music.reset ();
         }
 
-      _music = std::move (
-          _resourceManager->load<ResourceManager::MusicResource> (enumMusic));
+      _music
+          = _resourceManager->load<ResourceManager::MusicResource> (enumMusic);
 
       _music->setVolume (1);
       _music->setLoop (true);
@@ -58,8 +58,9 @@ SoundManager::dispose () noexcept
 {
   if (_music)
     {
+      _music->stop ();
       _music->dispose ();
-      _music.release ();
+      _music.reset ();
     }
 
   _resourceManager.reset ();

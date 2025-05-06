@@ -3,8 +3,9 @@
 
 #include <cstdint>
 
-enum class ESceneRoute : uint8_t
+enum class EScene : uint8_t
 {
+  None,
   Main,
   World,
 };

@@ -9,7 +9,7 @@
 class SoundManager
 {
 private:
-  std::unique_ptr<MusicAdapterResource> _music;
+  std::shared_ptr<MusicAdapterResource> _music;
   std::shared_ptr<ResourceManager> _resourceManager;
 
 public:

@@ -3,8 +3,9 @@
 
 #include <cstdint>
 
-enum class EHudRoute : uint8_t
+enum class EHud : uint8_t
 {
+  None,
   Setting,
   Logger,
 };

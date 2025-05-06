@@ -88,7 +88,7 @@ ResourceManager::loadMusic (const E &key) noexcept
       auto path
           = std::format ("{}{}{}", MUSICS_PATH, getEnumName (key), MUSIC_EXT);
 
-      _musics.emplace (key, std::make_unique<MusicAdapterResource> (
+      _musics.emplace (key, std::make_shared<MusicAdapterResource> (
                                 LoadMusicStream (path.c_str ())));
     }
 

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef WINDOW_MANAGER_HPP
 #define WINDOW_MANAGER_HPP
 
@@ -7,10 +6,6 @@
 #include <router_manager.hpp>
 #include <sound_manager.hpp>
 #include <window_adapter.hpp>
-
-using WindowArgs = WindowAdapter;
-using WindowCallbackWrapper = void (WindowArgs &);
-using WindowCallback = std::function<WindowCallbackWrapper>;
 
 class WindowManager
 {

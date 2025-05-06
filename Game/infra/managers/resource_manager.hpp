@@ -18,7 +18,7 @@ class ResourceManager
 {
 public:
   using FontResource = std::unique_ptr<FontAdapterResource>;
-  using MusicResource = std::unique_ptr<MusicAdapterResource>;
+  using MusicResource = std::shared_ptr<MusicAdapterResource>;
   using SoundResource = std::unique_ptr<SoundAdapterResource>;
   using TextureResource = std::unique_ptr<TextureAdapterResource>;
 

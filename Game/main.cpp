@@ -4,7 +4,9 @@
 #include <enum_adapter.hpp>
 #include <keyboard_args.hpp>
 #include <logger_hud.hpp>
+#include <main_scene.hpp>
 #include <rectangle_adapter.hpp>
+#include <route_args.hpp>
 #include <router_manager.hpp>
 #include <size_args.hpp>
 #include <sound_args.hpp>
@@ -21,9 +23,7 @@ main ()
   /// TEMP TEST
 
   auto player{ std::make_unique<CircleAdapter> () };
-  auto text{ std::make_unique<TextAdapter> () };
   auto sprite{ std::make_unique<SpriteAdapter> () };
-  auto rectangle{ std::make_unique<RectangleAdapter> () };
   auto screen{ std::make_unique<RectangleAdapter> () };
   auto world{ std::make_unique<RectangleAdapter> () };
 
@@ -40,18 +40,6 @@ main ()
       .setOutlineSize (5)
       .setFillColor (EColor::Black)
       .setOutlineColor (EColor::White);
-
-  text->setText ("Hello World")
-      .setFontSize (30)
-      .setFontSpacing (3)
-      .setFont (EFont::Romulus)
-      .setFontColor (EColor::White)
-      .setPosition (VectorAdapter (200, 100));
-
-  rectangle->setSize (VectorAdapter{ 50, 50 })
-      .setPosition (VectorAdapter{ 250, 300 })
-      .setTexture (ETexture::ButtonDefault)
-      .setFillColor (EColor::CornFlowerBlue);
 
   sprite->setPosition (VectorAdapter (200, 500))
       .setTexture (ETexture::ButtonDefault);
@@ -94,6 +82,17 @@ main ()
 
         eventManager->invoke (EEvent::CameraCenter,
                               CameraArgs (player->getPosition ()));
+
+        // ROUTE TEST
+        if (key == EKeyboardKey::ONE)
+          eventManager->invoke (EEvent::Route, RouteArgs (EScene::Main));
+
+        if (key == EKeyboardKey::TWO)
+          eventManager->invoke (EEvent::Route, RouteArgs (EScene::World));
+
+        if (key == EKeyboardKey::THREE)
+          eventManager->invoke (EEvent::Route, RouteArgs (EHud::Logger));
+        
       };
 
   ////////////////////////////////////////////////////////////////////////
@@ -107,8 +106,9 @@ main ()
 
   soundManager->withResourceManager (resourceManager);
 
-  routerManager->addTransient<WorldScene> (ESceneRoute::World)
-      .addTransient<LoggerHud> (EHudRoute::Logger);
+  routerManager->addTransient<MainScene> (EScene::Main)
+      .addTransient<WorldScene> (EScene::World)
+      .addTransient<LoggerHud> (EHud::Logger);
 
   windowManager->withSoundManager (soundManager)
       .withEventManager (eventManager)
@@ -119,7 +119,7 @@ main ()
 
   windowManager->events (WindowCallback ([&eventManager, &cameraManager,
                                           &soundManager, &windowManager,
-                                          &TEMP_EVENT_DEBUG] (
+                                          &routerManager, &TEMP_EVENT_DEBUG] (
                                              WindowArgs &window) {
     EventId eventId;
 
@@ -167,6 +167,12 @@ main ()
         }));
 
     /// LISTERNERS //////////////////////////////////////////////////////
+
+    eventId = eventManager->subscribe (
+        EEvent::Route, EventCallback ([&] (const IEventArgs &sender) {
+          routerManager->execute (sender);
+        }));
+
     eventId = eventManager->subscribe (
         EEvent::CameraCenter, EventCallback ([&] (const IEventArgs &sender) {
           cameraManager->execute (sender);
@@ -210,17 +216,16 @@ main ()
   }));
 
   windowManager->render (
-      WindowCallback ([&screen, &text, &rectangle, &sprite, &world,
+      WindowCallback ([&routerManager, &screen, &sprite, &world,
                        &player] (WindowArgs &window) {
         window.render (*screen);
-        window.render (*text);
-        window.render (*rectangle);
-        window.render (*sprite);
 
         window.beginViewport ();
         window.render (*world);
         window.render (*player);
         window.endViewport ();
+
+        routerManager->render (window);
       }));
 
   windowManager->dispose ();
