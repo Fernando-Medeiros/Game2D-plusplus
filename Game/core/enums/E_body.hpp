@@ -3,13 +3,11 @@
 
 #include <cstdint>
 
-namespace core::enums {
-
-enum class Body : uint8_t {
-    Npc,
-    Static,
-    Player,
-    Enemy,
+enum class EBody : uint8_t
+{
+  Npc,
+  Static,
+  Player,
+  Enemy,
 };
-}
 #endif
