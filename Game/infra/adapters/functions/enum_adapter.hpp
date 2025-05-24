@@ -19,6 +19,14 @@ castEnum (const std::string_view &enumName, const E &defaultEnum) noexcept
   return magic_enum::enum_cast<E> (enumName).value_or (defaultEnum);
 }
 
+template <IsEnum E, IsEnum T>
+[[nodiscard]] E
+castEnum (const T &enumValue, const E &defaultEnum) noexcept
+{
+  const auto name = getEnumName<T> (enumValue);
+  return castEnum<E> (name, defaultEnum);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 template <IsExtKeyboard E>

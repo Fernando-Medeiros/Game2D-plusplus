@@ -6,24 +6,33 @@
 class Body2D : public IBody2D
 {
 public:
-  Body2D ();
+  Body2D () noexcept;
 
-public:
-  // IBody2D interface
-public:
-  INode2D &GetNode () const noexcept override;
-  ETexture &GetTexture () const noexcept override;
-  ILightComponent &GetLightComponent () const noexcept override;
-  IDamageComponent &GetDamageComponent () const noexcept override;
-  IMovementComponent &GetMovementComponent () const noexcept override;
-  IStatisticComponent &GetStatisticComponent () const noexcept override;
-  void Execute (IEventArgs *sender) noexcept override;
-  void SetBody (IBody2D *entity) noexcept override;
-  void SetNode (INode2D *node) noexcept override;
-  void SetSprite (ETexture *sprite) noexcept override;
-  void Translate (INode2D &linkedNode) noexcept override;
-  bool IsDiposed () const noexcept override;
-  void Dispose () noexcept override;
+  INode2D &getNode () const noexcept override;
+
+  ETexture &getTexture () const noexcept override;
+
+  ILightComponent &getLightComponent () const noexcept override;
+
+  IDamageComponent &getDamageComponent () const noexcept override;
+
+  IMovementComponent &getMovementComponent () const noexcept override;
+
+  IStatisticComponent &getStatisticComponent () const noexcept override;
+
+  void execute (IEventArgs *sender) noexcept override;
+
+  void setBody (IBody2D *entity) noexcept override;
+
+  void setNode (INode2D *node) noexcept override;
+
+  void setSprite (ETexture *sprite) noexcept override;
+
+  void translate (INode2D &linkedNode) noexcept override;
+
+  bool isDiposed () const noexcept override;
+
+  void dispose () noexcept override;
 };
 
 #endif // BODY_2D_HPP

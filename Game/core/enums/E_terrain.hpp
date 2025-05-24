@@ -5,6 +5,8 @@
 
 enum class ETerrain : uint8_t
 {
+  NONE,
+
   BorealForestA,
   BorealForestB,
   BorealForestC,

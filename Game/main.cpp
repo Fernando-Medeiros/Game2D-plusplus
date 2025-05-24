@@ -218,14 +218,9 @@ main ()
   windowManager->render (
       WindowCallback ([&routerManager, &screen, &sprite, &world,
                        &player] (WindowArgs &window) {
-        window.render (*screen);
-
-        window.beginViewport ();
-        window.render (*world);
-        window.render (*player);
-        window.endViewport ();
-
         routerManager->render (window);
+
+        window.render (*player);
       }));
 
   windowManager->dispose ();

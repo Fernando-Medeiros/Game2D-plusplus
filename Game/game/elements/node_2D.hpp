@@ -1,42 +1,88 @@
 #ifndef NODE_2D_HPP
 #define NODE_2D_HPP
 
+#include <I_body_2D.hpp>
+#include <I_item_2D.hpp>
 #include <I_node_2D.hpp>
+#include <vector_adapter.hpp>
 
 class Node2D : public INode2D
 {
-public:
-  Node2D ();
+private:
+  bool _selected{ false };
+  VectorAdapter _position{};
+  EBiome _biome{ EBiome::Forest };
+  ETerrain _terrain{ ETerrain::ForestA };
+  EOpacity _visibility{ EOpacity::Opaque };
+  BodyPtr _entity{ nullptr };
+  ItemCollection _items{};
+  ItemCollection _buildings{};
 
 public:
-  // INode2D interface
+  inline static Navigation _navigation;
+
 public:
-  bool IsEmpty () const noexcept override;
-  bool HasItems () const noexcept override;
-  bool IsVisible () const noexcept override;
-  bool IsOccupied () const noexcept override;
-  bool IsSelected () const noexcept override;
-  bool HasBuildings () const noexcept override;
-  EBiome &GetBiome () const noexcept override;
-  IBody2D *GetEntity () const noexcept override;
-  ETerrain &GetTerrain () const noexcept override;
-  EOpacity &GetVisibility () const noexcept override;
-  VectorAdapter &GetPosition () const noexcept override;
-  std::vector<IItem2D &> GetItems () const noexcept override;
-  std::vector<IItem2D &> GetBuildings () const noexcept override;
-  INode2D Navigate (std::vector<EAnchor> anchors) noexcept override;
-  void SetBiome (EBiome biome) noexcept override;
-  void SetSelected (bool option) noexcept override;
-  void SetEntity (IBody2D *entity) noexcept override;
-  void SetVisible (EOpacity &opacity) noexcept override;
-  void SetTerrain (ETerrain &terrain) noexcept override;
-  void AppendItem (IItem2D &item) noexcept override;
-  void RemoveItem (IItem2D &item) noexcept override;
-  void AppendBuilding (IItem2D &building) noexcept override;
-  void RemoveBuilding (IItem2D &building) noexcept override;
-  void RenderSync (IWindow &window) noexcept override;
-  void Clear () noexcept override;
-  void Dispose () noexcept override;
+  Node2D (VectorAdapter position) noexcept;
+
+  bool isEmpty () const noexcept override;
+
+  bool hasItems () const noexcept override;
+
+  bool isVisible () const noexcept override;
+
+  bool isOccupied () const noexcept override;
+
+  bool isSelected () const noexcept override;
+
+  bool hasBuildings () const noexcept override;
+
+  [[nodiscard]] const EBiome &getBiome () const noexcept override;
+
+  [[nodiscard]] BodyPtr &getEntity () noexcept override;
+
+  [[nodiscard]] const ETerrain &getTerrain () const noexcept override;
+
+  [[nodiscard]] const EOpacity &getVisibility () const noexcept override;
+
+  [[nodiscard]] const VectorAdapter &getPosition () const noexcept override;
+
+  [[nodiscard]] const ItemCollection &getItems () const noexcept override;
+
+  [[nodiscard]] const ItemCollection &getBuildings () const noexcept override;
+
+  [[nodiscard]] NodePtr
+  navigate (std::vector<EAnchor> anchors) noexcept override;
+
+  void setBiome (EBiome biome) noexcept override;
+
+  void setSelected (bool option) noexcept override;
+
+  void setEntity (BodyPtr entity) noexcept override;
+
+  void setVisible (EOpacity opacity) noexcept override;
+
+  void setTerrain (ETerrain terrain) noexcept override;
+
+  void appendItem (ItemPtr &item) noexcept override;
+
+  void removeItem (ItemPtr &item) noexcept override;
+
+  void appendBuilding (ItemPtr &building) noexcept override;
+
+  void removeBuilding (ItemPtr &building) noexcept override;
+
+  void render (IWindow &window) noexcept override;
+
+  void clear () noexcept override;
+
+  void dispose () noexcept override;
+
+private:
+  void renderTerrain (IWindow &window) noexcept;
+  void renderBuildings (IWindow &window) noexcept;
+  void renderItems (IWindow &window) noexcept;
+  void renderBody (IWindow &window) noexcept;
+  void renderSelected (IWindow &window) noexcept;
 };
 
 #endif // NODE_2D_HPP

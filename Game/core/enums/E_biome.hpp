@@ -5,6 +5,8 @@
 
 enum class EBiome : uint8_t
 {
+  NONE,
+
   BorealForest,
   DarkForest,
   Desert,

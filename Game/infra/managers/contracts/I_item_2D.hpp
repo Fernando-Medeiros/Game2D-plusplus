@@ -3,14 +3,14 @@
 
 #include <E_texture.hpp>
 
-class Item2D
+class IItem2D
 {
 public:
-  virtual ~Item2D () noexcept = default;
+  virtual ~IItem2D () noexcept = default;
 
-  [[nodiscard]] virtual ETexture &GetTexture () const noexcept = 0;
+  [[nodiscard]] virtual ETexture &getTexture () const noexcept = 0;
 
-  virtual void Dispose () noexcept = 0;
+  virtual void dispose () noexcept = 0;
 };
 
 #endif // I_ITEM_2D_HPP

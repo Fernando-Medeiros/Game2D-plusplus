@@ -142,7 +142,7 @@ WindowAdapter::getCoords (const VectorAdapter &vector,
                           const ViewportAdapter &viewport) const noexcept
 {
   return GetScreenToWorld2D (vector, viewport);
-};
+}
 
 void
 WindowAdapter::close () noexcept

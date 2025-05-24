@@ -10,9 +10,9 @@ class ILightComponent
 public:
   virtual ~ILightComponent () noexcept = default;
 
-  virtual void VisibilityTo (IBody2D &entity, EOpacity &opacity) noexcept = 0;
+  virtual void visibilityTo (IBody2D &entity, EOpacity &opacity) noexcept = 0;
 
-  virtual void Dispose () noexcept = 0;
+  virtual void dispose () noexcept = 0;
 };
 
 #endif // I_LIGHT_COMPONENT_HPP
