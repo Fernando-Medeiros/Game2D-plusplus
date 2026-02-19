@@ -17,23 +17,23 @@ class IBody2D
 public:
   virtual ~IBody2D () noexcept = 0;
 
-  [[nodiscard]] virtual INode2D &getNode () const noexcept = 0;
+  [[nodiscard]] const virtual INode2D &getNode () const noexcept = 0;
 
-  [[nodiscard]] virtual ETexture &getTexture () const noexcept = 0;
+  /*[[nodiscard]] const virtual ETexture &getTexture () const noexcept = 0;
 
-  [[nodiscard]] virtual ILightComponent &getLightComponent () const noexcept
+  [[nodiscard]] const virtual ILightComponent &getLightComponent () const noexcept
       = 0;
 
-  [[nodiscard]] virtual IDamageComponent &getDamageComponent () const noexcept
-      = 0;
+  [[nodiscard]] const virtual IDamageComponent &getDamageComponent () const noexcept
+      = 0;*/
 
-  [[nodiscard]] virtual IMovementComponent &
+  [[nodiscard]] const virtual IMovementComponent &
   getMovementComponent () const noexcept
       = 0;
 
-  [[nodiscard]] virtual IStatisticComponent &
+  /*[[nodiscard]] const virtual IStatisticComponent &
   getStatisticComponent () const noexcept
-      = 0;
+      = 0;*/
 
   virtual void execute (IEventArgs *sender) noexcept = 0;
 

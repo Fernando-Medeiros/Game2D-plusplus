@@ -50,6 +50,7 @@ file(GLOB_RECURSE CPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/game/huds/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/scenes/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/elements/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/components/*.cpp
 )
 
 file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
@@ -62,6 +63,7 @@ file(GLOB_RECURSE HPP_FILES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/game/huds/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/scenes/*.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/game/elements/*.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/game/components/*.hpp
 )
 
 add_library(GameCore SHARED ${CPP_FILES} ${HPP_FILES})
@@ -88,6 +90,7 @@ target_include_directories(GameCore PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/game/huds
   ${CMAKE_CURRENT_SOURCE_DIR}/game/scenes
   ${CMAKE_CURRENT_SOURCE_DIR}/game/elements
+  ${CMAKE_CURRENT_SOURCE_DIR}/game/components
 )
 
 target_compile_definitions(GameCore PUBLIC

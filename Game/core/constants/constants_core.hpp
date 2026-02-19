@@ -14,8 +14,8 @@ constexpr float MAX_ZOOM = 1.5f;
 constexpr float MIN_ZOOM = 0.5f;
 constexpr float ZOOM_VALUE = 0.05f;
 constexpr float DEFAULT_ZOOM = 1.0f;
-constexpr float WORLD_WIDTH = 255 * 64;
-constexpr float WORLD_HEIGHT = 255 * 64;
+constexpr uint16_t WORLD_WIDTH = 255 * 64;
+constexpr uint16_t WORLD_HEIGHT = 255 * 64;
 
 const inline std::string GAME_TITLE = "Game 2D";
 const inline std::string FONTS_PATH = "./resources/fonts/";

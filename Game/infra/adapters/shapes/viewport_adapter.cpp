@@ -39,6 +39,18 @@ ViewportAdapter::getCenter () const noexcept
   return _center;
 }
 
+[[nodiscard]] const VectorAdapter & 
+ViewportAdapter::getMaxPosition() const noexcept
+{
+  return _maxPosition;
+}
+
+[[nodiscard]] const VectorAdapter &
+ViewportAdapter::getMinPosition() const noexcept
+{
+  return _minPosition;
+}
+
 void
 ViewportAdapter::setZoom (float value) noexcept
 {
@@ -62,10 +74,12 @@ void
 ViewportAdapter::setTarget (VectorAdapter vector) noexcept
 {
   _target = vector;
+  _minPosition = getTarget () - (getSize () / 2) + RECT;
+  _maxPosition = getTarget () + (getSize () / 2) + RECT;
 }
 
 ViewportAdapter::operator const ExtViewport () const noexcept
 {
-  const ExtViewport camera{ _center, _target, _rotation, _zoom };
+    const ExtViewport camera{ VectorAdapter{0,0}, _target, _rotation, _zoom };
   return camera;
 };

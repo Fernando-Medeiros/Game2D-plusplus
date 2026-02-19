@@ -27,8 +27,7 @@ main ()
   auto screen{ std::make_unique<RectangleAdapter> () };
   auto world{ std::make_unique<RectangleAdapter> () };
 
-  screen
-      ->setSize (VectorAdapter{ DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT })
+  screen->setSize (VectorAdapter{ DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT })
       .setPosition (VectorAdapter{ 0, 0 })
       .setFillColor (EColor::CornFlowerBlue);
 

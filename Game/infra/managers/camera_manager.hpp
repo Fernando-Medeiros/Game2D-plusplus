@@ -8,7 +8,7 @@ class CameraManager
 {
 private:
   ViewportAdapter _viewport;
-
+ 
 public:
   [[nodiscard]] const ViewportAdapter &getViewport () const noexcept;
 

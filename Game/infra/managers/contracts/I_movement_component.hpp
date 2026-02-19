@@ -12,15 +12,9 @@ class IMovementComponent
 public:
   virtual ~IMovementComponent () noexcept = default;
 
-  [[nodiscard]] virtual IMovementComponent
-  withEntity (IBody2D &linkedEntity) noexcept
-      = 0;
+  [[nodiscard]] virtual const EAnchor &getAnchor () const noexcept = 0;
 
-  [[nodiscard]] virtual EAnchor getAnchor () const noexcept = 0;
-
-  [[nodiscard]] virtual INode2D
-  getAnchorForKey (IEventArgs *keyboardCode) const noexcept
-      = 0;
+  [[nodiscard]] virtual const INode2D &getAnchorForKey (IEventArgs *keyboardCode) const noexcept = 0;
 
   virtual void rotateAnchor (IEventArgs *keyboardCode) noexcept = 0;
 

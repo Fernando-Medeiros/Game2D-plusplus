@@ -11,7 +11,9 @@ private:
   float _zoom{ DEFAULT_ZOOM }, _rotation{ 0.0f };
   VectorAdapter _target{ DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 },
       _center{ DEFAULT_SCREEN_WIDTH / 2, DEFAULT_SCREEN_HEIGHT / 2 },
-      _size{ DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT };
+      _size{ DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT },
+      _maxPosition{ WORLD_WIDTH, WORLD_HEIGHT },
+      _minPosition{ 0, 0 };
 
 public:
   ViewportAdapter () noexcept = default;
@@ -30,6 +32,10 @@ public:
   [[nodiscard]] const VectorAdapter &getTarget () const noexcept;
 
   [[nodiscard]] const VectorAdapter &getCenter () const noexcept;
+
+  [[nodiscard]] const VectorAdapter &getMaxPosition() const noexcept;
+
+  [[nodiscard]] const VectorAdapter &getMinPosition() const noexcept;
 
   void setZoom (float value) noexcept;
 

@@ -15,9 +15,9 @@ CameraManager::getViewport () const noexcept
 void
 CameraManager::execute (const IEventArgs &sender) noexcept
 {
-  if (const auto *args = sender.toSecurePtr<SizeArgs> ())
+  if (const SizeArgs* args = sender.toSecurePtr<SizeArgs> ())
     {
-      const auto size = args->getSize ();
+      const VectorAdapter size = args->getSize ();
 
       _viewport.setSize (size);
       _viewport.setTarget (size / 2);
@@ -25,10 +25,10 @@ CameraManager::execute (const IEventArgs &sender) noexcept
       return;
     }
 
-  if (const auto *args = sender.toSecurePtr<CameraArgs> ())
+  if (const CameraArgs* args = sender.toSecurePtr<CameraArgs> ())
     {
-      const auto target = args->getTarget ();
-      const auto size = _viewport.getSize ();
+      const VectorAdapter target = args->getTarget ();
+      const VectorAdapter size = _viewport.getSize ();
 
       int baseY = size.vertical () / 2;
       int baseX = size.horizontal () / 2;
@@ -39,12 +39,12 @@ CameraManager::execute (const IEventArgs &sender) noexcept
       int centerY
           = std::clamp<int> (target.vertical (), baseY, WORLD_HEIGHT - baseY);
 
-      _viewport.setTarget (VectorAdapter (centerX, centerY));
+      _viewport.setTarget (VectorAdapter (centerX, centerY));            
       return;
     }
 
-  const auto *mouse = sender.toSecurePtr<MouseArgs> ();
-  const auto *keyboard = sender.toSecurePtr<KeyboardArgs> ();
+  const MouseArgs* mouse = sender.toSecurePtr<MouseArgs> ();
+  const KeyboardArgs* keyboard = sender.toSecurePtr<KeyboardArgs> ();
 
   if (mouse || keyboard)
     {
